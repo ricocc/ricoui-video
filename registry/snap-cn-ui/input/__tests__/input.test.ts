@@ -146,7 +146,7 @@ describe("inputConfig.snippet: default props are omitted", () => {
   const allDefaults = snippet({
     state: "typing",
     placeholder: "you@example.com",
-    value: "remotion@snap-cn.dev",
+    value: "remotion@snapcn.dev",
     size: "default",
     primary: "#171717",
   });
@@ -155,7 +155,7 @@ describe("inputConfig.snippet: default props are omitted", () => {
     expect(allDefaults).not.toContain("placeholder=");
   });
 
-  it("omits value when it equals the default 'remotion@snap-cn.dev'", () => {
+  it("omits value when it equals the default 'remotion@snapcn.dev'", () => {
     expect(allDefaults).not.toContain("value=");
   });
 

@@ -52,7 +52,7 @@ pnpm test registry/snap-cn-ui/input/__tests__
   Asserts: emits `state="<state>"` as a bare JSX prop for every option; NEVER
   emits `steps` or `action`; includes `import { Input }` from
   `@/components/snap-cn/input`; omits default-equal props
-  (`placeholder=you@example.com`, `value=remotion@snap-cn.dev`, `size=default`,
+  (`placeholder=you@example.com`, `value=remotion@snapcn.dev`, `size=default`,
   `mode=light`, `primary=#171717`); EMITS non-default
   `placeholder`/`value`/`size`/`mode`/`primary`; structural round-trip (starts
   with import, contains `<Input`, ends `/>`).

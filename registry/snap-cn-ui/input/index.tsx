@@ -151,7 +151,7 @@ export function Input({
   state = "idle",
   style,
   placeholder = "you@example.com",
-  value = "remotion@snap-cn.dev",
+  value = "remotion@snapcn.dev",
   size = "default",
   theme: themeOverride,
   primary,
