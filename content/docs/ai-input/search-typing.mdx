@@ -1,0 +1,261 @@
+---
+title: Search Typing
+description: A search field wider than the shot — two thirds in frame, then it comes forward, types across its left half, pages to its right half, and goes back
+---
+
+<ComponentPreview name="search-typing" />
+
+## Installation
+
+<InstallBlock name="search-typing" />
+
+## Usage
+
+Two thirds of the field are in frame to begin with, parked back. On the first keystroke it comes forward, and now only its **left half** fits. The sentence types across that half; when the caret runs out of frame the field slides, and its **right half** comes in. The sentence finishes there — and then the field goes back **further than it started**, far enough that the **whole** of it lands in frame, centred. That is the only moment in the clip you see the complete field and the finished sentence at once, so it is the shot the whole thing is built toward.
+
+Everything is driven by the current frame, so scrubbing and rendering are deterministic — including the keystroke jitter, which is seeded, not sampled from a clock.
+
+```tsx
+// src/Root.tsx
+import { Composition } from "remotion";
+import { SearchTyping } from "@/components/snap-cn/search-typing";
+
+const AskScene = () => (
+  <SearchTyping text="How do I make my product demo actually look expensive?" />
+);
+
+export const RemotionRoot = () => (
+  <Composition
+    id="SearchTyping"
+    component={AskScene}
+    durationInFrames={420}
+    fps={60}
+    width={1280}
+    height={720}
+  />
+);
+```
+
+The component ships with a transparent background — place it over any backdrop, or over one of the [Backgrounds](/docs/backgrounds).
+
+### The field is wider than the frame
+
+That is the whole idea. `fieldHeight` sets how tall the field reads on screen (0.27 of the frame, so it comes out long and slim), and `frontVisible` sets how much of it is in frame once it has come forward. The field is then **padded out to whatever length that framing needs**.
+
+That padding matters, and it is not a fudge. A field only as long as its sentence has a *fixed* aspect ratio — so demanding that half of it fill the frame would force its height, and it would come out as a chunky slab. Separating the two knobs is what lets it be both half-in-frame and slim. A real search field is longer than what you type into it anyway.
+
+`dolly` is the ratio between the two depths — **1.25**, which is what the reference measures. `frontVisible × dolly` is how much is in frame at rest: 0.56 × 1.25 ≈ **two thirds**.
+
+The **ending depth is not a third knob**: it falls out of the geometry. The field retreats until it is exactly as wide as the page, so it fits — and because `edgeInset` leaves an equal margin either side, anchoring the retreat on the field's right cap lands it centred with no special case. The push and the retreat are therefore two separate moves to two separate depths (`cameraPush`, `cameraRetreat`), not one move played backwards. Folding them together is what kept the field from ever pulling back far enough to be seen whole.
+
+The page across is not on a timer — it fires on the **character whose caret is about to run out of frame**, which falls near the middle of the sentence. It fires a little early on purpose: the pan eases in, so for its first frames the field has barely moved while the typing carries the caret on rightwards. Fire it *at* the edge and the caret spills over before the field catches up. Short sentences that fit in the first half never pan at all.
+
+### Proportions
+
+Every measurement is a ratio of the field's height, so the whole thing scales as one piece. They are not invented: they come off the reference frames.
+
+| | ratio of field height |
+| --- | --- |
+| corner radius | **0.276** — not a pill; a pill would be 0.500 |
+| font size | 0.379 (cap height 0.265) |
+| left cap → first glyph | 1.024 |
+| left cap → icon | 0.357; icon 0.378 |
+| caret | 0.024 wide × 0.434 tall |
+
+The face is **Outfit Light (300)**, loaded through `@remotion/google-fonts` so the Player, the rendered mp4 and your own project all get the same one. It was chosen by measurement, not by eye: the reference's stem-to-cap ratio is 0.121, and Outfit 300 is the geometric face that lands on it.
+
+### The surface is the design system's, not the reference's
+
+The proportions above are measured. The **colours are not** — they were the
+reference's brand. The field paints itself from `inputStyleContext()`, the very same
+style context the shadcn `<Input>` uses, so it is a card surface on a hairline
+border and it cannot drift away from the input sitting next to it in your app.
+
+That matters most for the shadow. The reference's field carries a heavy drop shadow
+and a grey-crown gradient. On its dark violet backdrop those read as depth and as
+glass; on a light page they read as a **grey smear** and an **inner shadow**. So the
+default carries **no shadow at all** — a flat `#FFFFFF` card and a `#E4E7EC` hairline
+border, which is how shadcn defines a control. `surface="glass"` keeps the measured
+reference field; use it only over something dark.
+
+### Why the type doesn't judder as it scales
+
+A browser gives glyph origins **no vertical sub-pixel precision at all** — it rounds them to a whole device pixel. So a scale that *moves the baseline* makes the type climb the pixel grid in whole-pixel jumps: sit still, jump, sit still. So the scale **pivots on the baseline**, which is measured (a zero-sized inline-block sitting on it), never guessed from a line-height. On the rendered frames the baseline holds to a **single pixel row** across the full 1.25× sweep.
+
+Separately, hinting bends each glyph so its stems land on whole pixels, and under a sliding scale they re-snap every frame — the letterforms boil. `text-rendering: geometricPrecision` turns that off.
+
+`will-change: transform` is gated on `getRemotionEnvironment().isRendering`: right for the Player (one long-lived tab, a hard frame budget), wrong for a render (parallel tabs each inherit a stale raster).
+
+### Why the text doesn't shift as it types
+
+The obvious way to type a string is `text.slice(0, n)`. That re-shapes the run every keystroke, and a run that re-shapes can re-kern — settled glyphs twitch as new ones land. Instead the sentence is laid out **once, in full**, and revealed by clipping to a measured character boundary. A run shaped once cannot move a glyph. Ligatures are off, so the clip can never bisect an "fi".
+
+The measurement runs once, behind `delayRender()`, after `document.fonts.ready` — and with the camera transform switched off, because `getBoundingClientRect()` reports device px and would otherwise hand back every advance multiplied by the current scale.
+
+## Props
+
+<PropsTable
+  rows={[
+    {
+      name: "text",
+      type: "string",
+      required: true,
+      description: "The sentence typed into the field, one character at a time",
+    },
+    {
+      name: "charsPerSecond",
+      type: "number",
+      default: "14",
+      description: "Typing speed. 14 is what the reference does",
+    },
+    {
+      name: "humanize",
+      type: "number",
+      default: "0.35",
+      description:
+        "Keystroke-interval variance, 0–1. 0 is a metronome. Deterministic — seeded, never sampled from a clock",
+    },
+    {
+      name: "wordPause",
+      type: "number",
+      default: "1.55",
+      description:
+        "Beat after a space, as a multiple of the base keystroke interval",
+    },
+    {
+      name: "punctuationPause",
+      type: "number",
+      default: "2.2",
+      description:
+        "Beat after . , ! ? ; : as a multiple of the base keystroke interval",
+    },
+    {
+      name: "startDelay",
+      type: "number",
+      default: "0.5",
+      description:
+        "Seconds the field holds, parked and blinking, before the first keystroke",
+    },
+    {
+      name: "dollyDuration",
+      type: "number",
+      default: "0.8",
+      description: "Seconds the field takes to come forward once typing starts",
+    },
+    {
+      name: "panDuration",
+      type: "number",
+      default: "0.5",
+      description:
+        "Seconds the field takes to slide from its left half to its right half",
+    },
+    {
+      name: "holdAfter",
+      type: "number",
+      default: "0.9",
+      description:
+        "Seconds the finished sentence holds at the front before the field goes back",
+    },
+    {
+      name: "recedeDuration",
+      type: "number",
+      default: "1.2",
+      description:
+        "Seconds the field takes to travel back. It goes back further than it started — far enough that the whole field lands in frame. 0 parks it at the front",
+    },
+    {
+      name: "dolly",
+      type: "number",
+      default: "1.25",
+      description:
+        "How much bigger the field gets coming forward — the ratio the reference measures. frontVisible × dolly is how much is in frame at rest",
+    },
+    {
+      name: "fieldHeight",
+      type: "number",
+      default: "0.27",
+      description:
+        "The field's height on screen as a fraction of the frame's. The knob that makes it read long and slim rather than chunky; the text is a fixed ratio of it and comes with it",
+    },
+    {
+      name: "frontVisible",
+      type: "number",
+      default: "0.56",
+      description:
+        "How much of the field is in frame once it has come forward. The field is padded out to whatever length that needs, so this and fieldHeight are independent",
+    },
+    {
+      name: "edgeInset",
+      type: "number",
+      default: "40",
+      description:
+        "Margin, in px, between the field's visible cap and the edge of the frame",
+    },
+    {
+      name: "caretBlinksPerSecond",
+      type: "number",
+      default: "1",
+      description:
+        "Blinks per second. 1 is the ~500ms-on/500ms-off of a real text field; 0 holds it solid",
+    },
+    {
+      name: "caret",
+      type: "boolean",
+      default: "true",
+      description: "Render the caret at all",
+    },
+    {
+      name: "surface",
+      type: '"shadcn" | "glass"',
+      default: '"shadcn"',
+      description:
+        "shadcn: a flat card surface and a hairline border, no shadow — correct on a light page. glass: the reference's grey-crown-to-white field with its drop shadow, which is lit for a DARK backdrop and reads as an inner shadow plus a smear on a light one",
+    },
+    {
+      name: "theme",
+      type: "Partial<SnapCnTheme>",
+      description:
+        "Design-system token overrides — the same shape every snap-cn-ui component takes",
+    },
+    {
+      name: "mode",
+      type: '"light" | "dark"',
+      default: '"light"',
+      description: "Which default token set to resolve against",
+    },
+    {
+      name: "icon",
+      type: '"search" | "sparkle" | "none"',
+      default: '"search"',
+      description: "Glyph in the left of the field",
+    },
+    {
+      name: "fontFamily",
+      type: "string",
+      description: "Overrides Outfit",
+    },
+    {
+      name: "fontWeight",
+      type: "number",
+      default: "300",
+      description: "CSS font-weight. The reference measures as a Light",
+    },
+    {
+      name: "seed",
+      type: "string",
+      default: '"search-typing"',
+      description: "Seeds humanize. Same seed, same performance, forever",
+    },
+    {
+      name: "speed",
+      type: "number",
+      default: "1",
+      description: "Global playback multiplier applied to the whole sequence",
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "Optional className passed to the field",
+    },
+  ]}
+/>
