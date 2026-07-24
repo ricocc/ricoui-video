@@ -1,0 +1,62 @@
+---
+title: Agent Skill
+description: Install the snap-cn agent skill with skills.sh so your AI generates better Remotion videos
+---
+
+snap-cn ships an **agent skill** — a knowledge pack that teaches AI coding agents (Claude Code and
+friends) how to build videos with snap-cn: the full component catalog with props and durations,
+design defaults, motion-design principles, and common anti-patterns.
+
+Once installed, your agent picks the right components, budgets the timeline correctly, and styles
+your additions to match the library — without you pasting context every time.
+
+## Install with skills.sh
+
+The skill lives in the [`skills/`](https://github.com/SriNath693/snap-cn/tree/main/skills) folder of
+the snap-cn repo. Install it with the [`skills`](https://skills.sh) CLI:
+
+```bash
+npx skills add SriNath693/snap-cn
+```
+
+This finds the `snap-cn` skill and installs it into your agent (for Claude Code:
+`.claude/skills/snap-cn/`). The CLI is interactive — pick the skill and target agent when prompted.
+
+### Common flags
+
+```bash
+# Install straight to the snap-cn skill, no prompts
+npx skills add SriNath693/snap-cn --skill snap-cn --yes
+
+# Install globally (available in every project)
+npx skills add SriNath693/snap-cn --skill snap-cn -g
+
+# Target a specific agent
+npx skills add SriNath693/snap-cn -a claude-code
+
+# Just list what's available in the repo
+npx skills add SriNath693/snap-cn --list
+```
+
+### Use without installing
+
+To try it for a single session without writing files:
+
+```bash
+npx skills use SriNath693/snap-cn@snap-cn | claude
+```
+
+## What's inside
+
+| File | Contents |
+|---|---|
+| `SKILL.md` | Install flow, the two tiers, categories, patterns, design defaults |
+| `references/components.md` | Every component — props, defaults, dependencies, duration & vibe |
+| `references/design.md` | Anti-slop design defaults + tokens (palette, fonts, canvas) |
+| `references/motion-principles.md` | The 12 motion principles adapted to snap-cn |
+| `references/anti-patterns.md` | Common generation mistakes and their fixes |
+
+## Prerequisites
+
+- An AI agent that loads skills (e.g. Claude Code).
+- A Remotion project with snap-cn — see [Installation](/docs/getting-started/installation).
