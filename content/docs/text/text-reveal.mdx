@@ -1,0 +1,190 @@
+---
+title: Text Reveal
+description: A cinematic zoom-out title reveal — the lead word floats up close to the viewer, falls back to size, then the sentence pushes in word by word and slides into place
+---
+
+<ComponentPreview name="text-reveal" />
+
+The reveal plays in four beats:
+
+1. The lead word fades in large and centred — right up against the viewer.
+2. It drifts a little **closer** still, and hangs there.
+3. It **falls back** to its final size, roughly in place.
+4. Only once it has landed does the line travel left, while the trailing words
+   **push in** one by one from the right and settle.
+
+Beats 3 and 4 begin on the same frame but run on very different clocks: the
+recede is short, the slide is long and heavily eased in. That gap is what makes
+the word read as going *back* first and moving left second, rather than doing
+both at once — and the trailing words stay hidden until `wordDelay` frames into
+the recede, so none of them appear while the lead word is still travelling.
+
+Only `scale`, `translate` and `opacity` animate, so the baseline stays fixed and
+nothing reflows.
+
+## Installation
+
+<InstallBlock name="text-reveal" />
+
+## Usage
+
+```tsx
+// src/Root.tsx
+import { Composition } from "remotion";
+import { TextReveal } from "@/components/snap-cn/text-reveal";
+
+const TitleScene = () => <TextReveal text="Meet Acme Billing" />;
+
+export const RemotionRoot = () => (
+  <Composition
+    id="TextReveal"
+    component={TitleScene}
+    durationInFrames={90}
+    fps={30}
+    width={1280}
+    height={720}
+  />
+);
+```
+
+Tune the feel with a few props — a bigger `initialScale` for a more dramatic
+zoom, a longer `assembleDuration` for a slower settle:
+
+```tsx
+<TextReveal
+  text="Get more than you expect"
+  initialScale={2.6}
+  holdDuration={14}
+  assembleDuration={40}
+/>
+```
+
+The lead word's centre is measured once on mount so it stays perfectly centred
+while large and lands exactly in the line — the type, spacing and baseline never
+shift.
+
+`recedeDuration` and `assembleDuration` are the two knobs that shape the reveal.
+Keep the assemble comfortably longer than the recede (the default 30 vs 14 is a
+good ratio); shrink the gap and the line starts sliding left while the lead word
+is still falling back, which reads as one muddled move instead of two.
+
+## Props
+
+<PropsTable
+  rows={[
+    {
+      name: "text",
+      type: "string",
+      default: "\"Meet Acme Billing\"",
+      description: "The sentence to assemble. Its first word leads the reveal",
+    },
+    {
+      name: "fontSize",
+      type: "number",
+      default: "72",
+      description: "Final font size in px — the size the line settles at",
+    },
+    {
+      name: "color",
+      type: "string",
+      default: "\"#101828\"",
+      description: "Text color (any valid CSS color)",
+    },
+    {
+      name: "fontWeight",
+      type: "number | string",
+      default: "600",
+      description: "CSS font-weight",
+    },
+    {
+      name: "initialScale",
+      type: "number",
+      default: "2.3",
+      description:
+        "How much larger the lead word starts (2 = twice the final size)",
+    },
+    {
+      name: "pushScale",
+      type: "number",
+      default: "1.06",
+      description:
+        "How far toward the viewer the lead word drifts during the hold (1.06 = 6% larger)",
+    },
+    {
+      name: "introDuration",
+      type: "number",
+      default: "6",
+      description: "Frames the lead word fades in over at the very start",
+    },
+    {
+      name: "holdDuration",
+      type: "number",
+      default: "12",
+      description:
+        "Frames the lead word spends big and centred, drifting toward the viewer, before it falls back",
+    },
+    {
+      name: "recedeDuration",
+      type: "number",
+      default: "14",
+      description:
+        "Frames the lead word takes to fall back from its peak to its final size",
+    },
+    {
+      name: "assembleDuration",
+      type: "number",
+      default: "30",
+      description:
+        "Frames the line takes to slide left into place. Starts with the recede but runs well past it",
+    },
+    {
+      name: "wordDelay",
+      type: "number",
+      default: "7",
+      description:
+        "Frames after the recede begins before the second word pushes in",
+    },
+    {
+      name: "wordStagger",
+      type: "number",
+      default: "4",
+      description: "Frames between each trailing word pushing in",
+    },
+    {
+      name: "wordDuration",
+      type: "number",
+      default: "14",
+      description: "Frames a trailing word takes to push into its slot",
+    },
+    {
+      name: "wordPush",
+      type: "number",
+      default: "0.5",
+      description: "How far right of its slot a trailing word starts, in em",
+    },
+    {
+      name: "wordFade",
+      type: "number",
+      default: "2",
+      description:
+        "Frames a trailing word fades in over — deliberately tiny, so the word reads as pushed into place rather than faded in",
+    },
+    {
+      name: "letterSpacing",
+      type: "string",
+      default: "\"-0.03em\"",
+      description: "Resting letter-spacing (CSS value, em recommended)",
+    },
+    {
+      name: "speed",
+      type: "number",
+      default: "1",
+      description: "Playback speed multiplier",
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "Optional className passed to the line element",
+    },
+  ]}
+/>

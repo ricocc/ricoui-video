@@ -1,0 +1,144 @@
+---
+title: Text Build
+description: Words enter one at a time while the already-placed words physically reflow to stay centered — on the x axis as a growing line or the y axis as a growing stack
+---
+
+<ComponentPreview name="text-build" />
+
+Unlike a plain text reveal, every word that is already on screen moves to make
+room: each new word enters (from the right on `axis="x"`, from above on
+`axis="y"`) and pushes the placed words through a re-centered layout, with a
+soft blur pulse while they travel.
+
+## Installation
+
+<InstallBlock name="text-build" />
+
+## Usage
+
+```tsx
+// src/Root.tsx
+import { Composition } from "remotion";
+import { TextBuild } from "@/components/snap-cn/text-build";
+
+const TextBuildScene = () => (
+  <TextBuild text="Ship. Test. Deploy. Repeat." axis="x" fontSize={72} />
+);
+
+export const RemotionRoot = () => (
+  <Composition
+    id="TextBuild"
+    component={TextBuildScene}
+    durationInFrames={75}
+    fps={30}
+    width={1280}
+    height={720}
+  />
+);
+```
+
+Set `axis="y"` to build a centered stack of rows instead of a single line:
+
+```tsx
+<TextBuild text="Build from above." axis="y" />
+```
+
+## Props
+
+<PropsTable
+  rows={[
+    {
+      name: "text",
+      type: "string",
+      required: true,
+      description: "Phrase to build; split into words on spaces",
+    },
+    {
+      name: "axis",
+      type: "\"x\" | \"y\"",
+      default: "\"x\"",
+      description:
+        "Build direction: \"x\" grows a centered line (measured word widths), \"y\" grows a centered stack of fontSize-tall rows",
+    },
+    {
+      name: "entryOffset",
+      type: "number",
+      default: "88 (x) / 28 (y)",
+      description:
+        "Distance in px a new word travels in from — the right on x, above on y",
+    },
+    {
+      name: "gap",
+      type: "number",
+      default: "10 (x) / 12 (y)",
+      description: "Space in px between words (x) or between rows (y)",
+    },
+    {
+      name: "firstDuration",
+      type: "number",
+      default: "10",
+      description: "Frames the first word takes to settle",
+    },
+    {
+      name: "pushDuration",
+      type: "number",
+      default: "13",
+      description:
+        "Frames each subsequent word takes to enter and push the layout",
+    },
+    {
+      name: "entryScale",
+      type: "number",
+      default: "0.992",
+      description: "Scale a word enters at before settling to 1",
+    },
+    {
+      name: "entryBlur",
+      type: "number",
+      default: "3.5 (x) / 2.4 (y)",
+      description: "Blur in px a word enters with",
+    },
+    {
+      name: "reflowBlur",
+      type: "number",
+      default: "0.8",
+      description:
+        "Peak blur in px on already-placed words while they reflow",
+    },
+    {
+      name: "easing",
+      type: "[number, number, number, number]",
+      default: "[0.2, 0.8, 0.2, 1]",
+      description: "Cubic-bezier control points used for every move",
+    },
+    {
+      name: "fontSize",
+      type: "number",
+      default: "72",
+      description: "Font size in pixels (also the row height on the y axis)",
+    },
+    {
+      name: "color",
+      type: "string",
+      default: "\"#101828\"",
+      description: "Text color (any valid CSS color)",
+    },
+    {
+      name: "fontWeight",
+      type: "number",
+      default: "600",
+      description: "CSS font-weight",
+    },
+    {
+      name: "speed",
+      type: "number",
+      default: "1",
+      description: "Playback-rate multiplier applied to the frame clock",
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "Optional className passed to the wrapping element",
+    },
+  ]}
+/>

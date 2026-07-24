@@ -1,0 +1,184 @@
+---
+title: Text Swap
+description: Replace one line of text with another — by default the old line rushes the camera and flies past you, and the new one is revealed behind it
+---
+
+<ComponentPreview name="text-swap" />
+
+## Installation
+
+<InstallBlock name="text-swap" />
+
+## Usage
+
+```tsx
+// src/Root.tsx
+import { Composition } from "remotion";
+import { TextSwap } from "@/components/snap-cn/text-swap";
+
+const TextSwapScene = () => (
+  <TextSwap
+    fromText="Manual invoicing"
+    toText="Automated with Acme"
+    transition="fly-through"
+    fontSize={72}
+  />
+);
+
+export const RemotionRoot = () => (
+  <Composition
+    id="TextSwap"
+    component={TextSwapScene}
+    durationInFrames={90}
+    fps={30}
+    width={1280}
+    height={720}
+  />
+);
+```
+
+Two stacked layers hold the outgoing and incoming lines. The incoming line is
+scheduled with `enterStart = max(0, exitTotal - overlap + microDelay)`, so the
+old text is (almost) gone before the new one lands — with a small beat between
+the two moments.
+
+## Presets
+
+The `transition` prop selects one of six looks. Each preset carries its own
+default `unit`, `exitDuration`, and `enterDuration`; setting those props
+explicitly overrides the preset.
+
+| Preset | Description |
+| --- | --- |
+| `fly-through` | **Default.** The old line rushes the camera and passes your face; the new one is revealed behind it, arriving out of depth. |
+| `fade-through` | Material-style block fade: old line fades out with a small upward drift, new line fades in with a soft blur resolve. |
+| `crossfade` | Words gently crossfade one after another with a short vertical drift — a calm keynote rhythm. |
+| `shared-axis-y` | The whole line travels on the vertical axis: exits 24px up, enters from 24px below. |
+| `shared-axis-z` | Depth swap: the old line scales up and blurs away, the new one settles down from a larger scale. |
+| `cut` | Per-word hard cuts with stepped staircase timing for sharp editorial swaps. |
+
+## How `fly-through` works, and why it is not just a big scale
+
+Three things, and each of them is load-bearing.
+
+**Perspective, not easing.** The line does not grow on a ramp — it *travels toward
+the eye*, and its apparent size goes as `1 / (1 - travel)`. So it creeps for most
+of the trip and then blows up right at the end, which is the whole character of
+something rushing past you. This cannot be faked with an easing curve. Fitted
+against the reference recording, a plain `interpolate` to a big scale misses by
+rmse 0.31 and can never reach the blowup at all; the perspective model lands at
+10.09x where the reference measured 10.28x. The easing describes the *travel*,
+which is nearly linear — the drama is geometry, not curve-shaping.
+
+**A shutter, not a blur filter.** At the end of the rush the line more than doubles
+between one frame and the next. Drawn sharp, that does not read as speed — it
+reads as strobing. So the exit is sampled several times across the frame and the
+samples are averaged, which is exactly what a camera shutter does. Because the
+motion is a scale, the samples fan out radially: sharp at the centre of the rush,
+streaked at the edges. That radial smear is the thing that makes it feel fast, and
+you cannot get it from `filter: blur()`, which softens everything equally.
+
+**It stays solid until it is gone.** A line flying at your face does not dim on the
+way in. `exitFadeStart` holds the fade back until 72% of the travel has passed,
+and then it goes.
+
+The cost is real: the shutter draws the outgoing line 18 times per frame. That is
+free in a render and expensive in a live browser preview, which is why this
+component ships a **pre-rendered demo** on the docs site.
+
+## Props
+
+<PropsTable
+  rows={[
+    {
+      name: "fromText",
+      type: "string",
+      required: true,
+      description: "The line that exits",
+    },
+    {
+      name: "toText",
+      type: "string",
+      required: true,
+      description: "The line that enters",
+    },
+    {
+      name: "transition",
+      type: "\"fade-through\" | \"crossfade\" | \"shared-axis-y\" | \"shared-axis-z\" | \"cut\"",
+      default: "\"fade-through\"",
+      description: "Which swap preset to use",
+    },
+    {
+      name: "unit",
+      type: "\"word\" | \"block\"",
+      default: "per transition",
+      description:
+        "Animate word-by-word or as one block. Defaults to \"word\" for crossfade and cut, \"block\" otherwise",
+    },
+    {
+      name: "exitDuration",
+      type: "number",
+      default: "per transition (8–15)",
+      description: "Frames each outgoing segment takes to exit",
+    },
+    {
+      name: "enterDuration",
+      type: "number",
+      default: "per transition (8–21)",
+      description: "Frames each incoming segment takes to enter",
+    },
+    {
+      name: "exitStagger",
+      type: "number",
+      default: "1",
+      description: "Frame offset between outgoing words (unit=\"word\" only)",
+    },
+    {
+      name: "enterStagger",
+      type: "number",
+      default: "2",
+      description: "Frame offset between incoming words (unit=\"word\" only)",
+    },
+    {
+      name: "overlap",
+      type: "number",
+      default: "1",
+      description: "Frames the enter is pulled forward into the exit",
+    },
+    {
+      name: "microDelay",
+      type: "number",
+      default: "2",
+      description: "Extra beat (frames) added before the enter starts",
+    },
+    {
+      name: "fontSize",
+      type: "number",
+      default: "72",
+      description: "Font size in pixels",
+    },
+    {
+      name: "color",
+      type: "string",
+      default: "\"#101828\"",
+      description: "Text color (any valid CSS color)",
+    },
+    {
+      name: "fontWeight",
+      type: "number",
+      default: "600",
+      description: "CSS font-weight",
+    },
+    {
+      name: "speed",
+      type: "number",
+      default: "1",
+      description: "Playback speed multiplier",
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "Optional className passed to the root container",
+    },
+  ]}
+/>

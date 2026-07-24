@@ -1,0 +1,294 @@
+---
+title: Text Swell
+description: The lead word rises into the middle and floats toward you — then the rest of the sentence pushes in from the right, bouncing its letters, and shoves the lead word aside before the whole line falls back
+---
+
+<ComponentPreview name="text-swell" />
+
+A title reveal built around one idea: **the lead word is pushed aside by the words
+that follow it.**
+
+1. The lead word **rises from below** and settles, centred, at its natural size.
+2. The line **floats forward** — toward the viewer. The lead word is still alone,
+   so it stays dead centre as it grows.
+3. The second word cuts in from the right, its **letters bouncing** up off the
+   baseline one after another, and **shoves the lead word left** to make room.
+   Later words follow, pushing in **without a bounce**, each shoving the lead word
+   further left.
+4. Once everything has landed, the whole line **falls back** to its final size and
+   settles into the sentence.
+
+## The shove
+
+The shove is the whole point, so it is not on a clock of its own — that would
+just be a word arriving and a line sliding at the same time, and it would read as
+two things happening rather than one thing causing another.
+
+Instead, each trailing word **owns a share of the leftward travel** — its share of
+the width it adds to the line — and spends that share over exactly the frames it
+spends pushing into its slot. The lead word therefore cannot move until a word
+arrives to move it, and once every word has landed it sits exactly where the
+finished sentence needs it. Nothing is scheduled twice, so nothing can drift out
+of sync.
+
+## The bounce
+
+`bounceWords` controls how many trailing words bounce their letters in. The
+default is `1`: only the second word bounces, and every word after it simply
+pushes in. The lead word never bounces.
+
+Each letter swells up **off its baseline** — not its centre — so the word grows
+upward and stays planted on the line. Both halves of the pulse use a curve that
+starts and ends at a standstill, so a letter never jerks off the baseline and the
+top of the bounce rounds over instead of cornering. `letterStagger` is the wave's
+speed; `letterHold` adds a flat top (leave it at `0` for a clean quick pop).
+
+## Installation
+
+<InstallBlock name="text-swell" />
+
+## Usage
+
+```tsx
+// src/Root.tsx
+import { Composition } from "remotion";
+import { TextSwell } from "@/components/snap-cn/text-swell";
+
+const TitleScene = () => <TextSwell text="No extra charge" />;
+
+export const RemotionRoot = () => (
+  <Composition
+    id="TextSwell"
+    component={TitleScene}
+    durationInFrames={110}
+    fps={30}
+    width={1280}
+    height={720}
+  />
+);
+```
+
+## Why scaled text looks "stuck", and what actually fixes it
+
+If you have ever animated `scale` on a heading and watched the letters judder and
+stick instead of gliding, this is why — and it is worth knowing, because the
+obvious fixes are mostly wrong.
+
+**The cause is the type, not the animation.** Browsers do not scale text the way
+they scale an image. They re-shape and re-rasterise the glyphs at every new size,
+and the rasteriser snaps each glyph's origin to the pixel grid — in Skia,
+horizontal positions quantise to ¼px and **vertical positions have no sub-pixel
+precision at all**, they round to a whole pixel. So under a perfectly smooth scale
+ramp the letters sit on one pixel row for a few frames, snap to the next, and sit
+again. Measured on a linear 1.6× → 1× ramp, the line's vertical centroid reversed
+direction 29 times in 40 frames while its true motion was a straight line.
+
+**The fix is to lay the line out at the biggest size it will ever be shown at, and
+only ever scale it _down_** (`fontSize: fontSize * raster`, `scale: scale / raster`),
+with `will-change: transform` so the line is composited. Compositing hands the
+scale to the GPU, which resamples a texture instead of re-shaping type — the
+snapping cannot happen. Laying out big is what makes that safe: the transform
+never asks for more detail than the texture already holds, so the browser
+rasterises once and never revisits it. Same measurement after the change:
+**0.03px of quantisation instead of 0.30px**, and no loss of sharpness, because
+the texture was rasterised at the largest size in the first place.
+
+`will-change: transform` **on its own is not the fix** — scaling up past the
+texture's resolution forces the browser to re-rasterise mid-animation, which
+trades the jitter for blur and pops. The two halves only work together.
+
+Not fixes, despite being widely repeated: `translateZ(0)`, `backface-visibility:
+hidden`, `perspective(1px)`. They are all layer-promotion hacks with the same
+blur side effect. And `-webkit-font-smoothing: antialiased` does not affect glyph
+positioning at all.
+
+**One more, unrelated to rasterisation: no asymptotic easing on a frame clock.**
+Aggressive decelerating curves — quint-out, expo-out — cover 99% of their travel
+in the first third and then crawl. Over a 50px rise at 30fps that leaves five
+frames moving less than half a pixel each, which rasterise to *identical frames*:
+the word visibly stops dead partway and waits. Every curve here still arrives at a
+standstill, but none of them spend more than a frame or so on travel you cannot
+see. A settle worth one frame is a settle; a settle worth five frames is a freeze.
+
+## frontScale is a ceiling, not a promise
+
+Floating forward blows the line up about its left edge, and until the last word
+has finished shoving, that edge still sits right of where it will rest. A word
+arriving into that gap is the widest the line ever gets — so `frontScale` is
+capped at whatever keeps even that moment inside the frame.
+
+That means a long sentence floats less far forward than you asked for. It is not
+a bug you can tune around; it is the only way to have every word on screen at
+once while the line is forward. If you want the full, dramatic push, **use fewer
+or shorter words** — the cap lifts as the line gets narrower.
+
+## Props
+
+<PropsTable
+  rows={[
+    {
+      name: "text",
+      type: "string",
+      default: "\"No extra charge\"",
+      description:
+        "The sentence to assemble. Its first word leads, and everything else pushes it left",
+    },
+    {
+      name: "fontSize",
+      type: "number",
+      default: "72",
+      description: "Final font size in px — the size the line settles at",
+    },
+    {
+      name: "color",
+      type: "string",
+      default: "\"#101828\"",
+      description: "Text color (any valid CSS color)",
+    },
+    {
+      name: "fontWeight",
+      type: "number | string",
+      default: "600",
+      description: "CSS font-weight",
+    },
+    {
+      name: "riseDistance",
+      type: "number",
+      default: "0.7",
+      description: "How far below its resting line the lead word starts, in em",
+    },
+    {
+      name: "riseDuration",
+      type: "number",
+      default: "10",
+      description: "Frames the lead word takes to rise into place",
+    },
+    {
+      name: "introDuration",
+      type: "number",
+      default: "8",
+      description: "Frames the lead word fades in over",
+    },
+    {
+      name: "startScale",
+      type: "number",
+      default: "1",
+      description: "Size the lead word rises in at, relative to its final size",
+    },
+    {
+      name: "frontScale",
+      type: "number",
+      default: "2.1",
+      description:
+        "How far forward the line floats. Capped so the line never leaves the frame — long text floats less far",
+    },
+    {
+      name: "approachDelay",
+      type: "number",
+      default: "14",
+      description:
+        "Frames after the start before the line begins floating forward",
+    },
+    {
+      name: "approachDuration",
+      type: "number",
+      default: "20",
+      description: "Frames the line takes to float forward",
+    },
+    {
+      name: "wordDelay",
+      type: "number",
+      default: "27",
+      description:
+        "Frames before the second word arrives. The lead word is alone until then, so this is the beat between it landing and the sentence starting to build",
+    },
+    {
+      name: "wordStagger",
+      type: "number",
+      default: "14",
+      description: "Frames between each trailing word arriving",
+    },
+    {
+      name: "wordPush",
+      type: "number",
+      default: "0.15",
+      description: "How far right of its slot a trailing word starts, in em",
+    },
+    {
+      name: "wordPushDuration",
+      type: "number",
+      default: "12",
+      description:
+        "Frames a trailing word takes to push into its slot — and to shove the lead word left. The push and the shove are one motion",
+    },
+    {
+      name: "bounceWords",
+      type: "number",
+      default: "1",
+      description:
+        "How many trailing words bounce their letters in. 1 bounces only the second word; the rest just push in. The lead word never bounces",
+    },
+    {
+      name: "letterSwell",
+      type: "number",
+      default: "0.23",
+      description:
+        "How far each letter swells at the peak of its bounce (0.23 = 23% bigger)",
+    },
+    {
+      name: "letterStagger",
+      type: "number",
+      default: "2",
+      description:
+        "The wave's speed — frames between one letter starting its bounce and the next",
+    },
+    {
+      name: "letterRise",
+      type: "number",
+      default: "3",
+      description: "Frames a letter takes to swell up",
+    },
+    {
+      name: "letterHold",
+      type: "number",
+      default: "0",
+      description:
+        "Frames a letter stays swollen at the top. 0 gives a clean quick pop; raise it for a slow rolling bulge",
+    },
+    {
+      name: "letterFall",
+      type: "number",
+      default: "6",
+      description: "Frames a letter takes to settle back to its natural size",
+    },
+    {
+      name: "holdDuration",
+      type: "number",
+      default: "6",
+      description: "Frames the line stays forward once everything has landed",
+    },
+    {
+      name: "recedeDuration",
+      type: "number",
+      default: "18",
+      description: "Frames the whole line takes to fall back to its final size",
+    },
+    {
+      name: "letterSpacing",
+      type: "string",
+      default: "\"-0.03em\"",
+      description: "Resting letter-spacing (CSS value, em recommended)",
+    },
+    {
+      name: "speed",
+      type: "number",
+      default: "1",
+      description: "Playback speed multiplier",
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "Optional className passed to the line element",
+    },
+  ]}
+/>

@@ -1,0 +1,133 @@
+---
+title: Word Flip
+description: A headline types itself out, then one word cycles on a 3D flip — sinking into an anticipation dip, throwing up and away about its baseline under motion blur, while the next word unfurls from below.
+---
+
+<ComponentPreview name="word-flip" />
+
+## Installation
+
+<InstallBlock name="word-flip" />
+
+## Usage
+
+```tsx
+import { WordFlip } from "@/components/snap-cn/word-flip";
+
+export function Hero() {
+  return (
+    <WordFlip
+      prefix="Looking For A"
+      words={["Modern", "Stunning", "Minimal"]}
+      suffix="Portfolio"
+    />
+  );
+}
+```
+
+## How it moves
+
+The sentence types itself a character at a time, holds for a beat, and then the
+word in the middle starts cycling. Four things happen in the nine frames of a
+flip, and they are all one gesture.
+
+### The slot is reserved before the first word exists
+
+The whole point of this animation is that **nothing except the word ever moves** —
+no horizontal shift, no baseline shift, no reflow. That cannot be achieved by
+swapping text in and out of a line, because the words have different widths and
+the line would breathe every time one arrived.
+
+So the slot is an `inline-block` whose width is the widest word's, fixed from the
+first frame. While the sentence is still typing, the slot is simply *empty* — the
+gap you see between "A" and "Portfolio" is the word's seat, waiting for it. Every
+word is then uniformly scaled to fill that seat, which is why the widest word sits
+at scale 1 and the rest are scaled up to meet it, and why both edges of the slot
+are pinned no matter which word is showing.
+
+Measured across the whole clip: the left edge of "Portfolio" moves **1px**, and
+that 1px is the antialiasing on its own fade-in.
+
+### The word sinks before it flies
+
+The flip does not start by lifting the word. It starts by dropping it about a
+tenth of an em — a backswing, the same thing a person does with their arm before
+they throw. It is what makes the flip read as weight instead of as a cut.
+
+That is not a separate keyframe. One `easeInBack` progress drives the translate
+*and* the rotation, and the curve's own overshoot is the dip: its minimum is
+`p = -0.100` at `t = 0.42`, so the dip is worth exactly a tenth of the exit travel
+and lands a little under halfway through it.
+
+### The blur is a shutter, not a ramp
+
+Blur is proportional to **speed** — `easeInBackSpeed` is the analytic derivative of
+the curve above. It matters because the derivative is *zero at the turnaround*: at
+the bottom of the dip the word has stopped to change direction, and it is sharp
+there. Three frames later it is travelling as fast as it ever will, and it is
+smeared. A blur keyed to progress instead of speed would blur the word while it is
+standing still, which reads as a focus pull rather than motion.
+
+### The two words overlap
+
+The incoming word starts before the outgoing one is gone (`overlap`, in frames), so
+the swap is continuous rather than sequential. It arrives rotated `-90°` about its
+baseline, a touch below where it belongs and a touch small, and unfurls into place
+on a moderate decelerate — never an expo-out, which on a frame clock spends most of
+its frames moving less than a pixel and reads as the word stopping dead partway up
+and waiting.
+
+Everything pivots on the **baseline**, and the baseline is measured, never derived
+from a line-height ratio. Pivot anywhere else and the glyph origins climb the pixel
+grid in whole-pixel jumps as the scale moves them — the word sits still, jumps,
+sits still.
+
+## Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `prefix` | `string` | `"Looking For A"` | Text before the flipping word. |
+| `words` | `string[]` | `["Modern", "Stunning", "Minimal"]` | The words that cycle through the slot. |
+| `suffix` | `string` | `"Portfolio"` | Text after the flipping word. |
+| `gradient` | `string[]` | `["#2A8BF5", "#D382B0"]` | Gradient painted on the flipping word, left to right. |
+| `cps` | `number` | `9` | Typing speed, characters per second. |
+| `typeStart` | `number` | `4` | Frames before the first keystroke. |
+| `charFade` | `number` | `6` | Frames each character takes to fade in. |
+| `jitter` | `number` | `0.18` | Keystroke unevenness, as a fraction of one keystroke. `0` is a metronome. |
+| `pause` | `number` | `6` | Frames held after the sentence completes, before the first flip. 6 frames is the 200ms beat. |
+| `cycle` | `number` | `35` | Frames from one flip to the next. |
+| `exitDuration` | `number` | `9` | Frames the outgoing word takes to leave. |
+| `enterDuration` | `number` | `9` | Frames the incoming word takes to settle. |
+| `overlap` | `number` | `3` | Frames the incoming word starts before the outgoing one is gone. |
+| `caret` | `boolean` | `true` | Blinking caret while typing. |
+| `loop` | `boolean` | `true` | Keep cycling the words forever. |
+| `motion` | `Partial<WordFlipMotion>` | see below | Distances, in em. |
+| `perspective` | `number` | `6.5` | 3D depth, in em. Smaller is a stronger perspective. |
+| `fontFamily` | `string` | app sans stack | The typeface. |
+| `fontSize` | `number` | `72` | |
+| `color` | `string` | `"#101828"` | The static part of the sentence. |
+| `fontWeight` | `number` | `600` | |
+| `speed` | `number` | `1` | |
+
+### `motion`
+
+Every distance is in **em**, so the gesture scales with the type instead of being
+tied to one font size.
+
+| Key | Default | Description |
+| --- | --- | --- |
+| `exitY` | `-1.29` | How far the outgoing word is thrown. Negative is up. Its first tenth, inverted, *is* the dip. |
+| `enterY` | `0.135` | How far below rest the incoming word starts. |
+| `rotate` | `90` | Degrees about the baseline. |
+| `scale` | `0.98` | What the outgoing word shrinks to, and the incoming grows from. |
+| `blur` | `0.085` | Peak blur, reached at peak speed. |
+
+## Notes
+
+- The sentence is one line and never wraps. `fontSize` is the knob: at the default
+  72 the reference sentence fills about 83% of a 1280-wide composition.
+- `caret` has no effect on layout — it is a zero-width box with an absolutely
+  positioned bar inside, so the sentence's geometry is identical with it and
+  without it.
+- The words are measured once, behind `delayRender()`, so frame 0 is never
+  captured against the wrong slot width.
