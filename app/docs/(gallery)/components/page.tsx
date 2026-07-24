@@ -9,7 +9,7 @@ import { GalleryHeaderRow } from "@/components/docs/gallery/gallery-header-row";
 import { GALLERY_CATEGORIES, GALLERY_ITEMS } from "@/lib/gallery-data";
 import { formatUpdatedAt, getGitHubUpdatedAt } from "@/lib/github";
 
-const SITE_URL = "https://snap-cn.dev";
+const SITE_URL = "https://snapcn.dev";
 const TITLE = "Components";
 const DESCRIPTION = "Every component in snap-cn, grouped by category";
 

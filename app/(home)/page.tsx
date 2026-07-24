@@ -5,7 +5,7 @@ import { GetStarted } from "./components/sections/get-started";
 import { Hero } from "./components/sections/hero";
 import { Testimonials } from "./components/sections/testimonials";
 
-const SITE_URL = "https://snap-cn.dev";
+const SITE_URL = "https://snapcn.dev";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },

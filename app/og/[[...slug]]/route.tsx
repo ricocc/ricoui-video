@@ -120,7 +120,7 @@ export async function GET(
         }}
       >
         <div>Video components for Remotion · shadcn CLI</div>
-        <div>snap-cn.dev</div>
+        <div>snapcn.dev</div>
       </div>
     </div>,
     { width: 1200, height: 630 },

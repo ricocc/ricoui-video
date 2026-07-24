@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { GALLERY_CATEGORIES, GALLERY_ITEMS } from "./gallery-data";
 
-export const SITE_URL = "https://snap-cn.dev";
+export const SITE_URL = "https://snapcn.dev";
 
 const DOCS_DIR = path.join(process.cwd(), "content", "docs");
 

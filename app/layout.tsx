@@ -31,7 +31,7 @@ const caveat = Caveat({
   subsets: ["latin"],
 });
 
-const SITE_URL = "https://snap-cn.dev";
+const SITE_URL = "https://snapcn.dev";
 const SITE_TITLE = "snap-cn — Cinematic video components for React";
 const SITE_DESCRIPTION =
   "Production-ready Remotion animations, transitions and backgrounds. Install with the shadcn CLI and own the code.";

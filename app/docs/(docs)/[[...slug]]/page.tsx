@@ -5,7 +5,7 @@ import { GALLERY_HREFS } from "@/lib/gallery-data";
 import { getMDXComponents } from "@/mdx-components";
 import { source } from "@/source";
 
-const SITE_URL = "https://snap-cn.dev";
+const SITE_URL = "https://snapcn.dev";
 
 /**
  * Components no longer have standalone docs pages — their MDX renders inline in

@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { GALLERY_HREFS } from "@/lib/gallery-data";
 import { source } from "@/source";
 
-const SITE_URL = "https://snap-cn.dev";
+const SITE_URL = "https://snapcn.dev";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
