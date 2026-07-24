@@ -1,0 +1,417 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "fumadocs-ui/css/shadcn.css";
+@import "fumadocs-ui/css/preset.css";
+@source "../node_modules/fumadocs-ui/dist/**/*.js";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-gallery-card: var(--gallery-card);
+  --color-gallery-chip: var(--gallery-chip);
+  --color-annotation-new: var(--annotation-new);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+  --animate-marquee: marquee var(--marquee-duration, 48s) linear infinite;
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+:root {
+  /* snap-cn design system — light (first-class). Neutral surfaces, hairline
+     borders, one blue accent, shadows kept to a whisper. */
+  --background: #fafafa;
+  --foreground: #101828;
+  --card: #ffffff;
+  --card-foreground: #101828;
+  --popover: #ffffff;
+  --popover-foreground: #101828;
+  --primary: #266df0;
+  --primary-hover: #1d5bd6;
+  --primary-foreground: #ffffff;
+  --secondary: #f2f4f7;
+  --secondary-foreground: #101828;
+  --muted: #f2f4f7;
+  --muted-foreground: #667085;
+  --accent: #f2f4f7;
+  --accent-foreground: #101828;
+  --destructive: #d92d20;
+  --border: #e4e7ec;
+  --input: #e4e7ec;
+  --ring: #266df0;
+  --chart-1: #266df0;
+  --chart-2: #667085;
+  --chart-3: #98a2b3;
+  --chart-4: #475467;
+  --chart-5: #344054;
+  /* Subtle-radius aesthetic: one lever. Every --radius-{sm..4xl} derives from
+     this by multiplier, so this single value sets the rounding on every
+     rounded-* rectangular surface site-wide (buttons, inputs, dropdowns,
+     dialogs, .surface-card, fumadocs chrome). At 0.125rem, buttons (rounded-4xl,
+     2.6×) land at ~5px and inputs (rounded-3xl, 2.2×) at ~4px — a whisper of
+     rounding, not square, not pills. Genuinely circular controls use
+     rounded-full (9999px) and are unaffected; a few surfaces are deliberately
+     kept square with rounded-none. .dark inherits this value. */
+  --radius: 0.125rem;
+  --shadow-card: 0 1px 2px rgb(16 24 40 / 0.05);
+  --sidebar: #fafafa;
+  --sidebar-foreground: #101828;
+  --sidebar-primary: #266df0;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #eceef2;
+  --sidebar-accent-foreground: #101828;
+  --sidebar-border: #e4e7ec;
+  --sidebar-ring: #266df0;
+
+  /* "NEW" sidebar badge — editable accent knob. A soft tint of the system
+     blue; recolor the badge by changing these two values per theme. */
+  --badge-new-bg: #dce8fd;
+  --badge-new-fg: #1d5bd6;
+
+  /* Components gallery (sanctioned exception — see DESIGN.md "Gallery
+     pattern"). --gallery-card is the flat, borderless card mat; --gallery-chip
+     is the translucent surface behind the on-card icon/arrow overlays;
+     --annotation-new colors the handwritten "new" scribble in the gallery
+     sidebar. */
+  --gallery-card: #ececec;
+  --gallery-chip: rgb(255 255 255 / 0.65);
+  --annotation-new: #ec4899;
+
+  /* Width of the fixed gallery sidebar. The collapsible frame flips this to 0px
+     when collapsed; the main content's left padding and the detail overlay's
+     left offset both read it, so the overlay sits beside the sidebar (never
+     over it) and everything stays in sync from one value. */
+  --gallery-sidebar-w: 300px;
+}
+
+.dark {
+  /* snap-cn design system — dark. Near-black page, slightly raised surfaces,
+     the same blue accent; separation comes from 1px borders, not shadows. */
+  --background: #0a0a0b;
+  --foreground: #fafafa;
+  --card: #141417;
+  --card-foreground: #fafafa;
+  --popover: #141417;
+  --popover-foreground: #fafafa;
+  --primary: #266df0;
+  --primary-hover: #1d5bd6;
+  --primary-foreground: #ffffff;
+  --secondary: #1d1d21;
+  --secondary-foreground: #fafafa;
+  --muted: #1b1b1f;
+  --muted-foreground: #a1a1aa;
+  --accent: #1d1d21;
+  --accent-foreground: #fafafa;
+  --destructive: #f97066;
+  --border: #26272b;
+  --input: #26272b;
+  --ring: #266df0;
+  --chart-1: #266df0;
+  --chart-2: #a1a1aa;
+  --chart-3: #7a7a83;
+  --chart-4: #55555c;
+  --chart-5: #38383e;
+  --shadow-card: none;
+  --sidebar: #0a0a0b;
+  --sidebar-foreground: #fafafa;
+  --sidebar-primary: #266df0;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #1d1d21;
+  --sidebar-accent-foreground: #fafafa;
+  --sidebar-border: #26272b;
+  --sidebar-ring: #266df0;
+
+  /* Badge shifts to a deep blue tint so it reads on dark surfaces. */
+  --badge-new-bg: #1c3054;
+  --badge-new-fg: #8ab0f9;
+
+  /* Gallery card is a hair above the page bg (#0a0a0b) so borderless cards
+     still read as raised surfaces; chip goes translucent-dark; the scribble
+     lightens so it stays legible on the dark sidebar. */
+  --gallery-card: #17171a;
+  --gallery-chip: rgb(10 10 11 / 0.55);
+  --annotation-new: #f472b6;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "cv11", "ss01";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  html {
+    @apply font-sans;
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+  }
+}
+
+.section {
+  @apply mx-auto w-full max-w-6xl px-4 sm:px-6;
+}
+
+.bg-control {
+  @apply bg-muted border border-border;
+}
+
+.bg-grid-fade {
+  background-image: radial-gradient(
+    color-mix(in oklab, var(--color-foreground) 9%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 28px 28px;
+  -webkit-mask-image: radial-gradient(
+    ellipse 70% 60% at 50% 0%,
+    black,
+    transparent 75%
+  );
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, black, transparent 75%);
+}
+
+.divider-soft {
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--color-border),
+    transparent
+  );
+}
+
+.surface-card {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
+}
+
+.marquee-edge-fade {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 12%,
+    black 88%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 12%,
+    black 88%,
+    transparent
+  );
+}
+
+.prose figure.shiki {
+  background-color: var(--muted) !important;
+  border-width: 0 !important;
+  box-shadow: none !important;
+  border-radius: var(--radius-xl);
+}
+.prose figure.shiki pre,
+.prose figure.shiki [class*="bg-"] {
+  background-color: transparent !important;
+}
+
+.prose figure.shiki pre {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+}
+.prose :not(pre) > code {
+  background-color: color-mix(in oklab, var(--muted) 70%, transparent);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.125rem 0.375rem;
+  font-size: 0.875em;
+  font-weight: 500;
+}
+.prose :not(pre) > code::before,
+.prose :not(pre) > code::after {
+  content: none;
+}
+
+.prose h2 {
+  @apply mt-16 mb-4 text-3xl font-semibold tracking-tight;
+}
+.prose > :first-child h2,
+.prose h2:first-child {
+  @apply mt-12;
+}
+.prose h3 {
+  @apply mt-10 mb-3 text-xl font-semibold tracking-tight;
+}
+.prose h4 {
+  @apply mt-8 mb-2 text-base font-semibold tracking-tight;
+}
+
+.prose a:not(:where([class~="not-prose"] *)) {
+  color: var(--primary);
+  font-weight: 500;
+  text-decoration: none;
+  text-underline-offset: 0.2em;
+  text-decoration-color: color-mix(in oklab, var(--primary) 35%, transparent);
+  transition:
+    text-decoration-color 150ms ease-out,
+    color 150ms ease-out;
+}
+.prose a:not(:where([class~="not-prose"] *)):hover {
+  color: var(--primary-hover);
+  text-decoration: underline;
+  text-decoration-color: color-mix(
+    in oklab,
+    var(--primary-hover) 60%,
+    transparent
+  );
+}
+.prose a:not(:where([class~="not-prose"] *)):focus-visible {
+  outline: none;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 60%, transparent);
+}
+
+.prose table {
+  font-size: 0.875rem;
+}
+.prose thead {
+  border-bottom: 1px solid var(--border);
+}
+.prose th {
+  font-weight: 600;
+  color: var(--foreground);
+}
+.prose tbody tr {
+  border-bottom: 1px solid var(--border);
+}
+.prose td,
+.prose th {
+  padding: 0.5rem 0.75rem;
+}
+
+.prose p,
+.prose ul,
+.prose ol,
+.prose blockquote {
+  @apply max-w-3xl;
+}
+.prose .not-prose,
+.prose .not-prose p,
+.prose .not-prose ul,
+.prose .not-prose ol {
+  max-width: none;
+}
+
+.prose blockquote {
+  border-inline-start: 2px solid var(--border);
+  color: var(--muted-foreground);
+  font-style: normal;
+}
+
+/* fumadocs-ui's default Sidebar/mobile-drawer slots ship a hardcoded
+   border-e / border-s divider between the sidebar and the content column.
+   There's no prop to turn it off, and the flat top-level nav this sidebar now
+   renders is meant to be border-free end to end — override the library
+   default directly. */
+#nd-sidebar,
+#nd-sidebar-mobile {
+  border-inline-end: none !important;
+  border-inline-start: none !important;
+}
+
+#nd-sidebar a,
+#nd-sidebar-mobile a {
+  font-size: 0.8125rem;
+  letter-spacing: -0.01em;
+}
+
+#nd-sidebar a[data-active],
+#nd-sidebar-mobile a[data-active] {
+  padding-block: 0.4375rem;
+  color: var(--foreground);
+  transition: color 150ms ease;
+}
+#nd-sidebar a[data-active]:hover,
+#nd-sidebar-mobile a[data-active]:hover {
+  color: var(--foreground);
+  background-color: transparent;
+}
+
+#nd-sidebar a[data-active="true"],
+#nd-sidebar-mobile a[data-active="true"] {
+  font-weight: 500;
+  color: var(--foreground);
+  background-color: transparent;
+}
+#nd-sidebar a[data-active="true"]:hover,
+#nd-sidebar-mobile a[data-active="true"]:hover {
+  background-color: transparent;
+}
+/* A trailing bullet on the active item instead of a side rail/border — the
+   flat top-level sidebar has no nested groups to draw a guide line against,
+   and a left-edge bar reads as a border, which this list intentionally has
+   none of. */
+#nd-sidebar a[data-active="true"]::after,
+#nd-sidebar-mobile a[data-active="true"]::after {
+  content: "\2022";
+  margin-inline-start: 0.4rem;
+  color: var(--foreground);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #nd-sidebar a[data-active],
+  #nd-sidebar-mobile a[data-active] {
+    transition: none;
+  }
+}
+
+#nd-sidebar [data-radix-scroll-area-viewport],
+#nd-sidebar-mobile [data-radix-scroll-area-viewport] {
+  padding-bottom: 2rem;
+}
