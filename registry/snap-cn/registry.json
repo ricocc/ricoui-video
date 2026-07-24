@@ -1,0 +1,485 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "snap-cn",
+  "homepage": "https://snap-cn.dev",
+  "items": [
+    {
+      "name": "text-reveal",
+      "type": "registry:component",
+      "title": "Text Reveal",
+      "description": "One staggered enter/exit text animator: fade, slide, blur, scale, mask and tracking effects over character, word, line or block units, with 14 classic looks as presets.",
+      "dependencies": [
+        "remotion"
+      ],
+      "files": [
+        {
+          "path": "text-reveal/index.tsx",
+          "type": "registry:component",
+          "target": "components/snap-cn/text-reveal.tsx"
+        }
+      ]
+    },
+    {
+      "name": "text-highlight",
+      "type": "registry:component",
+      "title": "Text Highlight",
+      "description": "Animated emphasis on one span inside a static sentence — marker sweep, color shift, underline, strikethrough-replace, or shimmer.",
+      "dependencies": [
+        "remotion"
+      ],
+      "files": [
+        {
+          "path": "text-highlight/index.tsx",
+          "type": "registry:component",
+          "target": "components/snap-cn/text-highlight.tsx"
+        }
+      ]
+    },
+    {
+      "name": "text-swap",
+      "type": "registry:component",
+      "title": "Text Swap",
+      "description": "Replaces one line of text with another using exit-then-enter scheduling, with five transition presets: fade-through, crossfade, shared-axis-y, shared-axis-z, and cut.",
+      "dependencies": [
+        "remotion"
+      ],
+      "files": [
+        {
+          "path": "text-swap/index.tsx",
+          "type": "registry:component",
+          "target": "components/snap-cn/text-swap.tsx"
+        }
+      ]
+    },
+    {
+      "name": "text-swell",
+      "type": "registry:component",
+      "title": "Text Swell",
+      "description": "A title reveal where the lead word floats toward the viewer and hangs there while the sentence assembles around it — each trailing word pushes in and its letters bounce up off the baseline in a wave — before the whole line falls back to size.",
+      "dependencies": [
+        "remotion"
+      ],
+      "files": [
+        {
+          "path": "text-swell/index.tsx",
+          "type": "registry:component",
+          "target": "components/snap-cn/text-swell.tsx"
+        }
+      ]
+    },
+    {
+      "name": "text-build",
+      "type": "registry:component",
+      "title": "Text Build",
+      "description": "Words enter one at a time while already-placed words physically reflow to stay centered — a growing line on the x axis or a growing stack on the y axis.",
+      "dependencies": [
+        "remotion"
+      ],
+      "files": [
+        {
+          "path": "text-build/index.tsx",
+          "type": "registry:component",
+          "target": "components/snap-cn/text-build.tsx"
+        }
+      ]
+    },
+    {
+      "name": "word-flip",
+      "type": "registry:component",
+      "title": "Word Flip",
+      "description": "A headline types itself out, then one word cycles on a 3D flip — it sinks into an anticipation dip, throws up and away about its baseline under motion blur, and the next word unfurls from below. The slot is reserved from the first keystroke, so nothing in the sentence ever reflows.",
+      "dependencies": [
+        "remotion"
+      ],
+      "files": [
+        {
+          "path": "word-flip/index.tsx",
+          "type": "registry:component",
+          "target": "components/snap-cn/word-flip.tsx"
+        }
+      ]
+    },
+    {
+      "name": "word-captions",
+      "type": "registry:component",
+      "title": "Word Captions",
+      "description": "Burned-in captions in the styles big channels actually use — heavy Montserrat, a real outside outline so they read on any footage, and the spoken word springing to an accent. Four presets: beast, hormozi, pop, clean.",
+      "dependencies": [
+        "remotion",
+        "@remotion/google-fonts"
+      ],
+      "files": [
+        {
+          "path": "word-captions/index.tsx",
+          "type": "registry:component",
+          "target": "components/snap-cn/word-captions.tsx"
+        }
+      ]
+    },
+    {
+      "name": "karaoke-captions",
+      "type": "registry:component",
+      "title": "Karaoke Captions",
+      "description": "A caption line that fills word by word as it is spoken — heavy outlined type that reads on any footage. Three presets: karaoke, highlight (the word rides an accent bar), clean.",
+      "dependencies": [
+        "remotion",
+        "@remotion/google-fonts"
+      ],
+      "files": [
+        {
+          "path": "karaoke-captions/index.tsx",
+          "type": "registry:component",
+          "target": "components/snap-cn/karaoke-captions.tsx"
+        }
+      ]
+    },
+    {
+      "name": "logo-assemble",
+      "type": "registry:component",
+      "title": "Logo Assemble",
+      "description": "A single ring of image cards revolves around a centred title, then spins inward and drains to the middle — giving birth to a simple logo that slides left as the brand name reveals to its right.",
+      "dependencies": [
+        "remotion"
+      ],
+      "files": [
+        {
+          "path": "logo-assemble/index.tsx",
+          "type": "registry:component",
+          "target": "components/snap-cn/logo-assemble.tsx"
+        }
+      ]
+    },
+    {
+      "name": "logo-flicker",
+      "type": "registry:component",
+      "title": "Logo Flicker",
+      "description": "Images flip across a central card very fast, the flicker decelerates and fades, and the logo and brand name resolve underneath — a strobe of imagery settling onto the mark.",
+      "dependencies": [
+        "remotion"
+      ],
+      "files": [
+        {
+          "path": "logo-flicker/index.tsx",
+          "type": "registry:component",
+          "target": "components/snap-cn/logo-flicker.tsx"
+        }
+      ]
+    },
+    {
+      "name": "phone-frame",
+      "type": "registry:component",
+      "title": "Phone Frame",
+      "description": "iPhone-style device frame with a dynamic island and a screen slot — flat or lightly 3D-tilted, with rise, rotate-in, or float entrances and a subtle float loop.",
+      "dependencies": [
+        "remotion"
+      ],
+      "files": [
+        {
+          "path": "phone-frame/index.tsx",
+          "type": "registry:component",
+          "target": "components/snap-cn/phone-frame.tsx"
+        }
+      ]
+    },
+    {
+      "name": "laptop-frame",
+      "type": "registry:component",
+      "title": "Laptop Frame",
+      "description": "MacBook-style laptop that opens, runs a dynamic-island notch notification, then dives the camera into the screen until an image or video fills the frame.",
+      "dependencies": [
+        "remotion"
+      ],
+      "files": [
+        {
+          "path": "laptop-frame/index.tsx",
+          "type": "registry:component",
+          "target": "components/snap-cn/laptop-frame.tsx"
+        }
+      ]
+    },
+    {
+      "name": "terminal-simulator",
+      "type": "registry:component",
+      "title": "Terminal Simulator",
+      "description": "Terminal window with chunked command playback, freeze-frame pauses, step scrolling, and an optional cursor-pinned zoom camera.",
+      "dependencies": [
+        "remotion"
+      ],
+      "files": [
+        {
+          "path": "terminal-simulator/index.tsx",
+          "type": "registry:component",
+          "target": "components/snap-cn/terminal-simulator.tsx"
+        }
+      ]
+    },
+    {
+      "name": "claude-chat",
+      "type": "registry:component",
+      "title": "Claude Chat",
+      "description": "Animated Claude chat screen — a prompt types in, the waveform morphs into a send button, and the reply streams in while a pulsing border frames the response. Warm product-native palette inside snap-cn window chrome.",
+      "dependencies": [
+        "remotion",
+        "@remotion/google-fonts"
+      ],
+      "registryDependencies": [
+        "@snap-cn/caret",
+        "@snap-cn/snap-cn-ui",
+        "@snap-cn/pulsing-border"
+      ],
+      "files": [
+        {
+          "path": "claude-chat/index.tsx",
+          "type": "registry:component",
+          "target": "components/snap-cn/claude-chat.tsx"
+        }
+      ]
+    },
+    {
+      "name": "v0",
+      "type": "registry:component",
+      "title": "v0",
+      "description": "Simulated v0 composer screen — types an Acme build prompt into a token-aligned prompt box while the mic button morphs into send. Light/dark themes; opener for AI-builder demos.",
+      "dependencies": [
+        "remotion",
+        "@remotion/google-fonts"
+      ],
+      "registryDependencies": [
+        "@snap-cn/caret",
+        "@snap-cn/snap-cn-ui"
+      ],
+      "files": [
+        {
+          "path": "v0/index.tsx",
+          "type": "registry:component",
+          "target": "components/snap-cn/v0.tsx"
+        }
+      ]
+    },
+    {
+      "name": "pulsing-border",
+      "type": "registry:component",
+      "title": "Pulsing Border",
+      "description": "Glowing 'AI is working' frame — a soft pulsing border overlay that breathes around the scene edges while a response streams.",
+      "dependencies": [
+        "@paper-design/shaders-react"
+      ],
+      "files": [
+        {
+          "path": "pulsing-border/index.tsx",
+          "type": "registry:component",
+          "target": "components/snap-cn/pulsing-border.tsx"
+        }
+      ]
+    },
+    {
+      "name": "counter",
+      "type": "registry:component",
+      "title": "Counter",
+      "description": "One animated number with three looks — continuous rolling places, a hold-then-spring odometer, and a per-character slot swap for strings like \"$199\".",
+      "dependencies": [
+        "remotion",
+        "@remotion/google-fonts"
+      ],
+      "files": [
+        {
+          "path": "counter/index.tsx",
+          "type": "registry:component",
+          "target": "components/snap-cn/counter.tsx"
+        }
+      ]
+    },
+    {
+      "name": "stat-tile",
+      "type": "registry:component",
+      "title": "Stat Tile",
+      "description": "The composed big-stat proof beat — white cards with count-up numbers, muted labels, and up/down delta chips, staggered across a row. Single hero tile or row of three; light/dark.",
+      "dependencies": [
+        "remotion"
+      ],
+      "registryDependencies": [
+        "@snap-cn/counter"
+      ],
+      "files": [
+        {
+          "path": "stat-tile/index.tsx",
+          "type": "registry:component",
+          "target": "components/snap-cn/stat-tile.tsx"
+        }
+      ]
+    },
+    {
+      "name": "animated-line-chart",
+      "type": "registry:component",
+      "title": "Animated Line Chart",
+      "description": "KPI line chart that draws its SVG path on with a no-bounce spring, a leading accent dot, and a live counting headline value.",
+      "dependencies": [
+        "remotion"
+      ],
+      "files": [
+        {
+          "path": "animated-line-chart/index.tsx",
+          "type": "registry:component",
+          "target": "components/snap-cn/animated-line-chart.tsx"
+        }
+      ]
+    },
+    {
+      "name": "animated-bar-chart",
+      "type": "registry:component",
+      "title": "Animated Bar Chart",
+      "description": "Ops-style metric chart with staggered spring bars rising over hairline gridlines.",
+      "dependencies": [
+        "remotion"
+      ],
+      "files": [
+        {
+          "path": "animated-bar-chart/index.tsx",
+          "type": "registry:component",
+          "target": "components/snap-cn/animated-bar-chart.tsx"
+        }
+      ]
+    },
+    {
+      "name": "progress-ring",
+      "type": "registry:component",
+      "title": "Progress Ring",
+      "description": "Animated percentage ring or bar that sweeps to its target with a rolling count-up readout.",
+      "dependencies": [
+        "remotion"
+      ],
+      "registryDependencies": [
+        "@snap-cn/counter"
+      ],
+      "files": [
+        {
+          "path": "progress-ring/index.tsx",
+          "type": "registry:component",
+          "target": "components/snap-cn/progress-ring.tsx"
+        }
+      ]
+    },
+    {
+      "name": "comparison-table",
+      "type": "registry:component",
+      "title": "Comparison Table",
+      "description": "Us-vs-them feature table — rows stagger in, checks draw in accent blue, crosses fade to muted, highlighted column wears an accent band.",
+      "dependencies": [
+        "remotion"
+      ],
+      "files": [
+        {
+          "path": "comparison-table/index.tsx",
+          "type": "registry:component",
+          "target": "components/snap-cn/comparison-table.tsx"
+        }
+      ]
+    },
+    {
+      "name": "data-flow-pipes",
+      "type": "registry:component",
+      "title": "Data Flow Pipes",
+      "description": "Animated integration diagram — packets pulse along hairline pipes between product nodes, showing data fanning out through your system.",
+      "dependencies": [
+        "remotion"
+      ],
+      "files": [
+        {
+          "path": "data-flow-pipes/index.tsx",
+          "type": "registry:component",
+          "target": "components/snap-cn/data-flow-pipes.tsx"
+        }
+      ]
+    },
+    {
+      "name": "follower-rush",
+      "type": "registry:component",
+      "title": "Follower Rush",
+      "description": "An X-style follower notification that piles up — avatars stack in and the count explodes, then the row bends into an undulating wave of faces.",
+      "dependencies": [
+        "remotion",
+        "@remotion/google-fonts"
+      ],
+      "files": [
+        {
+          "path": "follower-rush/index.tsx",
+          "type": "registry:component",
+          "target": "components/snap-cn/follower-rush.tsx"
+        }
+      ]
+    },
+    {
+      "name": "orbit-gallery",
+      "type": "registry:component",
+      "title": "Orbit Gallery",
+      "description": "An image-universe hero: a continuous stream of photos flows along an Archimedean spiral (a vortex) from the frame edges into the center — evenly spaced by arc length, shrinking and rotating to follow the coil, with the title held in the clear middle. A slow, cinematic opener for launch and editorial videos.",
+      "dependencies": [
+        "remotion"
+      ],
+      "files": [
+        {
+          "path": "orbit-gallery/index.tsx",
+          "type": "registry:component",
+          "target": "components/snap-cn/orbit-gallery.tsx"
+        }
+      ]
+    },
+    {
+      "name": "moodboard-reveal",
+      "type": "registry:component",
+      "title": "Moodboard Reveal",
+      "description": "A kinetic headline with a swapping inline image, then a scattered gallery of photos flies in, the camera pushes through it as the background lifts from near-black to off-white, and it lands on a single hero image.",
+      "dependencies": [
+        "remotion"
+      ],
+      "files": [
+        {
+          "path": "moodboard-reveal/index.tsx",
+          "type": "registry:component",
+          "target": "components/snap-cn/moodboard-reveal.tsx"
+        }
+      ]
+    },
+    {
+      "name": "pricing-card",
+      "type": "registry:component",
+      "title": "Pricing Card",
+      "description": "Animated pricing tiers for the offer beat — prices count in on a tabular reel, features check off with a stagger, and the popular tier gets an accent border, tint and badge.",
+      "dependencies": [
+        "remotion"
+      ],
+      "registryDependencies": [
+        "@snap-cn/counter"
+      ],
+      "files": [
+        {
+          "path": "pricing-card/index.tsx",
+          "type": "registry:component",
+          "target": "components/snap-cn/pricing-card.tsx"
+        }
+      ]
+    },
+    {
+      "name": "search-typing",
+      "type": "registry:component",
+      "title": "Search Typing",
+      "description": "A search field wider than the shot: two thirds in frame, then it comes forward, types across its left half, pages to its right half, and goes back. Every proportion is measured, and the scale pivots on the text baseline so the type never climbs the pixel grid.",
+      "dependencies": [
+        "remotion",
+        "@remotion/google-fonts"
+      ],
+      "registryDependencies": [
+        "@snap-cn/snap-cn-ui",
+        "@snap-cn/caret",
+        "@snap-cn/input"
+      ],
+      "files": [
+        {
+          "path": "search-typing/index.tsx",
+          "type": "registry:component",
+          "target": "components/snap-cn/search-typing.tsx"
+        }
+      ]
+    }
+  ]
+}
