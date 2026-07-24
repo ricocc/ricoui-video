@@ -1,0 +1,54 @@
+/**
+ * Shared (client- and server-safe) helpers for classifying a submitted post
+ * URL by social platform. Kept free of any server-only imports so both the
+ * submit form and the server query layer can use it.
+ */
+
+export const PLATFORMS = [
+  "x",
+  "facebook",
+  "linkedin",
+  "youtube",
+  "instagram",
+  "tiktok",
+  "other",
+] as const;
+
+export type Platform = (typeof PLATFORMS)[number];
+
+export const PLATFORM_LABELS: Record<Platform, string> = {
+  x: "X",
+  facebook: "Facebook",
+  linkedin: "LinkedIn",
+  youtube: "YouTube",
+  instagram: "Instagram",
+  tiktok: "TikTok",
+  other: "Link",
+};
+
+/** Best-effort platform detection from a post URL's hostname. */
+export function detectPlatform(url: string): Platform {
+  let host: string;
+  try {
+    host = new URL(url).hostname.replace(/^www\./, "").toLowerCase();
+  } catch {
+    return "other";
+  }
+  if (
+    host === "x.com" ||
+    host.endsWith(".x.com") ||
+    host.endsWith("twitter.com")
+  )
+    return "x";
+  if (
+    host.endsWith("facebook.com") ||
+    host === "fb.com" ||
+    host.endsWith("fb.watch")
+  )
+    return "facebook";
+  if (host.endsWith("linkedin.com")) return "linkedin";
+  if (host.endsWith("youtube.com") || host === "youtu.be") return "youtube";
+  if (host.endsWith("instagram.com")) return "instagram";
+  if (host.endsWith("tiktok.com")) return "tiktok";
+  return "other";
+}
