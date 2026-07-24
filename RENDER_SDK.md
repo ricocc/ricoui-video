@@ -13,7 +13,7 @@ A separate project in a separate repository. License — MIT.
 The render mechanism in snap-cn is already **duplicated**: `lib/server/render-queue.ts` +
 `app/api/render/*` (github-stars), and its copy-paste in `lib/server/site-video/*` +
 `app/api/site-video/render/*` on the `feat/site-to-video` branch (two independent `p-limit`
-instances in one process). A third consumer is on the way — **studio** (`studio.snap-cn.dev`,
+instances in one process). A third consumer is on the way — **studio** (`studio.snapcn.dev`,
 a separate deployment). All three need a single render engine.
 
 The SDK solves: create a render job, learn its state/progress, get the result (url/stream) —
@@ -149,7 +149,7 @@ render.start({ compositionId: "x" }, { chromiumOptions: {} }); // ❌ compile er
 RenderServer({
   serveUrl: "./.remotion-bundle",          // INPUT: the bundle (provided by the user/CI)
   workDir: "/srv/renders",                 // OUTPUT-WRITE: a local path (required)
-  publicUrl?: "https://snap-cn.dev/renders",// OPT: the http base at which YOU serve workDir
+  publicUrl?: "https://snapcn.dev/renders",// OPT: the http base at which YOU serve workDir
   concurrency?: 2,                          // limiter (per-process)
 });
 
@@ -318,9 +318,9 @@ const { serveUrl } = await deploySite({ region, entryPoint, /* ... */ });
 
 ## 13. Integrations
 
-- **stars (snap-cn.dev):** replaces `lib/server/render-queue.ts` + `render.ts` with `RenderServer`; `validate-input.ts` stays in the application; `use-mp4-export.ts` polls its own routes.
+- **stars (snapcn.dev):** replaces `lib/server/render-queue.ts` + `render.ts` with `RenderServer`; `validate-input.ts` stays in the application; `use-mp4-export.ts` polls its own routes.
 - **site-video:** removes the `lib/server/site-video/*` duplicate — **stars and site-video share one `RenderSdk` instance** (one limiter per process, fixes the bug with two `p-limit`s).
-- **studio (studio.snap-cn.dev):** its own SDK instance (separate deployment/process); records every render into **its own drizzle DB** `(project_id, user_id, handle, url, created_at)` → "getting finished videos" = a query against its own DB. One generic composition + a JSON spine in `inputProps`.
+- **studio (studio.snapcn.dev):** its own SDK instance (separate deployment/process); records every render into **its own drizzle DB** `(project_id, user_id, handle, url, created_at)` → "getting finished videos" = a query against its own DB. One generic composition + a JSON spine in `inputProps`.
 
 ## 14. Out of scope for v1 (deliberately)
 

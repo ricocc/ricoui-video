@@ -2,7 +2,7 @@
 
 snap-cn is a copy-paste component library for building videos in [Remotion](https://www.remotion.dev). Instead of writing every fade, wipe, and kinetic title from scratch, you `npx shadcn add` a polished primitive into your project and own the code — the shadcn philosophy applied to video. Built for solo builders and small teams who need a product demo video shipped today, not next week.
 
-Browse the full catalog with interactive previews at [snap-cn.dev](https://snap-cn.dev).
+Browse the full catalog with interactive previews at [snapcn.dev](https://snapcn.dev).
 
 ## Installation
 
