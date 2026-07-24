@@ -1,0 +1,94 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/lib/snap-cn-ui": [
+        "./registry/snap-cn-ui/core/index.ts"
+      ],
+      "@/lib/snap-cn-ui/*": [
+        "./registry/snap-cn-ui/core/*"
+      ],
+      "@/components/snap-cn/use-input-transition": [
+        "./registry/snap-cn-ui/input/use-input-transition.ts"
+      ],
+      "@/components/snap-cn/glass-code-block": [
+        "./registry/snap-cn/glass-code-block/index.tsx"
+      ],
+      "@/components/snap-cn/number-wheel": [
+        "./registry/snap-cn/number-wheel/index.tsx"
+      ],
+      "@/components/snap-cn/terminal-simulator": [
+        "./registry/snap-cn/terminal-simulator/index.tsx"
+      ],
+      "@/components/snap-cn/soft-blur-in": [
+        "./registry/snap-cn/soft-blur-in/index.tsx"
+      ],
+      "@/components/snap-cn/blur-out-up": [
+        "./registry/snap-cn/blur-out-up/index.tsx"
+      ],
+      "@/components/snap-cn/kinetic-center-build": [
+        "./registry/snap-cn/kinetic-center-build/index.tsx"
+      ],
+      "@/components/snap-cn/per-character-rise": [
+        "./registry/snap-cn/per-character-rise/index.tsx"
+      ],
+      "@/components/snap-cn/per-word-crossfade": [
+        "./registry/snap-cn/per-word-crossfade/index.tsx"
+      ],
+      "@/components/snap-cn/staggered-fade-up": [
+        "./registry/snap-cn/staggered-fade-up/index.tsx"
+      ],
+      "@/components/snap-cn/marker-highlight": [
+        "./registry/snap-cn/marker-highlight/index.tsx"
+      ],
+      "@/components/snap-cn/micro-scale-fade": [
+        "./registry/snap-cn/micro-scale-fade/index.tsx"
+      ],
+      "@/components/snap-cn/mask-reveal-up": [
+        "./registry/snap-cn/mask-reveal-up/index.tsx"
+      ],
+      "@/components/snap-cn/tracking-in": [
+        "./registry/snap-cn/tracking-in/index.tsx"
+      ],
+      "@/components/snap-cn/*": [
+        "./registry/snap-cn-ui/*/index.tsx"
+      ],
+      "@/*": [
+        "./*"
+      ]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts",
+    "**/*.mts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
