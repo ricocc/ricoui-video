@@ -1,0 +1,187 @@
+---
+title: Laptop Frame
+description: MacBook-style laptop that opens, runs a notch notification, then dives into the screen until it fills the frame
+---
+
+<ComponentPreview name="laptop-frame" />
+
+## Installation
+
+<InstallBlock name="laptop-frame" />
+
+## Usage
+
+The lid **opens**, the notch runs its idle → connecting → connected notification,
+and then the camera **dives into the screen** — un-tilting it and scaling it up
+until the content fills the frame. Drop in a screenshot, a screen recording, or
+your own UI. Everything is driven by the current frame, so scrubbing and rendering
+are fully deterministic. The component ships with a transparent background; supply
+the backdrop from the scene.
+
+```tsx
+// src/Root.tsx
+import { Composition, staticFile } from "remotion";
+import { LaptopFrame } from "@/components/snap-cn/laptop-frame";
+
+const ProductScene = () => (
+  <LaptopFrame
+    entrance="open"
+    finale="zoom-to-screen"
+    screenSrc={staticFile("showcase-videos/airpods-pro.mp4")}
+    notchLabel="AirPods Connected"
+  />
+);
+
+export const RemotionRoot = () => (
+  <Composition
+    id="LaptopFrame"
+    component={ProductScene}
+    durationInFrames={240}
+    fps={30}
+    width={1280}
+    height={720}
+  />
+);
+```
+
+`screenSrc` takes an **image or a video** — a `.mp4/.webm/.mov/.m4v` plays through
+`<OffthreadVideo>`, anything else through `<Img>`, both covering the screen and
+fading in. Pass a `staticFile()` path (or a root-relative `/…` one) for a bundled
+asset, or an `http(s)`/data URL. For full control, pass `children` instead. Omit
+both and you get a built-in product-hero placeholder.
+
+### Entrances
+
+- `rise` — fades in while translating up 70px with a fast ease-out; the default launch look.
+- `open` — the lid swings up from the deck (82° → rest tilt) as the machine fades in.
+- `none` — appears already settled, for scenes that composite the laptop in some other way.
+
+### The screen takeover (`finale`)
+
+`finale="zoom-to-screen"` is the payoff: from frame 140 the camera dollies into the
+screen and flattens the lid to head-on (rotateX → 0), so by frame 185 the screen
+content **covers the whole frame** and holds. The cover scale is derived from the
+composition size, so it lands filling the frame exactly — this assumes the laptop
+occupies the full composition. Set `finale="none"` to just leave the laptop sitting.
+
+This is a slow scale on the whole screen over many frames, which a live `<Player>`
+mispaces on a high-refresh display — so the docs preview here plays the **rendered
+mp4**. Re-render it after any change: `pnpm run render:previews --only laptop-frame`.
+
+### The notch
+
+The notch is a dynamic-island-style pill that morphs through three states: an idle
+camera dot, three connecting dots, then the connected label with a battery. It lands
+"connected" at frame 120 (then fades as the dive begins) — set `showNotch={false}`
+for a plain lid, or change `notchLabel` and `batteryLevel` to suit the scene.
+
+## Props
+
+<PropsTable
+  rows={[
+    {
+      name: "children",
+      type: "ReactNode",
+      description:
+        "Screen content. Falls back to screenSrc, then the built-in hero placeholder",
+    },
+    {
+      name: "screenSrc",
+      type: "string",
+      description:
+        "Image or video (.mp4/.webm/.mov/.m4v → OffthreadVideo) to fill the screen; covers and fades in",
+    },
+    {
+      name: "entrance",
+      type: "\"rise\" | \"open\" | \"none\"",
+      default: "\"rise\"",
+      description: "How the laptop enters the frame",
+    },
+    {
+      name: "finale",
+      type: "\"none\" | \"zoom-to-screen\"",
+      default: "\"none\"",
+      description:
+        "zoom-to-screen dollies the camera into the screen until the content fills the frame",
+    },
+    {
+      name: "bezelColor",
+      type: "string",
+      default: "\"#1D1D1F\"",
+      description: "Lid shell and deck base color (space-grey by default)",
+    },
+    {
+      name: "screenColor",
+      type: "string",
+      default: "\"#FFFFFF\"",
+      description: "Screen fill rendered behind the content",
+    },
+    {
+      name: "restTilt",
+      type: "number",
+      default: "18",
+      description: "rotateX of the lid at rest, in degrees",
+    },
+    {
+      name: "radius",
+      type: "number",
+      default: "22",
+      description:
+        "Lid top-corner radius. Bottom corners stay near-square at the hinge",
+    },
+    {
+      name: "shadow",
+      type: "string",
+      default: "\"0 40px 80px rgba(10,12,20,0.45)\"",
+      description: "CSS box-shadow under the deck. Empty string disables it",
+    },
+    {
+      name: "scale",
+      type: "number",
+      default: "0.95",
+      description:
+        "Uniform size multiplier for the whole machine (lid base 820 × 500)",
+    },
+    {
+      name: "showNotch",
+      type: "boolean",
+      default: "true",
+      description: "Render the notch notification pill",
+    },
+    {
+      name: "notchLabel",
+      type: "string",
+      default: "\"AirPods Connected\"",
+      description: "Text shown in the notch's connected state",
+    },
+    {
+      name: "batteryLevel",
+      type: "number",
+      default: "85",
+      description: "Battery fill (0–100) drawn green in the connected state",
+    },
+    {
+      name: "floatLoop",
+      type: "boolean",
+      default: "true",
+      description: "Gentle vertical bob after the entrance settles (5s period)",
+    },
+    {
+      name: "floatAmplitude",
+      type: "number",
+      default: "4",
+      description: "Peak float displacement in pixels",
+    },
+    {
+      name: "speed",
+      type: "number",
+      default: "1",
+      description: "Global playback multiplier applied to the whole sequence",
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "Optional className passed to the outer wrapper",
+    },
+  ]}
+/>

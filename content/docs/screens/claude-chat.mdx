@@ -1,0 +1,141 @@
+---
+title: Claude Chat
+description: Animated Claude screen that types a prompt, sends it, and streams the reply while a pulsing border frames the response
+---
+
+<ComponentPreview name="claude-chat" />
+
+## Installation
+
+<InstallBlock name="claude-chat" />
+
+<Note>
+  Installing `claude-chat` pulls the `caret` and `pulsing-border` primitives and the `snap-cn-ui` core lib (which provides the shared `useTypewriter` hook) via `registryDependencies`, plus the `Inter` and `Fraunces` fonts via `@remotion/google-fonts` automatically. No additional install needed.
+</Note>
+
+## Usage
+
+A full request-to-response Claude moment for product demos: the composer eases in under a serif greeting, a support-ops prompt types itself, the waveform button morphs into the terracotta send button, and on send the composer drops to the bottom while the reply streams in above it — framed by a `pulsing-border` glow that pulses only while the model is responding.
+
+```tsx
+// src/Root.tsx
+import { Composition } from "remotion";
+import { ClaudeChat } from "@/components/snap-cn/claude-chat";
+
+const RefundPolicyScene = () => (
+  <ClaudeChat
+    greeting="Afternoon, Dana"
+    placeholder="How can I help you today?"
+    prompt="Draft a refund policy for Acme's annual plan"
+    response={
+      "Here's a draft refund policy for Acme's annual plan:\n\nFull refund within 30 days of purchase, no questions asked. After day 30, refunds are prorated for the unused months of the term. Requests go to billing@acme.com and are processed within 5 business days."
+    }
+    modelName="Opus 4.8"
+    modelTier="Max"
+    accentColor="#D97757"
+    showFrame
+    speed={1}
+  />
+);
+
+export const RemotionRoot = () => (
+  <Composition
+    id="ClaudeChat"
+    component={RefundPolicyScene}
+    durationInFrames={300}
+    fps={30}
+    width={1280}
+    height={720}
+  />
+);
+```
+
+Timeline: window + greeting ease in (0–26), the idle composer holds with a blinking caret (26–42), the prompt types in from frame 42 and the send button morphs in the instant text appears, the prompt sends at frame 116 (user bubble pops in, greeting fades, composer slides to the bottom, pulsing border fades in), the reply streams from frame 140 with a streaming caret, and the border fades back out once the reply completes.
+
+### Composing with pulsing-border
+
+The streaming frame is the `pulsing-border` component rendered behind the window — `claude-chat` fades it in on send and out when the reply finishes. Set `showFrame={false}` to render the bare screen and compose the border (or any other overlay) yourself:
+
+```tsx
+import { AbsoluteFill } from "remotion";
+import { ClaudeChat } from "@/components/snap-cn/claude-chat";
+import { PulsingBorder } from "@/components/snap-cn/pulsing-border";
+
+const FramedScene = () => (
+  <AbsoluteFill style={{ background: "#FAFAFA" }}>
+    <PulsingBorder glowColorA="#D97757" glowColorB="#E8B08F" />
+    <ClaudeChat showFrame={false} prompt="Draft a refund policy for Acme's annual plan" />
+  </AbsoluteFill>
+);
+```
+
+The screen itself renders transparent — supply the canvas yourself (the docs preview uses `#FAFAFA`).
+
+## Props
+
+<PropsTable
+  rows={[
+    {
+      name: "greeting",
+      type: "string",
+      default: "\"Afternoon, Dana\"",
+      description: "Serif greeting shown next to the sunburst before the prompt is sent",
+    },
+    {
+      name: "placeholder",
+      type: "string",
+      default: "\"How can I help you today?\"",
+      description: "Muted composer placeholder shown while the input is empty",
+    },
+    {
+      name: "prompt",
+      type: "string",
+      default: "\"Draft a refund policy for Acme's annual plan\"",
+      description: "The prompt that types in character-by-character and becomes the user bubble on send",
+    },
+    {
+      name: "response",
+      type: "string",
+      default: "Acme refund policy draft",
+      description: "The assistant reply that streams in after the prompt is sent. Use \\n\\n to split paragraphs",
+    },
+    {
+      name: "modelName",
+      type: "string",
+      default: "\"Opus 4.8\"",
+      description: "Model label in the composer toolbar",
+    },
+    {
+      name: "modelTier",
+      type: "string",
+      default: "\"Max\"",
+      description: "Tier label shown next to the model name",
+    },
+    {
+      name: "accentColor",
+      type: "string",
+      default: "\"#D97757\"",
+      description: "Terracotta accent used for the sunburst, send button, and streaming caret",
+    },
+    {
+      name: "showFrame",
+      type: "boolean",
+      default: "true",
+      description: "Render the built-in pulsing-border frame while the reply streams",
+    },
+    {
+      name: "speed",
+      type: "number",
+      default: "1",
+      description: "Animation speed multiplier applied to the whole sequence",
+    },
+  ]}
+/>
+
+## Notes
+
+- **Streaming frame:** The pulsing border is gated to the response — it fades in at send, pulses while text streams, and fades out once the reply is complete. It reads as "the model is working."
+- **Send choreography:** The waveform-to-send morph is gated on text presence, and springs back to the waveform the moment the prompt is sent and the input empties.
+- **Deterministic:** Everything — typing, morph, streaming, border pulse — is driven by `useCurrentFrame()`, so scrubbing and MP4 renders are frame-exact.
+- **Chrome vs product:** The outer window uses snap-cn tokens (radius 10, `#E4E7EC` hairline, restrained shadow); everything inside the window keeps Claude's product-native warm palette and serif greeting (`Fraunces`).
+- **Offline-friendly:** No network requests or images, so previews work offline and renders need no CORS setup.

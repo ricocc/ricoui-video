@@ -1,0 +1,149 @@
+---
+title: Terminal Simulator
+description: Single-camera flythrough — one continuous camera whips from a headline to a package-manager command panel to a zoomed green terminal, all on one canvas
+---
+
+<ComponentPreview name="terminal-simulator" />
+
+## Installation
+
+<InstallBlock name="terminal-simulator" />
+
+## Usage
+
+Everything lives on **one black canvas** and a **single camera** flies over it —
+nothing slides in from a screen edge. The camera holds on the **intro headline**,
+creeps left, then **suddenly accelerates** across to the **command panel**
+(package-manager tabs + a syntax-coloured install command with the package name
+highlighted), pushes in slowly while it types — leaving the trailing motion-blur
+copies — then pulls back, descends, and **punches in** on the green **focus
+terminal** as it types its output. Fast camera moves draw a velocity-driven ghost
+trail; holds are dead still. Output reveals in bursts (chunked, not char-by-char),
+and any line ending in `...` freezes the frame for 18 frames — or set `pause`
+explicitly. Everything is driven by the current frame, so scrubbing and rendering
+are fully deterministic.
+
+Pass `intro={null}` or `command={null}` to skip a station — the camera path
+closes the gap automatically.
+
+```tsx
+// src/Root.tsx
+import { Composition } from "remotion";
+import { TerminalSimulator } from "@/components/snap-cn/terminal-simulator";
+
+const InstallScene = () => (
+  <TerminalSimulator
+    intro="*work* one step at a *time.*"
+    command={{ managers: ["npm", "pnpm", "yarn", "bun"], text: "npm install One Tool" }}
+    lines={[
+      { text: "{labels: ['bug']})", type: "log", delay: 0 },
+      { text: "→   label added", type: "success", delay: 6 },
+      { text: "$", type: "log", delay: 10 },
+      { text: "One task", type: "command", delay: 4 },
+    ]}
+  />
+);
+
+export const RemotionRoot = () => (
+  <Composition
+    id="TerminalSimulator"
+    component={InstallScene}
+    durationInFrames={200}
+    fps={30}
+    width={1280}
+    height={720}
+  />
+);
+```
+
+### Intro headline
+
+`intro` is a single line rendered in the sans stack, centered. Wrap words in
+`*asterisks*` to paint them with the accent gradient (blue → violet); everything
+else stays white. Set `intro={null}` to skip straight to the command panel.
+
+### Focus terminal lines
+
+The final station renders each line large and zoomed, right of the green accent
+bar. `command` lines are white and carry the blinking accent cursor (the last one
+keeps it after it finishes typing); `log` lines are dim, `success` lines take the
+accent green, `error` lines red. `zoom` sets the landing zoom of the final punch
+(1.5x by default, 2.4x with `zoom` on).
+
+## Props
+
+<PropsTable
+  rows={[
+    {
+      name: "lines",
+      type: "Array<{ text: string; type: 'command' | 'log' | 'success' | 'error'; delay?: number; pause?: number }>",
+      description:
+        "The focus-terminal output (final station). `delay` is the frame gap before a line starts typing (default 8). `pause` freezes the frame after the line finishes; lines ending in \"...\" auto-freeze for 18 frames when `pause` is omitted.",
+    },
+    {
+      name: "intro",
+      type: "string | null",
+      default: "\"*work* one step at a *time.*\"",
+      description:
+        "The first camera station. Wrap words in *asterisks* to tint them with the accent gradient. `null` or \"\" skips the station.",
+    },
+    {
+      name: "command",
+      type: "{ managers?: string[]; text: string } | null",
+      default: "{ managers: ['npm','pnpm','yarn','bun'], text: 'npm install One Tool' }",
+      description:
+        "The second camera station. `managers` are the tab labels (first is active); `text` is typed into the row — manager and subcommand dim, the package name highlighted. `null` skips the station.",
+    },
+    {
+      name: "background",
+      type: "string",
+      default: "\"#141417\"",
+      description: "Command-panel surface color",
+    },
+    {
+      name: "borderColor",
+      type: "string",
+      default: "\"#26272B\"",
+      description: "Hairline color for the command-panel ring and divider",
+    },
+    {
+      name: "fontSize",
+      type: "number",
+      default: "18",
+      description:
+        "Base monospace size. The command panel and focus terminal scale up from it",
+    },
+    {
+      name: "charsPerFrame",
+      type: "number",
+      default: "2",
+      description:
+        "Reveal speed: how often the chunked reveal steps (a step every 1 / charsPerFrame frames)",
+    },
+    {
+      name: "chunkSize",
+      type: "number",
+      default: "3",
+      description:
+        "Characters revealed per step — larger chunks make output lurch in bursts like real command output",
+    },
+    {
+      name: "zoom",
+      type: "boolean | { enabled: boolean; scale?: number; followCursor?: boolean }",
+      default: "false",
+      description:
+        "Landing zoom of the final punch onto the terminal. Off = 1.5x; `true` or `{ scale }` overrides (default 2.4)",
+    },
+    {
+      name: "speed",
+      type: "number",
+      default: "1",
+      description: "Global playback multiplier applied to the whole session",
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "Optional className passed to the outer container",
+    },
+  ]}
+/>

@@ -1,0 +1,177 @@
+---
+title: Phone Frame
+description: iPhone-style device frame with a dynamic island and a screen slot — flat, tilted, or a cinematic 3D showcase crane move
+---
+
+<ComponentPreview name="phone-frame" />
+
+## Installation
+
+<InstallBlock name="phone-frame" />
+
+## Usage
+
+Drop any screen content into the frame — an app UI, an `<OffthreadVideo>` screen
+recording, or an `<Img>` — and the device rises in over your backdrop, then keeps a
+subtle float loop. Everything is driven by the current frame, so scrubbing and
+rendering are fully deterministic. The component ships with a transparent
+background; supply the backdrop from the scene (an ambient gradient works well).
+
+```tsx
+// src/Root.tsx
+import { Composition, staticFile } from "remotion";
+import { PhoneFrame } from "@/components/snap-cn/phone-frame";
+
+const AppLaunchScene = () => (
+  <PhoneFrame
+    variant="showcase"
+    entrance="float"
+    scale={0.9}
+    screenSrc={staticFile("screen-recording.mp4")}
+  />
+);
+
+export const RemotionRoot = () => (
+  <Composition
+    id="PhoneFrame"
+    component={AppLaunchScene}
+    durationInFrames={240}
+    fps={30}
+    width={1280}
+    height={720}
+  />
+);
+```
+
+`screenSrc` takes an **image or a video** — a `.mp4/.webm/.mov/.m4v` plays through
+`<OffthreadVideo>` (muted), anything else renders through `<Img>`, both cover-fit
+to the screen. Omit both `children` and `screenSrc` to get the built-in
+ride-summary placeholder — a dark map whose glowing GPS route draws itself while
+stat "insight" pills pop in along it. On light scenes, keep the silver
+`bezelColor`; on dark ones, set `bezelColor="#26272B"`.
+
+Unlike a desktop browser window, this is a portrait device with a real
+dynamic-island cutout and a 3D tilt (`tilt`) or cinematic crane move (`showcase`)
+for hero shots.
+
+### Variants
+
+- `flat` — faces the camera head-on.
+- `tilt` — a static perspective `rotateY` (see `tiltAngle`).
+- `showcase` — a cinematic crane move: the camera starts low at the bottom-left
+  corner of the laid-back device, sweeps up the screen while zooming in, then
+  pulls back and settles on a straight frontal view. Normalized to the
+  composition length, so it always completes.
+
+### Entrances
+
+- `rise` — fades in while translating up 70px with a fast ease-out; the default launch look.
+- `rotate-in` — rises with a slight -8° in-plane rotation and a 0.94 → 1 scale settle.
+- `float` — no travel: fades and grows from 0.96 in place, with the float loop running from frame 0.
+
+## Props
+
+<PropsTable
+  rows={[
+    {
+      name: "children",
+      type: "ReactNode",
+      description:
+        "Screen content. Falls back to screenSrc, then the animated ride-summary map placeholder",
+    },
+    {
+      name: "screenSrc",
+      type: "string",
+      description:
+        "Image or video URL to fill the screen when children is omitted. .mp4/.webm/.mov/.m4v play muted via OffthreadVideo, other sources render via Img; both cover-fit",
+    },
+    {
+      name: "variant",
+      type: "\"flat\" | \"tilt\" | \"showcase\"",
+      default: "\"flat\"",
+      description:
+        "flat faces the camera; tilt adds a static perspective rotateY (see tiltAngle); showcase runs the cinematic bottom-left → top → frontal crane move",
+    },
+    {
+      name: "entrance",
+      type: "\"rise\" | \"rotate-in\" | \"float\"",
+      default: "\"rise\"",
+      description: "How the device enters the frame",
+    },
+    {
+      name: "bezelColor",
+      type: "string",
+      default: "\"#101828\"",
+      description: "Device shell color. Use #26272B on dark scenes",
+    },
+    {
+      name: "screenColor",
+      type: "string",
+      default: "\"#FFFFFF\"",
+      description: "Screen fill rendered behind the children",
+    },
+    {
+      name: "radius",
+      type: "number",
+      default: "53",
+      description:
+        "Outer body corner radius. Defaults to real-device curvature (16.5% of the body width)",
+    },
+    {
+      name: "screenRadius",
+      type: "number",
+      default: "radius - 12",
+      description:
+        "Screen corner radius. Defaults to the concentric-corner rule: body radius minus the bezel width",
+    },
+    {
+      name: "shadow",
+      type: "string",
+      default: "\"0 24px 60px rgba(16,24,40,0.18)\"",
+      description: "CSS box-shadow under the device. Empty string disables it",
+    },
+    {
+      name: "scale",
+      type: "number",
+      default: "1",
+      description:
+        "Uniform size multiplier for the whole device (base size 320 × 656)",
+    },
+    {
+      name: "showDynamicIsland",
+      type: "boolean",
+      default: "true",
+      description: "Render the dynamic-island cutout over the screen",
+    },
+    {
+      name: "floatLoop",
+      type: "boolean",
+      default: "true",
+      description:
+        "Gentle vertical bob after the entrance settles (4.5s period)",
+    },
+    {
+      name: "floatAmplitude",
+      type: "number",
+      default: "6",
+      description: "Peak float displacement in pixels",
+    },
+    {
+      name: "tiltAngle",
+      type: "number",
+      default: "-12",
+      description: "rotateY angle in degrees used by the tilt variant",
+    },
+    {
+      name: "speed",
+      type: "number",
+      default: "1",
+      description: "Global playback multiplier applied to the whole sequence",
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "Optional className passed to the outer wrapper",
+    },
+  ]}
+/>
