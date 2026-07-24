@@ -1,0 +1,85 @@
+---
+title: Follower Rush
+description: An X-style follower notification that piles up — avatars stack in and the count explodes, then the row bends into an undulating wave of faces
+---
+
+<ComponentPreview name="follower-rush" />
+
+## Installation
+
+<InstallBlock name="follower-rush" />
+
+## Usage
+
+Built for the "we blew up" milestone beat. It opens as a single X-style notification — `Manon ✓ followed you` — then reorganizes into a stacked pile as more followers pour in: avatars pop on one by one and the count climbs slowly, then detonates from a couple dozen to the target. As it explodes the flat row bends into a travelling sine wave of faces that scrolls and undulates, with the lead name settling on the last follower and the count landing on the total.
+
+```tsx
+// src/Root.tsx
+import { Composition } from "remotion";
+import { FollowerRush } from "@/components/snap-cn/follower-rush";
+
+const Rush = () => (
+  <FollowerRush totalFollowers={5000} orientation="horizontal" speed={1} />
+);
+
+export const RemotionRoot = () => (
+  <Composition
+    id="FollowerRush"
+    component={Rush}
+    durationInFrames={300}
+    fps={30}
+    width={1280}
+    height={720}
+  />
+);
+```
+
+## Props
+
+<PropsTable
+  rows={[
+    {
+      name: "totalFollowers",
+      type: "number",
+      default: "5000",
+      description: "The number the count explodes up to and lands on — the pile grows exponentially and caps here",
+    },
+    {
+      name: "followers",
+      type: "Follower[]",
+      default: "SAMPLE_FOLLOWERS",
+      description: "The crowd shown in the pile/wave — each is { name, avatarId }, where avatarId is a low GitHub user id for a CORS-safe avatar photo. Falls back to an initial-letter circle offline",
+    },
+    {
+      name: "accentColor",
+      type: "string",
+      default: "\"#266DF0\"",
+      description: "Accent color — used for the verified badge and the leading new-follower icon",
+    },
+    {
+      name: "theme",
+      type: "\"light\" | \"dark\"",
+      default: "\"light\"",
+      description: "Light or dark surface — the hex mirrors the shadcn background/foreground/border tokens",
+    },
+    {
+      name: "orientation",
+      type: "\"horizontal\" | \"vertical\"",
+      default: "\"horizontal\"",
+      description: "Layout orientation — horizontal is 1280×720 (16:9), vertical is 720×1280 (9:16) letterboxed",
+    },
+    {
+      name: "speed",
+      type: "number",
+      default: "1",
+      description: "Animation speed multiplier — minimum 1 so the timeline always reaches the wave",
+    },
+  ]}
+/>
+
+## Notes
+
+- **Exponential count:** The total holds at 1 through the inline intro, then grows on an eased exponential — a slow crawl to a couple dozen, then a blow-up that lands exactly on `totalFollowers`.
+- **Flat pile → wave:** Avatars overlap in a centred pile (leftmost on top, a page-coloured ring separating them), then bend into a travelling sine wave that scrolls; a single edge mask fades the wave's ends.
+- **Offline rendering:** Avatars are real low-id GitHub photos (CORS-safe), each backed by an initial-letter circle, so the composition renders with no network and MP4 export needs no CORS setup.
+- **Live data ready:** Pass your own crowd as `followers` in the `{ name, avatarId }` shape; the lead callout name cycles through it and freezes on the last one.
