@@ -1,0 +1,14 @@
+{
+  "title": "Data & Stats",
+  "collapsible": false,
+  "pages": [
+    "index",
+    "counter",
+    "stat-tile",
+    "animated-line-chart",
+    "animated-bar-chart",
+    "progress-ring",
+    "comparison-table",
+    "data-flow-pipes"
+  ]
+}

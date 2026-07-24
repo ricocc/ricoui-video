@@ -1,0 +1,154 @@
+---
+title: Data Flow Pipes
+description: Animated integration diagram — packets pulse along hairline pipes between product nodes, showing data fanning out through your system
+---
+
+<ComponentPreview name="data-flow-pipes" />
+
+## Installation
+
+<InstallBlock name="data-flow-pipes" />
+
+## Usage
+
+The "how it works" beat of a B2B explainer: nodes fade in, then blue packets
+travel the pipes on a repeating schedule — payment events land in Acme Core and
+fan out to reporting and alerting. Node positions live in a 1280×720 viewBox,
+each edge gets a `startFrame`, and everything is driven by the current frame,
+so scrubbing and rendering are fully deterministic.
+
+```tsx
+// src/Root.tsx
+import { Composition } from "remotion";
+import { DataFlowPipes } from "@/components/snap-cn/data-flow-pipes";
+
+const HowItWorksScene = () => (
+  <DataFlowPipes
+    nodes={[
+      { id: "payments", x: 230, y: 360, label: "Payments" },
+      { id: "core", x: 640, y: 360, label: "Acme Core" },
+      { id: "reports", x: 1050, y: 252, label: "Reports" },
+      { id: "alerts", x: 1050, y: 468, label: "Alerts" },
+    ]}
+    edges={[
+      { from: "payments", to: "core", startFrame: 0 },
+      { from: "core", to: "reports", startFrame: 30 },
+      { from: "core", to: "alerts", startFrame: 38 },
+    ]}
+  />
+);
+
+export const RemotionRoot = () => (
+  <Composition
+    id="DataFlowPipes"
+    component={HowItWorksScene}
+    durationInFrames={180}
+    fps={30}
+    width={1280}
+    height={720}
+  />
+);
+```
+
+### Themes
+
+The component is light-first and renders transparent — put it over a light
+backdrop by default, or switch to `theme="dark"` for dark scenes. Individual
+colors (`pipeColor`, `nodeColor`, `borderColor`, `textColor`) override the
+theme when you need a custom palette.
+
+```tsx
+import { DataFlowPipes } from "@/components/snap-cn/data-flow-pipes";
+
+<DataFlowPipes theme="dark" />
+```
+
+### Looping packets
+
+Packets replay every `cycleFrames` frames (90 by default), so the diagram
+stays alive for as long as the scene runs. Set `cycleFrames={0}` to fire each
+packet exactly once.
+
+## Props
+
+<PropsTable
+  rows={[
+    {
+      name: "nodes",
+      type: "DataFlowNode[]",
+      default: "Payments → Acme Core → Reports / Alerts",
+      description: "Array of `{ id, x, y, label }`. Coordinates are in the 1280×720 viewBox.",
+    },
+    {
+      name: "edges",
+      type: "DataFlowEdge[]",
+      default: "the 3 fan-out edges of the default diagram",
+      description: "Array of `{ from, to, startFrame }`. Each edge becomes a static pipe plus a travelling packet; `startFrame` is relative to the packet cycle.",
+    },
+    {
+      name: "theme",
+      type: "\"light\" | \"dark\"",
+      default: "\"light\"",
+      description: "Palette for pipes, node cards, borders, and labels",
+    },
+    {
+      name: "pipeColor",
+      type: "string",
+      default: "theme pipe color",
+      description: "Override for the static hairline pipe stroke (#E4E7EC light, #26272B dark)",
+    },
+    {
+      name: "pulseColor",
+      type: "string",
+      default: "\"#266DF0\"",
+      description: "Color of the travelling packet and its glow",
+    },
+    {
+      name: "pulseLength",
+      type: "number",
+      default: "48",
+      description: "Length of the bright packet dash in pixels",
+    },
+    {
+      name: "pulseDuration",
+      type: "number",
+      default: "36",
+      description: "Frames a single packet takes to traverse its edge",
+    },
+    {
+      name: "cycleFrames",
+      type: "number",
+      default: "90",
+      description: "The packet schedule repeats every N frames; 0 fires each packet once",
+    },
+    {
+      name: "nodeColor",
+      type: "string",
+      default: "theme surface color",
+      description: "Override for the node card background (#FFFFFF light, #141417 dark)",
+    },
+    {
+      name: "borderColor",
+      type: "string",
+      default: "theme border color",
+      description: "Override for the 1px node border (#E4E7EC light, #26272B dark)",
+    },
+    {
+      name: "textColor",
+      type: "string",
+      default: "theme text color",
+      description: "Override for the 14px node label (#101828 light, #FAFAFA dark)",
+    },
+    {
+      name: "speed",
+      type: "number",
+      default: "1",
+      description: "Playback speed multiplier applied to the whole animation",
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "Optional className passed to the root container",
+    },
+  ]}
+/>

@@ -1,0 +1,158 @@
+---
+title: Stat Tile
+description: The big-stat proof beat — white cards with count-up numbers, muted labels, and up/down delta chips, staggered across a row
+---
+
+<ComponentPreview name="stat-tile" />
+
+## Installation
+
+<InstallBlock name="stat-tile" />
+
+## Usage
+
+```tsx
+// src/Root.tsx
+import { Composition } from "remotion";
+import { StatTile } from "@/components/snap-cn/stat-tile";
+
+const ProofScene = () => (
+  <StatTile
+    layout="row"
+    counterMode="rolling"
+    stats={[
+      {
+        value: 12480,
+        label: "Active users",
+        delta: { value: "+23%", direction: "up" },
+      },
+      { value: "99.98", label: "Uptime", suffix: "%" },
+      { value: "4.9", label: "Avg rating" },
+    ]}
+  />
+);
+
+export const RemotionRoot = () => (
+  <Composition
+    id="StatTile"
+    component={ProofScene}
+    durationInFrames={150}
+    fps={30}
+    width={1280}
+    height={720}
+  />
+);
+```
+
+Each tile composes the [Counter](/docs/data/counter): numeric values count up with
+the chosen `counterMode`, while string values (`"99.98%"`, `"$199"`, `"4.9"`)
+reel in with the slot animation. Tiles fade up one after another, `stagger`
+frames apart, and each tile's counter starts on its own beat.
+
+## The stats string form
+
+`stats` also accepts a compact string — handy for quick edits and the
+customizer. Each stat is `value | label | delta` (delta optional); stats are
+separated by `;`. A delta starting with `-` points down, everything else up.
+Integer values (commas allowed) count up; anything with a decimal point or
+symbol plays as a slot reel.
+
+```tsx
+<StatTile stats="12,480 | Active users | +23%; 99.98% | Uptime; 4.9 | Avg rating" />
+```
+
+## Props
+
+<PropsTable
+  rows={[
+    {
+      name: "stats",
+      type: "StatItem[] | string",
+      default: "three-stat demo string",
+      description:
+        "Stats to show. StatItem: { value: number | string, label: string, prefix?, suffix?, delta?: { value: string, direction: \"up\" | \"down\" } }. Strings use the compact form above.",
+    },
+    {
+      name: "layout",
+      type: "\"single\" | \"row\"",
+      default: "\"single\"",
+      description:
+        "single — one large hero tile (best with a single stat); row — compact tiles side by side.",
+    },
+    {
+      name: "counterMode",
+      type: "\"rolling\" | \"odometer\" | \"slot\"",
+      default: "\"rolling\"",
+      description:
+        "Passed through to the composed Counter for numeric values. String values always use slot mode.",
+    },
+    {
+      name: "stagger",
+      type: "number",
+      default: "10",
+      description:
+        "Frames between neighbouring tiles starting their entrance and count.",
+    },
+    {
+      name: "theme",
+      type: "\"light\" | \"dark\"",
+      default: "\"light\"",
+      description:
+        "light — #FFFFFF cards on hairline #E4E7EC borders; dark — #141417 cards with #26272B borders.",
+    },
+    {
+      name: "valueFontSize",
+      type: "number",
+      default: "110 (single) / 72 (row)",
+      description: "Big-number size in pixels. Defaults per layout.",
+    },
+    {
+      name: "speed",
+      type: "number",
+      default: "1",
+      description: "Multiplier for animation speed",
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "Optional className passed to the outer wrapper",
+    },
+  ]}
+/>
+
+Tiles render on a transparent backdrop, so the row drops onto any scene
+background. The number uses tabular numerals with tight tracking; the label
+sits under it at 14px muted gray, with the delta chip beside it — success
+green pointing up, danger red pointing down.
+
+## Surprising-stat opener
+
+One oversized number as a cold-open hook:
+
+```tsx
+import { StatTile } from "@/components/snap-cn/stat-tile";
+
+<StatTile
+  layout="single"
+  counterMode="odometer"
+  stats={[
+    {
+      value: 1299000,
+      label: "Requests served daily",
+      delta: { value: "+41%", direction: "up" },
+    },
+  ]}
+/>
+```
+
+## Dark section
+
+```tsx
+import { StatTile } from "@/components/snap-cn/stat-tile";
+
+<StatTile
+  theme="dark"
+  layout="row"
+  stats="48 | Countries; 2,300 | Teams on Acme | +12%; $4.2M | Processed"
+/>
+```
