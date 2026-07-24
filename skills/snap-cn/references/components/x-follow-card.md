@@ -22,7 +22,7 @@ Lands at `components/snap-cn/x-follow-card.tsx`. Pulls `@snap-cn/cursor` automat
 | `avatarUrl` | `string` | `""` |
 | `coverUrl` | `string` | `""` |
 | `location` | `string` | `"Internet"` |
-| `website` | `string` | `"snap-cn.dev"` |
+| `website` | `string` | `"snapcn.dev"` |
 | `joined` | `string` | `"January 2024"` |
 | `verified` | `boolean` | `true` |
 | `accentColor` | `string` | `"#1d9bf0"` |

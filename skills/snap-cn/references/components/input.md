@@ -19,7 +19,7 @@ Lands at `components/snap-cn/input.tsx`. Pulls `@snap-cn/snap-cn-ui`, `@snap-cn/
 | `state` | `InputState` | `"idle"` |
 | `style` | `InputStyle` | — |
 | `placeholder` | `string` | `"you@example.com"` |
-| `value` | `string` | `"remotion@snap-cn.dev"` |
+| `value` | `string` | `"remotion@snapcn.dev"` |
 | `size` | `InputSize` | `"default"` |
 | `theme` | `Partial<SnapCnTheme>` | — |
 | `primary` | `string` | — |
