@@ -1,0 +1,119 @@
+---
+title: Moodboard Reveal
+description: A kinetic headline, a scattered photo gallery, a camera push from dark to light, landing on a hero image
+---
+
+<ComponentPreview name="moodboard-reveal" />
+
+## Installation
+
+<InstallBlock name="moodboard-reveal" />
+
+## Usage
+
+A four-beat, camera-drives-through montage:
+
+1. **Headline** — `<leadIn>` · an inline image that swaps · **`<emphasis>`** · `<tailIn>`, on a near-black dotted field.
+2. **Gallery** — the image cards fly in and scatter into a moodboard.
+3. **Push** — the camera dollies through the gallery (with motion blur) while the background lifts from near-black to off-white.
+4. **Hero** — it lands on a single image, held to the end, with thin wireframe markers drifting.
+
+Pass your own `images` (used for both the intro swap and the gallery) and a `heroImage`.
+Everything is frame-driven, so scrubbing and rendering are deterministic.
+
+```tsx
+// src/Root.tsx
+import { Composition, staticFile } from "remotion";
+import { MoodboardReveal } from "@/components/snap-cn/moodboard-reveal";
+
+const Reel = () => (
+  <MoodboardReveal
+    leadIn="that lets you"
+    emphasis="filter"
+    tailIn="out AI."
+    images={[
+      staticFile("showcase-assets/438b9e6b50654a44d404fbf358c26e9f.webp"),
+      staticFile("showcase-assets/821d815affa6496c39cbdeeec7a84603.jpg"),
+      // …up to 8 look best
+    ]}
+  />
+);
+
+export const RemotionRoot = () => (
+  <Composition
+    id="MoodboardReveal"
+    component={Reel}
+    durationInFrames={150}
+    fps={30}
+    width={1280}
+    height={720}
+  />
+);
+```
+
+Images take a root-relative `/…` path (served by Next in the Player, rewritten through
+`staticFile()` in a render) or an `http(s)`/data URL. Eight portrait images fill the
+gallery cleanly; fewer are tiled across the slots.
+
+This is a slow camera scale over the whole gallery, which a live `<Player>` mispaces on
+a high-refresh display — so the docs preview plays the **rendered mp4**. Re-render after
+any change: `pnpm run render:previews --only moodboard-reveal`.
+
+## Props
+
+<PropsTable
+  rows={[
+    {
+      name: "leadIn",
+      type: "string",
+      default: "\"that lets you\"",
+      description: "Text before the inline swapping image",
+    },
+    {
+      name: "emphasis",
+      type: "string",
+      default: "\"filter\"",
+      description: "The bold word right after the inline image",
+    },
+    {
+      name: "tailIn",
+      type: "string",
+      default: "\"out AI.\"",
+      description: "Text after the emphasised word",
+    },
+    {
+      name: "images",
+      type: "string[]",
+      description:
+        "Image URLs for the intro swap and the gallery. Defaults to the showcase assets",
+    },
+    {
+      name: "heroImage",
+      type: "string",
+      description: "The image the montage lands on. Defaults to images[3]",
+    },
+    {
+      name: "darkColor",
+      type: "string",
+      default: "\"#0A0A0A\"",
+      description: "Near-black starting background",
+    },
+    {
+      name: "lightColor",
+      type: "string",
+      default: "\"#E7E7E7\"",
+      description: "Off-white ending background",
+    },
+    {
+      name: "speed",
+      type: "number",
+      default: "1",
+      description: "Global playback multiplier applied to the whole sequence",
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "Optional className passed to the outer wrapper",
+    },
+  ]}
+/>

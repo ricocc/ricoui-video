@@ -1,0 +1,11 @@
+{
+  "title": "Scenes",
+  "collapsible": false,
+  "pages": [
+    "index",
+    "hero-launch",
+    "orbit-gallery",
+    "moodboard-reveal",
+    "pricing-card"
+  ]
+}

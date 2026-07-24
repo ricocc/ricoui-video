@@ -1,0 +1,208 @@
+---
+title: Pricing Card
+description: Animated pricing tiers for the offer beat — prices count in on a tabular reel while features check off with a stagger
+---
+
+<ComponentPreview name="pricing-card" />
+
+## Installation
+
+<InstallBlock name="pricing-card" />
+
+## Usage
+
+Drop it in as the differentiator/offer scene: cards fade up one by one, each
+price counts in on the composed `Counter` reel, and feature rows check off
+with a stagger. The popular tier gets a 1px accent border, an accent tint and
+a "Most popular" badge. Everything derives from the current frame, so
+scrubbing and rendering stay deterministic.
+
+```tsx
+// src/Root.tsx
+import { Composition } from "remotion";
+import { PricingCard } from "@/components/snap-cn/pricing-card";
+
+const OfferScene = () => (
+  <PricingCard
+    tiers={[
+      {
+        name: "Starter",
+        price: 0,
+        period: "/mo",
+        features: ["3 projects", "Community support", "Basic analytics"],
+      },
+      {
+        name: "Pro",
+        price: 29,
+        period: "/mo",
+        features: [
+          "Unlimited projects",
+          "Priority support",
+          "Advanced analytics",
+          "Team seats",
+        ],
+        popular: true,
+      },
+      {
+        name: "Scale",
+        price: 99,
+        period: "/mo",
+        features: [
+          "Everything in Pro",
+          "SSO & SCIM",
+          "Dedicated success manager",
+          "Custom SLA",
+        ],
+      },
+    ]}
+    layout="row"
+  />
+);
+
+export const RemotionRoot = () => (
+  <Composition
+    id="PricingCard"
+    component={OfferScene}
+    durationInFrames={180}
+    fps={30}
+    width={1280}
+    height={720}
+  />
+);
+```
+
+### Compact string form
+
+`tiers` also accepts a compact string — handy for quick edits and the site
+customizer. Each tier is `name | price | period | features | popular`
+(features comma-separated, tiers separated by `;`). A non-empty 5th field
+marks the popular tier: the keyword `popular` keeps the default badge, any
+other text becomes the badge.
+
+```tsx
+<PricingCard tiers="Starter | 0 | /mo | 3 projects, Community support; Pro | 29 | /mo | Unlimited projects, Team seats | popular; Scale | 99 | /mo | Everything in Pro, Custom SLA" />
+```
+
+### Single hero card
+
+`layout="single"` shows just the popular tier (or the first, when none is
+marked) as one larger centered card — for a beat that spotlights the offer.
+
+```tsx
+<PricingCard layout="single" />
+```
+
+## Layouts
+
+- `row` — all tiers side by side, entering left to right with `cardStagger`.
+- `single` — one hero card: the popular tier if any, otherwise the first.
+
+## Props
+
+<PropsTable
+  rows={[
+    {
+      name: "tiers",
+      type: "PricingTier[] | string",
+      default: "Starter / Pro / Scale demo",
+      description:
+        "Tiers as an array of { name, price, period, features, popular?, badge? }, or the compact \"name | price | period | features | popular\" string form",
+    },
+    {
+      name: "priceCountIn",
+      type: "boolean",
+      default: "true",
+      description:
+        "Count each price up from 0 with the composed Counter reel; off renders the price statically",
+    },
+    {
+      name: "featureStagger",
+      type: "number",
+      default: "6",
+      description: "Frames between consecutive feature rows entering",
+    },
+    {
+      name: "cardStagger",
+      type: "number",
+      default: "8",
+      description: "Frames between neighbouring cards starting their entrance",
+    },
+    {
+      name: "layout",
+      type: "\"single\" | \"row\"",
+      default: "\"row\"",
+      description:
+        "row shows every tier side by side; single shows one hero card (the popular tier)",
+    },
+    {
+      name: "theme",
+      type: "\"light\" | \"dark\"",
+      default: "\"light\"",
+      description:
+        "light — #FFFFFF cards on hairline #E4E7EC borders; dark — #141417 cards on #26272B",
+    },
+    {
+      name: "accentColor",
+      type: "string",
+      default: "\"#266DF0\"",
+      description:
+        "Accent for the popular border, badge, surface tint and feature checks",
+    },
+    {
+      name: "currency",
+      type: "string",
+      default: "\"$\"",
+      description: "Static currency symbol rendered before the price reel",
+    },
+    {
+      name: "speed",
+      type: "number",
+      default: "1",
+      description: "Global playback speed multiplier",
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "Optional className passed to the root container",
+    },
+  ]}
+/>
+
+### PricingTier
+
+<PropsTable
+  rows={[
+    {
+      name: "name",
+      type: "string",
+      description: "Plan name, e.g. \"Pro\"",
+    },
+    {
+      name: "price",
+      type: "number",
+      description: "Numeric price — counts in when priceCountIn is on",
+    },
+    {
+      name: "period",
+      type: "string",
+      description: "Billing period rendered after the price, e.g. \"/mo\"",
+    },
+    {
+      name: "features",
+      type: "string[]",
+      description: "Feature bullets rendered with accent checks",
+    },
+    {
+      name: "popular",
+      type: "boolean",
+      description:
+        "Marks the tier as the offer: accent border, badge and surface tint",
+    },
+    {
+      name: "badge",
+      type: "string",
+      default: "\"Most popular\"",
+      description: "Badge text for the popular tier",
+    },
+  ]}
+/>
