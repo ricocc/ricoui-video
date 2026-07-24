@@ -1,0 +1,107 @@
+---
+title: Logo Assemble
+description: A scatter of cards collapses into a brand card that is born tilted and settles — revealing the logo and brand name
+---
+
+<ComponentPreview name="logo-assemble" />
+
+## Installation
+
+<InstallBlock name="logo-assemble" />
+
+## Usage
+
+A logo build in three beats:
+
+1. **Orbit** — a single ring of image cards revolves around the centre, holding a line of `middleText` in the clear middle.
+2. **Collapse** — the ring spins inward and drains to the centre, the cards vanishing.
+3. **Reveal** — a simple, monochrome logo is born at the centre, then slides left, and the brand name reveals to its right.
+
+Pass your `logoSrc` (kept simple/monochrome), your `brandName`, the `middleText`, and the
+`images` that ride the ring. Everything is frame-driven, so scrubbing and rendering are
+deterministic.
+
+```tsx
+// src/Root.tsx
+import { Composition, staticFile } from "remotion";
+import { LogoAssemble } from "@/components/snap-cn/logo-assemble";
+
+const Sting = () => (
+  <LogoAssemble
+    logoSrc={staticFile("logo/snapcn-white.png")}
+    brandName="snap-cn"
+    middleText={"Cinematic components\nfor React"}
+  />
+);
+
+export const RemotionRoot = () => (
+  <Composition
+    id="LogoAssemble"
+    component={Sting}
+    durationInFrames={108}
+    fps={30}
+    width={1280}
+    height={720}
+  />
+);
+```
+
+Assets take a root-relative `/…` path (served by Next in the Player, rewritten through
+`staticFile()` in a render) or an `http(s)`/data URL.
+
+This is a fast collapse and a scale-on-imagery landing, which a live `<Player>` mispaces on a
+high-refresh display — so the docs preview plays the **rendered mp4**. Re-render after any change:
+`pnpm run render:previews --only logo-assemble`.
+
+## Props
+
+<PropsTable
+  rows={[
+    {
+      name: "logoSrc",
+      type: "string",
+      default: "\"/logo/snapcn-white.png\"",
+      description: "The logo mark, kept simple/monochrome on the dark backdrop",
+    },
+    {
+      name: "brandName",
+      type: "string",
+      default: "\"snap-cn\"",
+      description: "Brand name that reveals to the right of the settled logo",
+    },
+    {
+      name: "middleText",
+      type: "string",
+      default: "\"Cinematic components\\nfor React\"",
+      description: "Text held in the middle of the ring while the images revolve (\\n for line breaks)",
+    },
+    {
+      name: "images",
+      type: "string[]",
+      description: "Image URLs for the ring, cycled around the circle. Defaults to the showcase assets",
+    },
+    {
+      name: "count",
+      type: "number",
+      default: "10",
+      description: "How many image cards ride the ring",
+    },
+    {
+      name: "background",
+      type: "string",
+      default: "\"#050505\"",
+      description: "Backdrop color behind the ring",
+    },
+    {
+      name: "speed",
+      type: "number",
+      default: "1",
+      description: "Global playback multiplier applied to the whole sequence",
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "Optional className passed to the outer wrapper",
+    },
+  ]}
+/>

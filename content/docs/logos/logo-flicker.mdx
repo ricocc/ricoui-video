@@ -1,0 +1,103 @@
+---
+title: Logo Flicker
+description: Images flip across the screen very fast, the flicker decelerates and fades, and the logo and brand name resolve
+---
+
+<ComponentPreview name="logo-flicker" />
+
+## Installation
+
+<InstallBlock name="logo-flicker" />
+
+## Usage
+
+A Marvel-Studios-style flicker reveal:
+
+1. **Flicker** — the `images` flip **full-screen** at a **constant** fast rate (one image per `flipInterval` frames), right to the end — no slow-down.
+2. **Cross-fade** — the flicker fades **out** while the logo and brand name fade **in**, on the exact same window — one move, not one after the other.
+
+Pass your `logoSrc` (simple/monochrome) and `brandName`, and the `images` the flicker flips
+through. Everything is frame-driven, so scrubbing and rendering are deterministic.
+
+```tsx
+// src/Root.tsx
+import { Composition, staticFile } from "remotion";
+import { LogoFlicker } from "@/components/snap-cn/logo-flicker";
+
+const Sting = () => (
+  <LogoFlicker
+    logoSrc={staticFile("logo/snapcn-white.png")}
+    brandName="snap-cn"
+    images={[
+      staticFile("showcase-assets/438b9e6b50654a44d404fbf358c26e9f.webp"),
+      staticFile("showcase-assets/821d815affa6496c39cbdeeec7a84603.jpg"),
+      // …a handful reads best
+    ]}
+  />
+);
+
+export const RemotionRoot = () => (
+  <Composition
+    id="LogoFlicker"
+    component={Sting}
+    durationInFrames={100}
+    fps={30}
+    width={1280}
+    height={720}
+  />
+);
+```
+
+The flicker swaps the full-screen image every couple of frames, which a live `<Player>` shows as
+harsh flashing before the browser has the images cached — so the docs preview plays the
+**rendered mp4**. Re-render after any change: `pnpm run render:previews --only logo-flicker`.
+
+Note: this is a fast full-screen image strobe. Raise `flipInterval` (slower flips) if you need it
+gentler for photosensitivity.
+
+## Props
+
+<PropsTable
+  rows={[
+    {
+      name: "logoSrc",
+      type: "string",
+      default: "\"/logo/snapcn-white.png\"",
+      description: "The logo mark, simple/monochrome, that resolves on the dark backdrop",
+    },
+    {
+      name: "brandName",
+      type: "string",
+      default: "\"snap-cn\"",
+      description: "Brand name shown under the logo",
+    },
+    {
+      name: "images",
+      type: "string[]",
+      description: "The image pool the flicker flips through full-screen. Defaults to the showcase assets",
+    },
+    {
+      name: "flipInterval",
+      type: "number",
+      default: "2",
+      description: "Frames each image holds — the (constant) flip speed. Larger = slower/gentler",
+    },
+    {
+      name: "background",
+      type: "string",
+      default: "\"#050505\"",
+      description: "Backdrop color",
+    },
+    {
+      name: "speed",
+      type: "number",
+      default: "1",
+      description: "Global playback multiplier applied to the whole sequence",
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "Optional className passed to the outer wrapper",
+    },
+  ]}
+/>
