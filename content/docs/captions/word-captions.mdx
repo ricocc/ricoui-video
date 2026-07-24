@@ -1,0 +1,282 @@
+---
+title: Word Captions
+description: TikTok-style word-by-word burned-in captions from a timed transcript
+---
+
+<ComponentPreview name="word-captions" />
+
+## Installation
+
+<InstallBlock name="word-captions" />
+
+## Usage
+
+Feed it a timed transcript — one `{ text, startFrame, endFrame? }` per word, e.g.
+mapped from Whisper word timestamps — and it burns captions into the frame: the
+current beat sits in a rounded backdrop pill inside the safe area of your aspect,
+and each word pops the moment it is spoken. The component has a transparent
+background, so overlay it on your screen recording or any scene.
+
+```tsx
+// src/Root.tsx
+import { AbsoluteFill, Composition, OffthreadVideo, staticFile } from "remotion";
+import { WordCaptions } from "@/components/snap-cn/word-captions";
+
+const CaptionedClip = () => (
+  <AbsoluteFill>
+    <OffthreadVideo src={staticFile("screen-recording.mp4")} />
+    <WordCaptions
+      words={[
+        { text: "Stop", startFrame: 0 },
+        { text: "losing", startFrame: 14 },
+        { text: "hours", startFrame: 28 },
+        { text: "to", startFrame: 42 },
+        { text: "manual", startFrame: 56 },
+        { text: "invoices", startFrame: 70, endFrame: 84 },
+      ]}
+      aspect="9:16"
+      activeStyle="pop"
+    />
+  </AbsoluteFill>
+);
+
+export const RemotionRoot = () => (
+  <Composition
+    id="WordCaptions"
+    component={CaptionedClip}
+    durationInFrames={96}
+    fps={30}
+    width={1080}
+    height={1920}
+  />
+);
+```
+
+A word's `endFrame` defaults to the next word's `startFrame`, so contiguous
+transcripts only need start times. For quick drafts you can also pass `words` as a
+plain string — it is split on whitespace and paced evenly at `framesPerWord`.
+Set `groupSize={2}` or `{3}` to show short phrases per beat instead of single words.
+
+## Active-word styles
+
+- `pop` — the spoken word scales to 1.06 with a fast 6-frame high-damping spring (no bounce).
+- `highlight` — the spoken word gets a rounded accent-colored chip behind it (CapCut-style).
+- `color` — the spoken word's text switches to the accent color; the rest stays white.
+
+## Aspect presets
+
+- `9:16` — captions ride 20% up from the bottom, clear of feed UI (like/comment/share chrome).
+- `1:1` — captions sit 11% up from the bottom edge.
+- `16:9` — classic lower-third placement, 8% up from the bottom.
+
+
+
+## Using a real transcript
+
+This is the part that matters. Nobody has frame numbers — you have a transcript, and
+it is in **milliseconds**. Whisper, whisper.cpp, CapCut, Submagic, Opus Clip, Descript
+and Remotion's own `@remotion/captions` all speak the same shape:
+
+```ts
+type Caption = { text: string; startMs: number; endMs: number };
+```
+
+So that is what this takes. Drop your Whisper output straight in:
+
+```tsx
+import { WordCaptions } from "@/components/snap-cn/word-captions";
+
+// whatever your transcription tool gave you — word level or phrase level
+const captions = [
+  { text: "You",     startMs: 1000, endMs: 1180 },
+  { text: "are",     startMs: 1180, endMs: 1320 },
+  { text: "losing",  startMs: 1320, endMs: 1700 },
+  { text: "three",   startMs: 1700, endMs: 2050 },
+  { text: "hours",   startMs: 2050, endMs: 2400 },
+];
+
+<WordCaptions captions={captions} preset="youtube" />;
+```
+
+Or paste an `.srt` in as-is — cues get split into words for you, so the active-word
+highlight still tracks:
+
+```tsx
+<WordCaptions srt={srtFileContents} preset="youtube" />
+```
+
+The frame maths is the component's problem, not yours: milliseconds are converted
+against `useVideoConfig().fps`, so the same transcript is correct at 24, 30 or 60fps.
+
+### Pages, not chunks
+
+Captions are grouped into **pages** the way real caption tools group them — by the
+shape of the speech. A page ends when it runs out of words, runs out of its character
+budget, or **the speaker pauses** (`pageBreakMs`). Chopping every N words regardless
+is how you end up with `STOP / LOSING / HOURS` stacked in a tower: three words that
+never belonged on a page together.
+
+`maxWords`, `maxChars` and `pageBreakMs` override the preset if you need to.
+
+## What actually makes a caption look premium
+
+Three things, and the first one is most of it.
+
+### 1. An OUTSIDE outline
+
+A caption has to stay legible over footage it has never seen — a face, a sky, a white
+desk. A heavy black outline is the only thing that does that, and it has to sit
+*outside* the letterform.
+
+`-webkit-text-stroke` **centres** the stroke on the glyph outline, so half of it eats
+inwards and the letters go thin and mushy. Measured on Montserrat 900 at 160px with a
+14px stroke:
+
+| | white stem |
+| --- | --- |
+| no stroke | 38px |
+| `-webkit-text-stroke` alone | **22px** — the stroke eats 42% of the letterform |
+| `+ paint-order: stroke fill` | **38px** — identical to no stroke |
+
+```tsx
+WebkitTextStrokeWidth: `${stroke}px`,
+WebkitTextStrokeColor: "#000",
+paintOrder: "stroke fill",   // draw the stroke, THEN the fill over it
+```
+
+That one line is most of the difference between a caption and a cheap caption.
+
+### 2. Weight and size
+
+Montserrat 800–900, at **11–13% of the frame's short side**. Not Inter at 700, and not
+2.8% of the height — that is a subtitle. Load the face through `@remotion/google-fonts`
+so the Player, the mp4 and your own project all get the same one.
+
+### 3. The spoken word lands
+
+A spring with overshoot, not an ease. And that scale is a scale **on text**, which is
+where captions usually fall apart: a browser gives glyph origins no vertical sub-pixel
+precision, so a scale that moves the baseline makes the word climb the pixel grid in
+whole-pixel jumps. The pop pivots on the **measured baseline** — verified on rendered
+frames, the baseline holds to **0px** while the word scales 1.16×, so it grows upward
+off its baseline exactly like real caption type.
+
+## Props
+
+<PropsTable
+  rows={[
+    {
+      name: "preset",
+      type: '"boxed" | "youtube" | "beast" | "hormozi" | "pop" | "clean"',
+      default: '"boxed"',
+      description:
+        "boxed (default): the YouTube auto-caption — white Roboto on a solid per-line black box, no outline. beast: ALL CAPS Montserrat Black, heavy outline, spoken word snaps to yellow. hormozi: the spoken word lands on a filled accent block. pop: sentence case, outlined. clean: a quiet pill",
+    },
+    {
+      name: "strokeRatio",
+      type: "number",
+      description:
+        "Outline width as a fraction of the font size. Defaults per preset. This is what keeps a caption legible over any footage — 0 turns it off",
+    },
+    {
+      name: "strokeColor",
+      type: "string",
+      default: '"#000000"',
+      description: "Outline colour",
+    },
+    {
+      name: "uppercase",
+      type: "boolean",
+      description: "Force upper case. Defaults per preset — the loud ones shout",
+    },
+    {
+      name: "accentCycle",
+      type: "string[]",
+      description:
+        "Accent set the hormozi block cycles through, one colour per beat",
+    },
+    {
+      name: "words",
+      type: "{ text: string; startFrame: number; endFrame?: number }[] | string",
+      default: "\"Stop losing hours to manual invoices\"",
+      description:
+        "Timed transcript. A missing endFrame defaults to the next word's startFrame (the last word holds for framesPerWord). A plain string is split on whitespace and paced evenly at framesPerWord",
+    },
+    {
+      name: "groupSize",
+      type: "number",
+      default: "1",
+      description: "Tokens shown per caption beat, clamped to 1–3",
+    },
+    {
+      name: "activeStyle",
+      type: "\"pop\" | \"highlight\" | \"color\"",
+      default: "\"pop\"",
+      description:
+        "How the currently-spoken word is emphasized: scale pop, accent chip, or accent text color",
+    },
+    {
+      name: "aspect",
+      type: "\"16:9\" | \"1:1\" | \"9:16\"",
+      default: "\"9:16\"",
+      description:
+        "Safe-area position preset — controls how far the caption block sits above the bottom edge",
+    },
+    {
+      name: "maxWidth",
+      type: "number",
+      default: "800",
+      description:
+        "Max width of the caption block in px; longer beats wrap and stay centered",
+    },
+    {
+      name: "fontSize",
+      type: "number",
+      default: "54",
+      description: "Caption font size in pixels",
+    },
+    {
+      name: "textColor",
+      type: "string",
+      default: "\"#FFFFFF\"",
+      description: "Caption text color",
+    },
+    {
+      name: "pillColor",
+      type: "string",
+      default: "\"rgba(16,24,40,0.55)\"",
+      description:
+        "Backdrop pill behind the caption line (rounded 8px). Any CSS color; empty string removes the pill",
+    },
+    {
+      name: "accentColor",
+      type: "string",
+      default: "\"#266DF0\"",
+      description: "Active-word accent used by the highlight and color styles",
+    },
+    {
+      name: "framesPerWord",
+      type: "number",
+      default: "14",
+      description:
+        "Even pacing used when words is a plain string; also the hold time of the final word",
+    },
+    {
+      name: "fontWeight",
+      type: "number",
+      default: "700",
+      description: "CSS font-weight of the caption text",
+    },
+    {
+      name: "speed",
+      type: "number",
+      default: "1",
+      description: "Global playback multiplier applied to the whole transcript",
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "Optional className passed to the outer wrapper",
+    },
+  ]}
+/>

@@ -1,0 +1,264 @@
+---
+title: Karaoke Captions
+description: Full-line captions with a progressive fill sweep across the spoken words and accent-colored keyword emphasis
+---
+
+<ComponentPreview name="karaoke-captions" />
+
+## Installation
+
+<InstallBlock name="karaoke-captions" />
+
+## Usage
+
+The whole line stays on screen while a color fill sweeps left-to-right across the
+words to indicate speech progress — muted `#667085` ramps to ink `#101828` in the
+light theme, and a translucent-white ramp resolves to `#FAFAFA` in the dark theme.
+Emphasized words fill in the accent color and scale up subtly. Everything is driven
+by the current frame, so scrubbing and rendering are fully deterministic.
+
+```tsx
+// src/Root.tsx
+import { Composition } from "remotion";
+import { KaraokeCaptions } from "@/components/snap-cn/karaoke-captions";
+
+const CaptionScene = () => (
+  <KaraokeCaptions
+    lines={[
+      {
+        text: "Acme reconciles every transaction automatically",
+        startFrame: 10,
+        endFrame: 120,
+        emphasize: [4], // "automatically" in accent blue
+      },
+    ]}
+    theme="light"
+    aspect="landscape"
+    pill
+  />
+);
+
+export const RemotionRoot = () => (
+  <Composition
+    id="KaraokeCaptions"
+    component={CaptionScene}
+    durationInFrames={150}
+    fps={30}
+    width={1280}
+    height={720}
+  />
+);
+```
+
+Without `lines`, the component builds a single demo line from `text` and
+`emphasize`. For word-accurate karaoke timing (e.g. from a transcription API),
+pass `wordTimings` — the absolute frame each word starts filling; a word's fill
+ends when the next word begins, and the last word runs to `endFrame`:
+
+```tsx
+<KaraokeCaptions
+  lines={[
+    {
+      text: "Acme reconciles every transaction automatically",
+      startFrame: 10,
+      endFrame: 120,
+      wordTimings: [10, 28, 52, 68, 92],
+      emphasize: [4],
+    },
+  ]}
+/>
+```
+
+The component renders with a transparent canvas (plus the optional pill surface),
+so place it over any footage or backdrop. Unlike word-by-word caption styles, the
+full line is always visible — the fill is what indicates progress.
+
+### Safe-area presets
+
+The `aspect` prop positions the caption block clear of platform UI:
+
+- `landscape` — 16:9 videos; sits 8% from the bottom with 10% side margins.
+- `portrait` — 9:16 (TikTok / Reels / Shorts); raised to 18% from the bottom to clear platform chrome, 7% side margins.
+- `square` — 1:1 feeds; 10% from the bottom, 8% side margins.
+
+
+
+## Using a real transcript
+
+Nobody has frame numbers. Your transcript is in **milliseconds** — the shape Whisper,
+CapCut and Remotion's own `@remotion/captions` all speak:
+
+```tsx
+<KaraokeCaptions
+  captions={[
+    { text: "Acme",        startMs: 1000, endMs: 1400 },
+    { text: "reconciles",  startMs: 1400, endMs: 2000 },
+    { text: "every",       startMs: 2000, endMs: 2300 },
+    { text: "transaction", startMs: 2300, endMs: 3000 },
+  ]}
+  preset="karaoke"
+/>
+```
+
+or paste an `.srt` straight in with `srt={...}`. Word-level output is collapsed into
+LINES (consecutive words become one line, a pause starts a new one) — which is exactly
+how a caption tool builds a line. Milliseconds are converted against
+`useVideoConfig().fps`, so one transcript is correct at any frame rate.
+
+## What actually makes a caption look premium
+
+Three things, and the first one is most of it.
+
+### 1. An OUTSIDE outline
+
+A caption has to stay legible over footage it has never seen — a face, a sky, a white
+desk. A heavy black outline is the only thing that does that, and it has to sit
+*outside* the letterform.
+
+`-webkit-text-stroke` **centres** the stroke on the glyph outline, so half of it eats
+inwards and the letters go thin and mushy. Measured on Montserrat 900 at 160px with a
+14px stroke:
+
+| | white stem |
+| --- | --- |
+| no stroke | 38px |
+| `-webkit-text-stroke` alone | **22px** — the stroke eats 42% of the letterform |
+| `+ paint-order: stroke fill` | **38px** — identical to no stroke |
+
+```tsx
+WebkitTextStrokeWidth: `${stroke}px`,
+WebkitTextStrokeColor: "#000",
+paintOrder: "stroke fill",   // draw the stroke, THEN the fill over it
+```
+
+That one line is most of the difference between a caption and a cheap caption.
+
+### 2. Weight and size
+
+Montserrat 800–900, at **11–13% of the frame's short side**. Not Inter at 700, and not
+2.8% of the height — that is a subtitle. Load the face through `@remotion/google-fonts`
+so the Player, the mp4 and your own project all get the same one.
+
+### 3. The spoken word lands
+
+A spring with overshoot, not an ease. And that scale is a scale **on text**, which is
+where captions usually fall apart: a browser gives glyph origins no vertical sub-pixel
+precision, so a scale that moves the baseline makes the word climb the pixel grid in
+whole-pixel jumps. The pop pivots on the **measured baseline** — verified on rendered
+frames, the baseline holds to **0px** while the word scales 1.16×, so it grows upward
+off its baseline exactly like real caption type.
+
+## Props
+
+<PropsTable
+  rows={[
+    {
+      name: "preset",
+      type: '"boxed" | "karaoke" | "highlight" | "clean"',
+      default: '"boxed"',
+      description:
+        "boxed (default): the YouTube auto-caption — white Roboto on a solid per-line black box, no outline. karaoke: heavy outlined line, each word snapping from dimmed to full white as it is spoken. highlight: the spoken word rides a rounded accent bar. clean: the quiet pill, no outline",
+    },
+    {
+      name: "strokeRatio",
+      type: "number",
+      description:
+        "Outline width as a fraction of the font size. Defaults per preset. 0 turns it off",
+    },
+    {
+      name: "strokeColor",
+      type: "string",
+      default: '"#000000"',
+      description: "Outline colour",
+    },
+    {
+      name: "uppercase",
+      type: "boolean",
+      description: "Force upper case. Defaults per preset",
+    },
+    {
+      name: "lines",
+      type: "CaptionLine[]",
+      description:
+        "Timed lines: { text, startFrame, endFrame, wordTimings?: number[], emphasize?: number[] }. Omit to build a single line from text",
+    },
+    {
+      name: "text",
+      type: "string",
+      default: "\"Acme reconciles every transaction automatically\"",
+      description: "Convenience single line used when lines is not provided",
+    },
+    {
+      name: "emphasize",
+      type: "string",
+      default: "\"automatically\"",
+      description:
+        "Comma-separated words of text to emphasize (case-insensitive, punctuation ignored). Only used with the text fallback",
+    },
+    {
+      name: "theme",
+      type: "\"light\" | \"dark\"",
+      default: "\"light\"",
+      description:
+        "Sweep palette and pill surface: light fills #667085 → #101828, dark fills a translucent-white ramp → #FAFAFA",
+    },
+    {
+      name: "accentColor",
+      type: "string",
+      default: "\"#266DF0\"",
+      description: "Fill color of emphasized words",
+    },
+    {
+      name: "fontSize",
+      type: "number",
+      default: "48",
+      description: "Font size in pixels",
+    },
+    {
+      name: "fontWeight",
+      type: "number",
+      default: "600",
+      description: "CSS font-weight",
+    },
+    {
+      name: "aspect",
+      type: "\"landscape\" | \"portrait\" | \"square\"",
+      default: "\"landscape\"",
+      description: "Safe-area preset positioning the caption block",
+    },
+    {
+      name: "pill",
+      type: "boolean",
+      default: "true",
+      description: "Rounded surface behind the line with a hairline border",
+    },
+    {
+      name: "emphasisScale",
+      type: "number",
+      default: "1.04",
+      description:
+        "Scale emphasized words grow to as their fill completes (ease-out, no bounce)",
+    },
+    {
+      name: "baseColor",
+      type: "string",
+      description: "Unfilled (not-yet-spoken) word color override",
+    },
+    {
+      name: "fillColor",
+      type: "string",
+      description: "Filled (spoken) word color override",
+    },
+    {
+      name: "speed",
+      type: "number",
+      default: "1",
+      description: "Global playback multiplier",
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "Optional className passed to the outer wrapper",
+    },
+  ]}
+/>
