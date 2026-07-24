@@ -1,0 +1,156 @@
+import { ChevronDown } from "lucide-react";
+import type { Metadata } from "next";
+import { Suspense } from "react";
+import { getDocBodies } from "@/components/docs/gallery/doc-bodies";
+import { GalleryCard } from "@/components/docs/gallery/gallery-card";
+import { GalleryExplorer } from "@/components/docs/gallery/gallery-explorer";
+import { GalleryFrame } from "@/components/docs/gallery/gallery-frame";
+import { GalleryHeaderRow } from "@/components/docs/gallery/gallery-header-row";
+import { GALLERY_CATEGORIES, GALLERY_ITEMS } from "@/lib/gallery-data";
+import { formatUpdatedAt, getGitHubUpdatedAt } from "@/lib/github";
+
+const SITE_URL = "https://snap-cn.dev";
+const TITLE = "Components";
+const DESCRIPTION = "Every component in snap-cn, grouped by category";
+
+export const metadata: Metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: "/docs/components" },
+  openGraph: {
+    type: "article",
+    url: "/docs/components",
+    title: TITLE,
+    description: DESCRIPTION,
+    siteName: "snap-cn",
+    images: [{ url: "/og/components", width: 1200, height: 630, alt: TITLE }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
+    images: ["/og/components"],
+  },
+};
+
+// The card faces carry no visible text (name/description live in aria-labels),
+// so an ItemList keeps every component name + URL machine-readable on this URL,
+// alongside the TechArticle + breadcrumb graph the catch-all used to emit.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      headline: TITLE,
+      description: DESCRIPTION,
+      url: `${SITE_URL}/docs/components`,
+      image: `${SITE_URL}/og/components`,
+      author: {
+        "@type": "Person",
+        name: "Sri Nath",
+        url: "https://x.com/SriNath693",
+      },
+      publisher: { "@type": "Organization", name: "snap-cn", url: SITE_URL },
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Docs",
+          item: `${SITE_URL}/docs`,
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: TITLE,
+          item: `${SITE_URL}/docs/components`,
+        },
+      ],
+    },
+    {
+      "@type": "ItemList",
+      itemListElement: GALLERY_ITEMS.map((item, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: item.name,
+        url: `${SITE_URL}${item.href}`,
+      })),
+    },
+  ],
+};
+
+export default async function ComponentsGalleryPage() {
+  const meta =
+    formatUpdatedAt(await getGitHubUpdatedAt()) ??
+    "MIT licensed · own your code";
+
+  // Full documentation for every component, rendered on the server and handed to
+  // the client overlay — no component has a standalone docs page anymore; the
+  // docs are read inline here.
+  const docBodies = getDocBodies();
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: static JSON-LD built from gallery data
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <GalleryFrame>
+        <GalleryHeaderRow meta={meta} />
+        <div className="pb-24">
+          {/* GalleryExplorer reads the filter/sort/item from the URL via nuqs
+              (useSearchParams), which requires a Suspense boundary on this
+              statically-rendered page. The fallback is the default "All"
+              masonry, so every card anchor is present in the prerendered HTML
+              (SEO) and there's no flash before hydration. */}
+          <Suspense fallback={<GalleryGridFallback />}>
+            <GalleryExplorer docBodies={docBodies} />
+          </Suspense>
+        </div>
+      </GalleryFrame>
+    </>
+  );
+}
+
+/**
+ * Server-rendered default view (All · Curated) shown while the interactive
+ * explorer hydrates. Its pills/sort are static, non-interactive placeholders;
+ * the grid is the full component set in curated order so the initial HTML
+ * carries all {@link GALLERY_ITEMS.length} card links. Structure mirrors the
+ * explorer's sticky toolbar so hydration causes no layout shift.
+ */
+function GalleryGridFallback() {
+  return (
+    <div className="not-prose">
+      <div className="sticky top-0 z-30 -mx-6 border-b border-border bg-background/90 px-6 py-3 backdrop-blur lg:-mx-8 lg:px-8">
+        <div className="flex items-center gap-2">
+          <div className="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto">
+            <span className="shrink-0 rounded-full bg-foreground px-3.5 py-1.5 text-sm font-medium text-background">
+              All
+            </span>
+            {GALLERY_CATEGORIES.map((c) => (
+              <span
+                key={c.id}
+                className="shrink-0 rounded-full bg-gallery-card px-3.5 py-1.5 text-sm font-medium text-foreground/70"
+              >
+                {c.label}
+              </span>
+            ))}
+          </div>
+          <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-border bg-background px-3.5 py-1.5 text-sm font-medium text-foreground/80">
+            Curated
+            <ChevronDown className="size-4" />
+          </span>
+        </div>
+      </div>
+      <div className="mt-6 columns-1 gap-5 sm:columns-2 xl:columns-3 min-[100rem]:columns-4">
+        {GALLERY_ITEMS.map((item) => (
+          <GalleryCard key={item.href} item={item} />
+        ))}
+      </div>
+    </div>
+  );
+}
