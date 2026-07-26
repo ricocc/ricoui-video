@@ -544,7 +544,7 @@ export function WordCaptions({
   pageBreakMs = 420,
   groupSize,
   activeStyle = "pop",
-  aspect = "9:16",
+  aspect = "16:9",
   maxWidth,
   fontSize,
   textColor = "#FFFFFF",

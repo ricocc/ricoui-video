@@ -74,8 +74,82 @@ function Token({ color, children }: { color: string; children: ReactNode }) {
 }
 
 /**
- * A syntax-highlighted editor card showing the `TextReveal` usage snippet —
- * the component the get-started card tells you to install.
+ * Just enough TSX tokeniser to colour a marketing snippet.
+ *
+ * Order in the alternation is the whole trick: comments and strings come first,
+ * so a keyword inside either is already swallowed by the time the keyword branch
+ * is tried. Capitalised identifiers are typed wholesale, which is why `<` and
+ * `/>` fall through to punctuation and come out right without a JSX branch.
+ *
+ * ponytail: one regex, no parser. It cannot tell a JSX prop from an object key
+ * and does not try. If these ever need to be real editors, delete it and hand
+ * the string to shiki — the `code` prop is already the right shape for that.
+ */
+const TOKENS =
+  /(\/\/[^\n]*)|("(?:[^"\\]|\\.)*"|`(?:[^`\\]|\\.)*`)|\b(import|from|export|default|function|return|const|let|new|await|async)\b|\b(true|false|null|undefined)\b|\b(\d+(?:\.\d+)?)\b|\b([A-Z][A-Za-z0-9]*)\b|\b([a-z][A-Za-z0-9]*)(?=\s*[=:])/g;
+
+/** Which capture group maps to which palette entry, in regex order. */
+const KINDS = [
+  "punctuation", // // line comment
+  "string",
+  "keyword",
+  "boolean",
+  "number",
+  "type",
+  "prop",
+] as const satisfies readonly (keyof SyntaxPalette)[];
+
+function highlight(code: string, palette: SyntaxPalette) {
+  const out: ReactNode[] = [];
+  let last = 0;
+  let key = 0;
+  TOKENS.lastIndex = 0;
+  let m = TOKENS.exec(code);
+  while (m !== null) {
+    if (m.index > last) {
+      out.push(
+        <Token color={palette.punctuation} key={key++}>
+          {code.slice(last, m.index)}
+        </Token>,
+      );
+    }
+    const g = KINDS.findIndex((_, i) => m?.[i + 1] !== undefined);
+    out.push(
+      <Token color={palette[KINDS[g] ?? "plain"]} key={key++}>
+        {m[0]}
+      </Token>,
+    );
+    last = m.index + m[0].length;
+    m = TOKENS.exec(code);
+  }
+  if (last < code.length) {
+    out.push(
+      <Token color={palette.punctuation} key={key++}>
+        {code.slice(last)}
+      </Token>,
+    );
+  }
+  return out;
+}
+
+/** The original hard-coded body, now just a string. */
+const DEFAULT_CODE = `import { TextReveal } from "@/components/snap-cn/text-reveal";
+
+export function Hero() {
+  return (
+    <TextReveal
+      text="Hello, world"
+      fontSize={72}
+      color="#171717"
+      fontWeight={700}
+    />
+  )
+}`;
+
+/**
+ * A syntax-highlighted editor card. Defaults to the `TextReveal` usage snippet —
+ * the component the get-started card tells you to install — and takes any other
+ * TSX through `code`.
  *
  * Theme resolution: an explicit `theme` prop always wins; otherwise the block
  * follows the site's next-theme (`resolvedTheme`), falling back to dark before
@@ -83,14 +157,18 @@ function Token({ color, children }: { color: string; children: ReactNode }) {
  */
 export function CodeSnippet({
   label = "TextReveal",
+  code = DEFAULT_CODE,
   theme,
   header = true,
   className,
+  bodyClassName,
 }: {
   label?: string;
+  code?: string;
   theme?: CodeTheme;
   header?: boolean;
   className?: string;
+  bodyClassName?: string;
 }) {
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -138,52 +216,13 @@ export function CodeSnippet({
       )}
 
       {/* Code */}
-      <pre className="relative overflow-x-auto px-6 py-6 font-mono text-[13px] leading-[1.95] whitespace-pre [scrollbar-width:none] sm:text-sm [&::-webkit-scrollbar]:hidden">
-        <code>
-          <Token color={palette.keyword}>import</Token>
-          <Token color={palette.plain}>{" { "}</Token>
-          <Token color={palette.type}>TextReveal</Token>
-          <Token color={palette.plain}>{" } "}</Token>
-          <Token color={palette.keyword}>from</Token>{" "}
-          <Token color={palette.string}>
-            "@/components/snap-cn/text-reveal"
-          </Token>
-          <Token color={palette.punctuation}>;</Token>
-          {"\n\n"}
-          <Token color={palette.keyword}>export function</Token>{" "}
-          <Token color={palette.fn}>Hero</Token>
-          <Token color={palette.punctuation}>{"() {"}</Token>
-          {"\n  "}
-          <Token color={palette.keyword}>return</Token>{" "}
-          <Token color={palette.punctuation}>(</Token>
-          {"\n    "}
-          <Token color={palette.punctuation}>{"<"}</Token>
-          <Token color={palette.type}>TextReveal</Token>
-          {"\n      "}
-          <Token color={palette.prop}>text</Token>
-          <Token color={palette.punctuation}>=</Token>
-          <Token color={palette.string}>"Hello, world"</Token>
-          {"\n      "}
-          <Token color={palette.prop}>fontSize</Token>
-          <Token color={palette.punctuation}>={"{"}</Token>
-          <Token color={palette.number}>72</Token>
-          <Token color={palette.punctuation}>{"}"}</Token>
-          {"\n      "}
-          <Token color={palette.prop}>color</Token>
-          <Token color={palette.punctuation}>=</Token>
-          <Token color={palette.string}>"#171717"</Token>
-          {"\n      "}
-          <Token color={palette.prop}>fontWeight</Token>
-          <Token color={palette.punctuation}>={"{"}</Token>
-          <Token color={palette.number}>700</Token>
-          <Token color={palette.punctuation}>{"}"}</Token>
-          {"\n    "}
-          <Token color={palette.punctuation}>{"/>"}</Token>
-          {"\n  "}
-          <Token color={palette.punctuation}>)</Token>
-          {"\n"}
-          <Token color={palette.punctuation}>{"}"}</Token>
-        </code>
+      <pre
+        className={cn(
+          "relative overflow-x-auto px-6 py-6 font-mono text-[13px] leading-[1.95] whitespace-pre [scrollbar-width:none] sm:text-sm [&::-webkit-scrollbar]:hidden",
+          bodyClassName,
+        )}
+      >
+        <code>{highlight(code, palette)}</code>
       </pre>
     </div>
   );

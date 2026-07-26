@@ -1,4 +1,4 @@
-const GITHUB_REPO = "SriNath693/snap-cn";
+const GITHUB_REPO = "snapcndev/snapcn.dev";
 
 /**
  * Fetches the repository star count from the GitHub REST API.

@@ -1,5 +1,13 @@
+import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import {
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  renameSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { bundle } from "@remotion/bundler";
@@ -114,12 +122,87 @@ async function main() {
         process.stdout.write(`\r${tag} ${(progress * 100).toFixed(0)}%   `);
       },
     });
-    process.stdout.write(
-      `\r${tag} done → public/demos/${composition.id}.mp4\n`,
-    );
+    retimeTo60(outputLocation, tag);
   }
 
   writeManifest(outDir);
+}
+
+/**
+ * Re-time a finished render to a 60fps container, by duplicating frames.
+ *
+ * Not cosmetic, and not about the demo: **Chrome paces a whole page's rendering
+ * to the frame rate of the video playing on it.** Measured on an otherwise idle
+ * page — one video, or none, and rAF runs at the display rate; two or more 30fps
+ * videos and the entire page drops to 30fps. The showcase wall plays five or six
+ * at once, so 30fps files pin the wall's own motion to 30fps, and a wall sliding
+ * at constant velocity is the least forgiving thing there is to run at half rate.
+ * Same clips at 60fps: the page holds 60.
+ *
+ * Frame duplication rather than a 60fps render, because the scenes are authored
+ * on frame numbers against their config's fps — rendering them at 60 would play
+ * them at half speed. This keeps every rendered frame exactly as authored and
+ * only changes the cadence the container declares. Duplicate frames cost almost
+ * nothing in H.264 (most of these files come out *smaller*), and it measures at
+ * SSIM 0.998–0.9997 against the source.
+ *
+ * ## …and down to 960 wide, in the same pass
+ *
+ * Nothing ever paints one of these at 1280. There are three consumers and they
+ * are all cards: the showcase wall (`stageWidth * 0.2` — 288 CSS px on a 1440
+ * stage) and the two masonry grids in the docs (`columns-2` → `xl:columns-3`, so
+ * ~400 CSS px). The widest any of them gets on a 2× display is ~800 device
+ * pixels, and 960 clears that with room left over.
+ *
+ * The 320 pixels above it were costing 4.2MB across the eleven demos and 44% of
+ * the decode — which the wall pays at 60fps, five clips at a time, while its
+ * canvas resamples every one of them into strips. Scaling here rather than at
+ * render time keeps Remotion's output at the composition's real size; this pass
+ * was already re-encoding, so it is free.
+ *
+ * If a demo ever gets shown full-bleed, this is the line that has to move.
+ */
+function retimeTo60(file: string, tag: string) {
+  const tmp = `${file}.60.mp4`;
+  const done = spawnSync(
+    "ffmpeg",
+    [
+      "-v",
+      "error",
+      "-i",
+      file,
+      "-vf",
+      "fps=60,scale=960:-2",
+      "-c:v",
+      "libx264",
+      "-crf",
+      "16",
+      "-preset",
+      "slow",
+      "-pix_fmt",
+      "yuv420p",
+      "-an",
+      "-movflags",
+      "+faststart",
+      "-y",
+      tmp,
+    ],
+    { stdio: "inherit" },
+  );
+
+  if (done.status === 0) {
+    renameSync(tmp, file);
+    process.stdout.write(`\r${tag} done → ${path.relative(root, file)} @60\n`);
+    return;
+  }
+
+  rmSync(tmp, { force: true });
+  process.stdout.write(
+    `\r${tag} done → ${path.relative(root, file)} — but STILL 30fps\n` +
+      `  ffmpeg is not on PATH, so this file was left as rendered. The site will\n` +
+      `  work, and the showcase wall will animate at 30fps instead of 60. Install\n` +
+      `  ffmpeg and re-run to fix it; see the note on retimeTo60.\n`,
+  );
 }
 
 /**

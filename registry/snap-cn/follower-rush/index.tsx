@@ -1,10 +1,13 @@
 "use client";
 
 import { loadFont as loadSans } from "@remotion/google-fonts/Inter";
+import { useState } from "react";
 import {
   AbsoluteFill,
   getRemotionEnvironment,
+  Img,
   interpolate,
+  staticFile,
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
@@ -16,6 +19,16 @@ const { fontFamily: FONT_FAMILY } = loadSans("normal", {
 
 export interface Follower {
   name: string;
+  /**
+   * Square photo for this follower. Root-relative paths (`/avatars/ada.jpg`) are
+   * served by the app in the browser and rewritten through `staticFile()` in a
+   * render; absolute URLs are passed straight through.
+   *
+   * Omit it and the avatar falls back to the gradient monogram, which is what
+   * makes the fallback worth having: a crowd is the one place a missing photo
+   * shows up as a hole in the row.
+   */
+  avatar?: string;
 }
 
 export interface FollowerRushProps {
@@ -31,20 +44,49 @@ interface Theme {
   bg: string;
   fg: string;
   fgMuted: string;
+  /** Placeholder disc behind a photo — `muted`, one step off the page. */
+  avatarBg: string;
 }
 
 // Hex mirrors the shadcn design-system tokens (background/foreground/
-// mutedForeground) so the pile-up drops into a shadcn project unchanged.
+// mutedForeground/muted) so the pile-up drops into a shadcn project unchanged.
 const THEMES: Record<"light" | "dark", Theme> = {
-  light: { bg: "#FFFFFF", fg: "#101828", fgMuted: "#667085" },
-  dark: { bg: "#141417", fg: "#FAFAFA", fgMuted: "#A1A1AA" },
+  light: {
+    bg: "#FFFFFF",
+    fg: "#101828",
+    fgMuted: "#667085",
+    avatarBg: "#EAECF0",
+  },
+  dark: {
+    bg: "#141417",
+    fg: "#FAFAFA",
+    fgMuted: "#A1A1AA",
+    avatarBg: "#26262B",
+  },
 };
 
 /**
+ * How many photos the sample crowd cycles through.
+ *
+ * 24, because the wave holds 22 avatars and scrolls two spare slots past the
+ * edge (`MAX + 2`), so 24 is the smallest set where no two faces are ever on
+ * screen together. Fewer is fine — they just repeat sooner. More is wasted; only
+ * 24 can ever be visible at once.
+ */
+const SAMPLE_AVATAR_COUNT = 24;
+
+/**
  * The crowd of names shown in the pile and named in the callout. Purely
- * flavour — swap it via the `followers` prop. Each avatar is a deterministic
- * gradient monogram derived from the name, so the scene renders with no network,
- * no CORS, and no missing-photo placeholders.
+ * flavour — swap it via the `followers` prop.
+ *
+ * Photos come from `public/avatars/01.jpg … 24.jpg`, kept local so the scene
+ * still renders with no network and no CORS. **The files are the only thing this
+ * expects — nothing here needs editing to add them.** Any that are missing fall
+ * back to the gradient monogram rather than failing the render, which is also
+ * what makes this list safe to ship before the folder is filled.
+ *
+ * There are more names than photos on purpose: the names cycle faster than the
+ * faces, so a repeat of either never lines up with a repeat of the other.
  */
 export const SAMPLE_FOLLOWERS: Follower[] = [
   "Manon",
@@ -85,7 +127,10 @@ export const SAMPLE_FOLLOWERS: Follower[] = [
   "Finn",
   "Maya",
   "Cole",
-].map((name) => ({ name }));
+].map((name, i) => ({
+  name,
+  avatar: `/avatars/${String((i % SAMPLE_AVATAR_COUNT) + 1).padStart(2, "0")}.jpg`,
+}));
 
 // --- Pure helpers (unit-tested) -------------------------------------------
 
@@ -99,15 +144,6 @@ export function smoothstep(x: number): number {
 }
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-
-/** FNV-1a hash → a stable number per string. */
-function hashName(s: string): number {
-  let h = 2166136261;
-  for (let i = 0; i < s.length; i++) {
-    h = Math.imul(h ^ s.charCodeAt(i), 16777619);
-  }
-  return h >>> 0;
-}
 
 /**
  * The running follower total at effective frame `fc`. Holds at 1 through the
@@ -132,6 +168,35 @@ export function followerCount(
   const p = clamp01((fc - midF) / (endF - midF));
   const c = midCount * (target / midCount) ** p;
   return Math.min(target, Math.round(c));
+}
+
+/**
+ * How far the crowd has scrolled, in stage px, at effective frame `fc`.
+ *
+ * The counter explodes from a full pile to the target between `growEnd` and
+ * `explodeEnd`, so the crowd accelerates across exactly that window and then
+ * holds. It used to travel at a flat 0.85px/frame, which is one avatar slot for
+ * the whole blow-up — the number ran to five thousand while a single face went
+ * past, and the wave read as still.
+ *
+ * Velocity ramps linearly `v0 → vMax` over the window, so position is its
+ * integral: quadratic while it accelerates, linear once it holds. Velocity is
+ * continuous at the join, which is what stops the hand-off being visible — a
+ * speed that steps is a jolt no easing curve can hide afterwards.
+ */
+export function waveScroll(
+  fc: number,
+  growEnd: number,
+  explodeEnd: number,
+  v0: number,
+  vMax: number,
+): number {
+  const f = Math.max(0, fc - growEnd);
+  const T = explodeEnd - growEnd;
+  if (T <= 0) return f * vMax;
+  if (f <= T) return v0 * f + ((vMax - v0) * f * f) / (2 * T);
+  // Distance banked over the ramp, then flat out.
+  return (T * (v0 + vMax)) / 2 + vMax * (f - T);
 }
 
 // --- Sub-components --------------------------------------------------------
@@ -172,8 +237,29 @@ function PersonIcon({ color, size }: { color: string; size: number }) {
   );
 }
 
-/** A deterministic gradient-monogram avatar keyed off the follower's name — a
- *  page-coloured ring separates it from its neighbours in the pile. */
+/** Rewrite root-relative assets through staticFile only while rendering. */
+function resolveSrc(src: string): string {
+  const isLocal = src.startsWith("/") && !src.startsWith("//");
+  if (isLocal && getRemotionEnvironment().isRendering) {
+    return staticFile(src.replace(/^\/+/, ""));
+  }
+  return src;
+}
+
+/**
+ * A follower's photo, over a neutral monogram disc for when there isn't one.
+ *
+ * The disc used to be a hue derived from the name, which gave the crowd a row of
+ * saturated greens and magentas — a palette invented right here, which the
+ * design-system rule exists to forbid, and which fought every real photograph
+ * put next to it. It is `muted` now: one step off the page, no hue of its own.
+ *
+ * It stays *underneath* the photo rather than being swapped out for it, so a
+ * photo still decoding shows a filled disc instead of a hole in the row.
+ * Remotion's `<Img>` holds a render back until it has loaded so a rendered frame
+ * never catches that state, but the live `<Player>` and the customizer have no
+ * such guarantee, and a row of empty circles reads as broken.
+ */
 function Avatar({
   follower,
   size,
@@ -185,25 +271,22 @@ function Avatar({
   ring: number;
   theme: Theme;
 }) {
-  const h = hashName(follower.name);
-  const hue = h % 360;
-  const hue2 = (hue + 34 + ((h >> 9) % 46)) % 360;
-  const sat = 60 + ((h >> 3) % 18);
-  const angle = (h >> 5) % 360;
+  const [failedSrc, setFailedSrc] = useState<string | null>(null);
   return (
     <div
       style={{
+        position: "relative",
         width: size,
         height: size,
         borderRadius: 9999,
-        background: `linear-gradient(${angle}deg, hsl(${hue} ${sat}% 62%), hsl(${hue2} ${sat}% 46%))`,
+        background: theme.avatarBg,
         // Ring in the page colour, drawn as box-shadow so it doesn't grow the
         // layout box — the overlap pitch stays exact.
         boxShadow: `0 0 0 ${ring}px ${theme.bg}`,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        color: "rgba(255,255,255,0.96)",
+        color: theme.fgMuted,
         fontFamily: FONT_FAMILY,
         fontWeight: 700,
         fontSize: size * 0.4,
@@ -212,6 +295,33 @@ function Avatar({
       }}
     >
       {follower.name.charAt(0).toUpperCase()}
+      {follower.avatar && failedSrc !== follower.avatar && (
+        <Img
+          src={resolveSrc(follower.avatar)}
+          // Without a handler Remotion treats a 404 as fatal and kills the whole
+          // render. One follower with a dead photo URL is not a reason to lose the
+          // video — drop back to the monogram already painted underneath.
+          //
+          // Keyed by src, not a bare boolean: a slot keeps its React instance
+          // while the crowd scrolls a *different* follower through it, so a plain
+          // `failed` flag would condemn every later face to the same slot.
+          onError={() => setFailedSrc(follower.avatar ?? null)}
+          // `cover` on a square box: a portrait crops to its centre rather than
+          // letterboxing, which is the one thing a circular avatar cannot do.
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            borderRadius: 9999,
+            // Preflight's `img { max-width: 100% }` is harmless here because the
+            // box is explicitly sized, but say it anyway — this component ships
+            // into other people's stylesheets.
+            maxWidth: "none",
+          }}
+        />
+      )}
     </div>
   );
 }
@@ -282,8 +392,13 @@ export function FollowerRush({
   const APPEAR = 8;
   const INLINE_END = 20; // single "X followed you" notification holds until here
   const MORPH_END = 34; // …then lifts into the stacked pile
-  const GROW_END = 150; // pile fills to MAX; wave + scroll begin
-  const EXPLODE_END = 214; // count lands on the target; row has fully bent to a wave
+  // The pile used to spend 116 frames (3.9s) laying down 21 avatars and the
+  // count did not start climbing in earnest until frame 150 — half the clip gone
+  // before anything felt urgent, which is what read as the numbers being slow.
+  // They were not slower; they started later. 50 frames to fill, and the blow-up
+  // begins at 1.8s instead of 5s.
+  const GROW_END = 84; // pile fills to MAX; wave + scroll begin
+  const EXPLODE_END = 140; // count lands on the target; row has fully bent to a wave
 
   const MAX = 22; // most avatars ever shown at once
 
@@ -330,7 +445,7 @@ export function FollowerRush({
 
   // Lead (bold) name cycles ~2.3×/s while followers rush in, then freezes on the
   // last one so the held wave doesn't flicker names forever.
-  const NAME_SLOT = 13;
+  const NAME_SLOT = 9;
   const nameFreeze = Math.floor((EXPLODE_END - INLINE_END) / NAME_SLOT);
   const nameIdx =
     fc < INLINE_END
@@ -346,7 +461,25 @@ export function FollowerRush({
   const waveAmp = (isVertical ? 40 : 46) * sp;
   const WAVE_FREQ = 1.55; // periods across the strip
   const wavePhase = fc * 0.05; // the wave travels
-  const scrollPx = Math.max(0, fc - GROW_END) * (isVertical ? 0.6 : 0.85);
+  // Left alone deliberately: the crowd rushing *through* a slow-moving sine is
+  // what makes them surf it. Speed the field up with them and the two motions
+  // cancel — the avatars would slide sideways along a wave that no longer
+  // appears to lift them.
+  //
+  // ~22px/frame flat out is one avatar slot every ~2.5 frames (the wave pitch is
+  // ~54px here), so about twelve faces a second stream past at the peak.
+  //
+  // This is near the ceiling for a 30fps composition: at 22px the crowd moves a
+  // third of an avatar's diameter per frame, and much past that the row stops
+  // reading as travelling and starts reading as strobing — discrete copies
+  // rather than motion. Faster than this wants motion blur, not a bigger number.
+  const scrollPx = waveScroll(
+    fc,
+    GROW_END,
+    EXPLODE_END,
+    isVertical ? 0.6 : 0.85,
+    isVertical ? 15 : 22,
+  );
   const scrollUnit = Math.floor(scrollPx / waveP);
 
   // Flat pile: icon + avatars, centred as one group. Width grows smoothly with

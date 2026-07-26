@@ -1,7 +1,7 @@
 import { Menu } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { SearchButton } from "@/components/search-button";
+import { SnapCnLogo } from "@/components/snapcn-logo";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Sheet,
@@ -24,22 +24,15 @@ export function HeaderLogo() {
       aria-label="snap-cn home"
       className="flex items-center focus-visible:outline-none"
     >
-      <Image
-        src="/logo/snapcn.png"
-        alt="snap-cn"
-        width={464}
-        height={409}
-        priority
-        className="h-7 w-auto rounded-md"
-      />
+      <SnapCnLogo />
     </Link>
   );
 }
 
 export function HeaderActions() {
   return (
-    <div className="flex items-center gap-2">
-      <SearchButton className="lg:w-56" />
+    <div className="flex items-center gap-1.5">
+      <SearchButton className="lg:w-52" />
       <div className="hidden sm:block">
         <GithubButton />
       </div>
@@ -51,7 +44,7 @@ export function HeaderActions() {
             <Button
               variant="outline"
               size="icon"
-              className="rounded-md sm:hidden"
+              className="sm:hidden"
               aria-label="Open menu"
             />
           }
@@ -69,10 +62,7 @@ export function HeaderActions() {
               render={
                 <Link
                   href="/docs/getting-started/introduction"
-                  className={cn(
-                    buttonVariants({ size: "lg" }),
-                    "h-11 w-full rounded-lg",
-                  )}
+                  className={cn(buttonVariants({ size: "lg" }), "h-11 w-full")}
                 />
               }
             >

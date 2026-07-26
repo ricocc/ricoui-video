@@ -1,0 +1,67 @@
+---
+title: Prompt Zoom
+description: A prompt field that types a sentence into itself and, partway through, cuts — hard, in a single frame — into the caret and keeps going
+---
+
+<ComponentPreview name="prompt-zoom" />
+
+## Installation
+
+<InstallBlock name="prompt-zoom" />
+
+## Usage
+
+The prompt starts typing in the wide shot. Partway through the sentence the view **cuts** to the caret — and the typing does not pause for it, it carries straight on at the new size.
+
+```tsx
+// src/Root.tsx
+import { Composition } from "remotion";
+import { PromptZoom } from "@/components/snap-cn/prompt-zoom";
+
+const AskScene = () => (
+  <PromptZoom greeting="Up late?" text="Get me a plan for tomorrow" />
+);
+
+export const RemotionRoot = () => (
+  <Composition
+    id="PromptZoom"
+    component={AskScene}
+    durationInFrames={90}
+    fps={30}
+    width={1280}
+    height={720}
+  />
+);
+```
+
+## The cut is the point
+
+It is a **cut, not a zoom**. On the reference the wide view is whole on one frame and fully pushed in on the very next — 803ms to 824ms, with nothing in between. Interpolating it, even across two or three frames, turns a cut into a move and loses the snap entirely. `isZoomed` is deliberately a boolean, and there is a test asserting no frame is ever partway.
+
+It fires **mid-sentence**, and that is what keeps it from reading as a scene change: the frame either side of the cut shows the same half-typed prompt, so there is one continuous action running through it and the cut simply gets you closer to it.
+
+Where it lands matters as much as how fast. The push is **2.547×**, anchored on a point **10% across and 41% down the input field** — the text insertion point. The shot doesn't just get bigger, it arrives on the thing that is about to happen.
+
+That focal point was fitted to the field's top and left edges, then checked against geometry it had not seen: it predicts the `+` glyph's centre to within **1.2px** and the field's bottom edge to **0.0px**.
+
+| | measured |
+| --- | --- |
+| typing starts | `0.35s` |
+| cut at | `1.0s` — mid-sentence |
+| zoom | `2.547×` |
+| focal point | `(0.270, 0.516)` of the frame |
+| typing | `18` chars/sec |
+
+Every one of those is a prop.
+
+## Colour and wording
+
+The proportions and the timing are measured. The **colours and the labels are not** — the reference is a specific product, and its mark, model names and suggestion labels are its brand, not something to ship to strangers. The paint is the shadcn token set, the field takes its surface from the `Input` primitive's own style context so the two cannot drift, and `greeting`, `placeholder`, `model` and `effort` are all props.
+
+Suggestion pills are off by default — pass `chips={["Write", "Learn"]}` to show a static row under the field.
+
+`accentColor` paints the starburst and defaults to `theme.primary`.
+
+<Note>
+The reference clip is 1.078s and stops **mid-word** — it is still typing "Get…" when it ends. The default duration here is the choreography's own end plus a hold, not the recording's length.
+</Note>

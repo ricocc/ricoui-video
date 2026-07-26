@@ -1,17 +1,5 @@
 import type React from "react";
 import { type ComponentConfig, SHARED_CONTROLS } from "@/lib/customizer-config";
-import { AnimatedBarChart } from "@/registry/snap-cn/animated-bar-chart";
-import { animatedBarChartConfig } from "@/registry/snap-cn/animated-bar-chart/config";
-import { AnimatedLineChart } from "@/registry/snap-cn/animated-line-chart";
-import { animatedLineChartConfig } from "@/registry/snap-cn/animated-line-chart/config";
-import { ClaudeChat } from "@/registry/snap-cn/claude-chat";
-import { claudeChatConfig } from "@/registry/snap-cn/claude-chat/config";
-import { ComparisonTable } from "@/registry/snap-cn/comparison-table";
-import { comparisonTableConfig } from "@/registry/snap-cn/comparison-table/config";
-import { Counter } from "@/registry/snap-cn/counter";
-import { counterConfig } from "@/registry/snap-cn/counter/config";
-import { DataFlowPipes } from "@/registry/snap-cn/data-flow-pipes";
-import { dataFlowPipesConfig } from "@/registry/snap-cn/data-flow-pipes/config";
 import { FollowerRush } from "@/registry/snap-cn/follower-rush";
 import { followerRushConfig } from "@/registry/snap-cn/follower-rush/config";
 import { HeroLaunch } from "@/registry/snap-cn/hero-launch";
@@ -30,14 +18,10 @@ import { OrbitGallery } from "@/registry/snap-cn/orbit-gallery";
 import { orbitGalleryConfig } from "@/registry/snap-cn/orbit-gallery/config";
 import { PhoneFrame } from "@/registry/snap-cn/phone-frame";
 import { phoneFrameConfig } from "@/registry/snap-cn/phone-frame/config";
-import { PricingCard } from "@/registry/snap-cn/pricing-card";
-import { pricingCardConfig } from "@/registry/snap-cn/pricing-card/config";
-import { ProgressRing } from "@/registry/snap-cn/progress-ring";
-import { progressRingConfig } from "@/registry/snap-cn/progress-ring/config";
+import { PromptZoom } from "@/registry/snap-cn/prompt-zoom";
+import { promptZoomConfig } from "@/registry/snap-cn/prompt-zoom/config";
 import { SearchTyping } from "@/registry/snap-cn/search-typing";
 import { searchTypingConfig } from "@/registry/snap-cn/search-typing/config";
-import { StatTile } from "@/registry/snap-cn/stat-tile";
-import { statTileConfig } from "@/registry/snap-cn/stat-tile/config";
 import { TerminalSimulator } from "@/registry/snap-cn/terminal-simulator";
 import { terminalSimulatorConfig } from "@/registry/snap-cn/terminal-simulator/config";
 import { TextBuild } from "@/registry/snap-cn/text-build";
@@ -50,8 +34,6 @@ import { TextSwap } from "@/registry/snap-cn/text-swap";
 import { textSwapConfig } from "@/registry/snap-cn/text-swap/config";
 import { TextSwell } from "@/registry/snap-cn/text-swell";
 import { textSwellConfig } from "@/registry/snap-cn/text-swell/config";
-import { V0 } from "@/registry/snap-cn/v0";
-import { v0Config } from "@/registry/snap-cn/v0/config";
 import { WordCaptions } from "@/registry/snap-cn/word-captions";
 import { wordCaptionsConfig } from "@/registry/snap-cn/word-captions/config";
 import { WordFlip } from "@/registry/snap-cn/word-flip";
@@ -63,21 +45,6 @@ export interface RegistryEntry {
 }
 
 const registry: Record<string, RegistryEntry> = {
-  "animated-bar-chart": {
-    Component: AnimatedBarChart,
-    config: animatedBarChartConfig,
-  },
-  "animated-line-chart": {
-    Component: AnimatedLineChart,
-    config: animatedLineChartConfig,
-  },
-  "claude-chat": { Component: ClaudeChat, config: claudeChatConfig },
-  "comparison-table": {
-    Component: ComparisonTable,
-    config: comparisonTableConfig,
-  },
-  counter: { Component: Counter, config: counterConfig },
-  "data-flow-pipes": { Component: DataFlowPipes, config: dataFlowPipesConfig },
   "follower-rush": { Component: FollowerRush, config: followerRushConfig },
   "hero-launch": { Component: HeroLaunch, config: heroLaunchConfig },
   "karaoke-captions": {
@@ -93,10 +60,8 @@ const registry: Record<string, RegistryEntry> = {
   },
   "orbit-gallery": { Component: OrbitGallery, config: orbitGalleryConfig },
   "phone-frame": { Component: PhoneFrame, config: phoneFrameConfig },
-  "pricing-card": { Component: PricingCard, config: pricingCardConfig },
-  "progress-ring": { Component: ProgressRing, config: progressRingConfig },
+  "prompt-zoom": { Component: PromptZoom, config: promptZoomConfig },
   "search-typing": { Component: SearchTyping, config: searchTypingConfig },
-  "stat-tile": { Component: StatTile, config: statTileConfig },
   "terminal-simulator": {
     Component: TerminalSimulator,
     config: terminalSimulatorConfig,
@@ -106,7 +71,6 @@ const registry: Record<string, RegistryEntry> = {
   "text-reveal": { Component: TextReveal, config: textRevealConfig },
   "text-swap": { Component: TextSwap, config: textSwapConfig },
   "text-swell": { Component: TextSwell, config: textSwellConfig },
-  v0: { Component: V0, config: v0Config },
   "word-captions": { Component: WordCaptions, config: wordCaptionsConfig },
   "word-flip": { Component: WordFlip, config: wordFlipConfig },
 };
@@ -123,15 +87,7 @@ for (const { config } of Object.values(registry)) {
 // stall the timeline short of that payoff, so the customizer caps their
 // `speed` knob at a minimum of 1. Reassigning the existing key keeps its order.
 const MIN_SPEED_ONE = [
-  "counter",
-  "stat-tile",
-  "progress-ring",
   "follower-rush",
-  "animated-bar-chart",
-  "animated-line-chart",
-  "comparison-table",
-  "claude-chat",
-  "v0",
   "terminal-simulator",
   // The notch notification lands "connected" at frame 120 of 240; under
   // speed < 1 that beat never arrives inside the composition.
@@ -143,7 +99,6 @@ const MIN_SPEED_ONE = [
   // arrive inside the composition.
   "logo-assemble",
   "logo-flicker",
-  "pricing-card",
   "text-build",
   "text-swell",
   "karaoke-captions",

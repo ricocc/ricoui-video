@@ -48,7 +48,7 @@ export function NavDesktop({
           setHighlight(null);
         }
       }}
-      className={cn("relative hidden items-center gap-1 sm:flex", className)}
+      className={cn("relative hidden items-center gap-0.5 sm:flex", className)}
     >
       <SlidingHighlight rect={highlight} />
       {links.map((link) => (
@@ -57,7 +57,7 @@ export function NavDesktop({
           href={link.href}
           onMouseEnter={(event) => moveTo(event.currentTarget)}
           onFocus={(event) => moveTo(event.currentTarget)}
-          className="relative rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors duration-150 ease-out hover:text-foreground focus-visible:text-foreground focus-visible:outline-none"
+          className="relative rounded-md px-2.5 py-1.5 text-[0.8125rem] text-muted-foreground transition-colors duration-150 ease-out hover:text-foreground focus-visible:text-foreground focus-visible:outline-none"
         >
           {link.label}
         </Link>
@@ -87,43 +87,6 @@ export function NavMobile({ links }: { links: NavLink[] }) {
           {link.label}
         </SheetClose>
       ))}
-    </nav>
-  );
-}
-
-/**
- * Footer nav: a flat row of links. External (`http`) targets open in a new tab
- * via a plain anchor; internal targets use the client router.
- */
-export function NavFooter({
-  links,
-  className,
-}: {
-  links: NavLink[];
-  className?: string;
-}) {
-  return (
-    <nav className={cn("flex gap-6", className)}>
-      {links.map((link) => {
-        const external = link.href.startsWith("http");
-        const linkClassName =
-          "transition-colors hover:text-foreground focus-visible:text-foreground focus-visible:outline-none";
-        return external ? (
-          <a
-            key={link.href}
-            href={link.href}
-            target="_blank"
-            rel="noreferrer"
-            className={linkClassName}
-          >
-            {link.label}
-          </a>
-        ) : (
-          <Link key={link.href} href={link.href} className={linkClassName}>
-            {link.label}
-          </Link>
-        );
-      })}
     </nav>
   );
 }

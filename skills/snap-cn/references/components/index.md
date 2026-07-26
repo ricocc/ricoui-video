@@ -100,9 +100,6 @@ Tier `snap-cn`. Interface simulations for product demos.
 
 | Component | Use for | Avoid for | Length | Vibe | Deps |
 |---|---|---|---|---|---|
-| [`animated-bar-chart`](animated-bar-chart.md) | Showing comparative categorical metrics in a product demo — feature usage, plan… | The data represents change over time — continuous trends belong in… | 90f | data | — |
-| [`animated-line-chart`](animated-line-chart.md) | Showing growth or trend over time — revenue curve, DAU climb, error-rate drop | The data is categorical (not time-ordered) — use `animated-bar-chart` to compare… | 90f | data | — |
-| [`data-flow-pipes`](data-flow-pipes.md) | Visualizing a microservices or event-driven architecture where data moves between… | The workflow is sequential with discrete pass/fail steps — use `stepper`… | 180f | tech | — |
 | [`glass-code-block`](glass-code-block.md) | A landing or hero scene needs an animated code backdrop that reads as "premium dev… | You need to animate a collapse of specific lines to focus attention — use… | 180f | tech | — |
 | [`terminal-simulator`](terminal-simulator.md) | Demoing a CLI tool install sequence (`npm install`, `npx shadcn add`, build output) | You only need to type a single short string — compose `caret` with your own text… | 240f | tech | — |
 
@@ -112,10 +109,8 @@ Tier `snap-cn`. Brand / product card scenes. Render offline (gradient fallbacks)
 
 | Component | Use for | Avoid for | Length | Vibe | Deps |
 |---|---|---|---|---|---|
-| [`claude-chat`](claude-chat.md) | Announcing a Claude integration or Anthropic-powered feature where the Claude brand… | The product is a CLI/terminal agent rather than a chat UI — use `terminal-simulator`… | 150f | tech | `@snap-cn/caret`, `@snap-cn/snap-cn-ui` |
 | [`github-stars`](github-stars.md) | Celebrating an OSS milestone — the count-up odometer landing on a star total is the… | You only need the number to roll up without the stargazer fly-through — use… | 120f | data | `@snap-cn/number-wheel` |
 | [`logo-enter`](logo-enter.md) | Showing a cluster of brand/partner/integration logos arriving together ("works with…",… | You need a single product wordmark lockup — this is a multi-chip cluster, not one mark;… | 90f | social | — |
-| [`v0`](v0.md) | Depicting the Vercel v0 composer as a recognizable branded surface in a generative-UI… | You're depicting a different product — use the matching card (`claude-chat`,… | 150f | tech | `@snap-cn/caret`, `@snap-cn/snap-cn-ui` |
 | [`x-follow-card`](x-follow-card.md) | Showcasing a single X profile with the recognizable click-to-Follow payoff as the… | You're aggregating follower growth or notifications rather than one profile — use… | 165f | social | `@snap-cn/cursor` |
 | [`x-followers-overview`](x-followers-overview.md) | A milestone or social-proof scene needs cycling follow notifications building to a… | You're highlighting one profile and a Follow click — use `x-follow-card` | 360f | data | `@snap-cn/confetti` |
 

@@ -73,5 +73,5 @@ export const SAMPLE_COMPONENTS = [
   "text-reveal",
   "follower-rush",
   "phone-frame",
-  "stat-tile",
+  "terminal-simulator",
 ];

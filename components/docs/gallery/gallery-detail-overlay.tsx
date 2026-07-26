@@ -120,12 +120,16 @@ function OverlayBody({
   const slug = slugFromHref(item.href);
   const preview = useMemo(() => resolvePreview(slug), [slug]);
   const category = CATEGORY_LABEL.get(item.category) ?? item.category;
-  const install = installName(item.href, slug);
+  // One string for both the label and the clipboard. They used to be written out
+  // separately, so the row showed a bare `@snap-cn/text-reveal` — which is not a
+  // command and does nothing if you type it — while the copy button quietly
+  // handed over the real thing. What it says is now what you get.
+  const installCommand = `npx shadcn@latest add ${installName(item.href, slug)}`;
   const [copied, setCopied] = useState(false);
   const hasDocs = Boolean(docBody);
 
   const copyInstall = () => {
-    navigator.clipboard.writeText(`npx shadcn@latest add ${install}`);
+    navigator.clipboard.writeText(installCommand);
     setCopied(true);
     setTimeout(() => setCopied(false), 1500);
   };
@@ -200,10 +204,10 @@ function OverlayBody({
               <button
                 type="button"
                 onClick={copyInstall}
-                className="inline-flex items-center gap-1.5 font-mono text-xs text-foreground transition-colors hover:text-muted-foreground"
+                className="inline-flex items-start gap-1.5 text-left font-mono text-xs break-all text-foreground transition-colors hover:text-muted-foreground"
                 title="Copy install command"
               >
-                {install}
+                {installCommand}
                 {copied ? (
                   <CheckIcon className="size-3.5" />
                 ) : (

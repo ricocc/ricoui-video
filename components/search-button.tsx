@@ -39,7 +39,7 @@ export function SearchButton({ className }: { className?: string }) {
       aria-label="Search"
       onClick={() => setOpenSearch(true)}
       className={cn(
-        "flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-background px-0 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/30 focus-visible:outline-none lg:w-full lg:justify-start lg:gap-2 lg:px-3",
+        "flex h-9 w-9 items-center justify-center rounded-4xl border border-border bg-background px-0 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/30 focus-visible:outline-none lg:w-full lg:justify-start lg:gap-2 lg:px-3",
         className,
       )}
     >

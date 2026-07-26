@@ -5,8 +5,6 @@
     "index",
     "phone-frame",
     "laptop-frame",
-    "terminal-simulator",
-    "claude-chat",
-    "v0"
+    "terminal-simulator"
   ]
 }

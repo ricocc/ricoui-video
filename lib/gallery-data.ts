@@ -1,6 +1,5 @@
 import {
   Captions,
-  ChartColumn,
   Clapperboard,
   Hexagon,
   type LucideIcon,
@@ -25,7 +24,6 @@ export type CategoryId =
   | "captions"
   | "logos"
   | "screens"
-  | "data"
   | "social"
   | "scenes"
   | "ai-input";
@@ -41,7 +39,6 @@ export const GALLERY_CATEGORIES: GalleryCategory[] = [
   { id: "captions", label: "Captions" },
   { id: "logos", label: "Logos" },
   { id: "screens", label: "Screens & Devices" },
-  { id: "data", label: "Data & Stats" },
   { id: "social", label: "Social Proof" },
   { id: "scenes", label: "Scenes" },
   { id: "ai-input", label: "AI Chat Input" },
@@ -53,7 +50,6 @@ export const CATEGORY_ICONS: Record<CategoryId, LucideIcon> = {
   captions: Captions,
   logos: Hexagon,
   screens: Monitor,
-  data: ChartColumn,
   social: Users,
   scenes: Clapperboard,
   "ai-input": Sparkles,
@@ -182,69 +178,6 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     href: "/docs/screens/terminal-simulator",
   },
   {
-    name: "Claude Chat",
-    description:
-      "Animated Claude screen that types a prompt, sends it, and streams the reply behind a pulsing border",
-    category: "screens",
-    href: "/docs/screens/claude-chat",
-  },
-  {
-    name: "v0",
-    description:
-      "Simulated v0 composer screen that types a prompt — the opening beat of an AI-builder demo",
-    category: "screens",
-    href: "/docs/screens/v0",
-  },
-  {
-    name: "Counter",
-    description:
-      "One animated number with three looks — rolling places, a hold-then-spring odometer, and a per-character slot swap",
-    category: "data",
-    href: "/docs/data/counter",
-  },
-  {
-    name: "Stat Tile",
-    description:
-      "The big-stat proof beat — cards with count-up numbers, muted labels, and delta chips, staggered across a row",
-    category: "data",
-    href: "/docs/data/stat-tile",
-  },
-  {
-    name: "Animated Line Chart",
-    description:
-      "KPI line chart that draws itself with a spring-eased reveal and a live counting value",
-    category: "data",
-    href: "/docs/data/animated-line-chart",
-  },
-  {
-    name: "Animated Bar Chart",
-    description:
-      "Ops-style metric chart — staggered spring bars over hairline gridlines",
-    category: "data",
-    href: "/docs/data/animated-bar-chart",
-  },
-  {
-    name: "Progress Ring",
-    description:
-      "Animated percentage ring or bar with a rolling count-up readout",
-    category: "data",
-    href: "/docs/data/progress-ring",
-  },
-  {
-    name: "Comparison Table",
-    description:
-      "Animated us-vs-them feature table — rows stagger in, checks draw in accent blue, crosses fade to muted",
-    category: "data",
-    href: "/docs/data/comparison-table",
-  },
-  {
-    name: "Data Flow Pipes",
-    description:
-      "Animated integration diagram — packets pulse along hairline pipes between product nodes",
-    category: "data",
-    href: "/docs/data/data-flow-pipes",
-  },
-  {
     name: "Follower Rush",
     description:
       "An X-style follower notification that piles up — avatars stack in and the count explodes, then the row bends into an undulating wave of faces",
@@ -257,13 +190,6 @@ export const GALLERY_ITEMS: GalleryItem[] = [
       "Cinematic product-launch hero — two cards slide into formation as the headline reveals above",
     category: "scenes",
     href: "/docs/scenes/hero-launch",
-  },
-  {
-    name: "Pricing Card",
-    description:
-      "Animated pricing tiers — prices count in on a tabular reel while features check off with a stagger",
-    category: "scenes",
-    href: "/docs/scenes/pricing-card",
   },
   {
     name: "Orbit Gallery",
@@ -286,6 +212,13 @@ export const GALLERY_ITEMS: GalleryItem[] = [
       "A search field wider than the shot — it comes forward, types across its left half, then pages to its right half",
     category: "ai-input",
     href: "/docs/ai-input/search-typing",
+  },
+  {
+    name: "Prompt Zoom",
+    description:
+      "An assistant landing screen that offers its suggestions, then cuts hard into the caret — a measured 2.547× push anchored on the text insertion point — where the prompt types itself",
+    category: "ai-input",
+    href: "/docs/ai-input/prompt-zoom",
   },
 ];
 

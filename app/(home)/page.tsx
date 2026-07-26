@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { BentoRegistry } from "./components/sections/bento-registry";
-import { FinalCTA } from "./components/sections/final-cta";
-import { GetStarted } from "./components/sections/get-started";
+import { Changelog } from "./components/sections/changelog";
+import { ComingSoon } from "./components/sections/coming-soon";
 import { Hero } from "./components/sections/hero";
-import { Testimonials } from "./components/sections/testimonials";
+import { ShowcaseCarousel } from "./components/sections/showcase-carousel";
+import { WallOfLove } from "./components/sections/wall-of-love";
 
 const SITE_URL = "https://snapcn.dev";
 
@@ -49,10 +49,10 @@ export default function Page() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Hero />
-      <BentoRegistry />
-      <GetStarted />
-      <Testimonials />
-      <FinalCTA />
+      <ShowcaseCarousel />
+      <Changelog />
+      <WallOfLove />
+      <ComingSoon />
     </>
   );
 }

@@ -214,49 +214,6 @@
       ]
     },
     {
-      "name": "claude-chat",
-      "type": "registry:component",
-      "title": "Claude Chat",
-      "description": "Animated Claude chat screen — a prompt types in, the waveform morphs into a send button, and the reply streams in while a pulsing border frames the response. Warm product-native palette inside snap-cn window chrome.",
-      "dependencies": [
-        "remotion",
-        "@remotion/google-fonts"
-      ],
-      "registryDependencies": [
-        "@snap-cn/caret",
-        "@snap-cn/snap-cn-ui",
-        "@snap-cn/pulsing-border"
-      ],
-      "files": [
-        {
-          "path": "claude-chat/index.tsx",
-          "type": "registry:component",
-          "target": "components/snap-cn/claude-chat.tsx"
-        }
-      ]
-    },
-    {
-      "name": "v0",
-      "type": "registry:component",
-      "title": "v0",
-      "description": "Simulated v0 composer screen — types an Acme build prompt into a token-aligned prompt box while the mic button morphs into send. Light/dark themes; opener for AI-builder demos.",
-      "dependencies": [
-        "remotion",
-        "@remotion/google-fonts"
-      ],
-      "registryDependencies": [
-        "@snap-cn/caret",
-        "@snap-cn/snap-cn-ui"
-      ],
-      "files": [
-        {
-          "path": "v0/index.tsx",
-          "type": "registry:component",
-          "target": "components/snap-cn/v0.tsx"
-        }
-      ]
-    },
-    {
       "name": "pulsing-border",
       "type": "registry:component",
       "title": "Pulsing Border",
@@ -269,125 +226,6 @@
           "path": "pulsing-border/index.tsx",
           "type": "registry:component",
           "target": "components/snap-cn/pulsing-border.tsx"
-        }
-      ]
-    },
-    {
-      "name": "counter",
-      "type": "registry:component",
-      "title": "Counter",
-      "description": "One animated number with three looks — continuous rolling places, a hold-then-spring odometer, and a per-character slot swap for strings like \"$199\".",
-      "dependencies": [
-        "remotion",
-        "@remotion/google-fonts"
-      ],
-      "files": [
-        {
-          "path": "counter/index.tsx",
-          "type": "registry:component",
-          "target": "components/snap-cn/counter.tsx"
-        }
-      ]
-    },
-    {
-      "name": "stat-tile",
-      "type": "registry:component",
-      "title": "Stat Tile",
-      "description": "The composed big-stat proof beat — white cards with count-up numbers, muted labels, and up/down delta chips, staggered across a row. Single hero tile or row of three; light/dark.",
-      "dependencies": [
-        "remotion"
-      ],
-      "registryDependencies": [
-        "@snap-cn/counter"
-      ],
-      "files": [
-        {
-          "path": "stat-tile/index.tsx",
-          "type": "registry:component",
-          "target": "components/snap-cn/stat-tile.tsx"
-        }
-      ]
-    },
-    {
-      "name": "animated-line-chart",
-      "type": "registry:component",
-      "title": "Animated Line Chart",
-      "description": "KPI line chart that draws its SVG path on with a no-bounce spring, a leading accent dot, and a live counting headline value.",
-      "dependencies": [
-        "remotion"
-      ],
-      "files": [
-        {
-          "path": "animated-line-chart/index.tsx",
-          "type": "registry:component",
-          "target": "components/snap-cn/animated-line-chart.tsx"
-        }
-      ]
-    },
-    {
-      "name": "animated-bar-chart",
-      "type": "registry:component",
-      "title": "Animated Bar Chart",
-      "description": "Ops-style metric chart with staggered spring bars rising over hairline gridlines.",
-      "dependencies": [
-        "remotion"
-      ],
-      "files": [
-        {
-          "path": "animated-bar-chart/index.tsx",
-          "type": "registry:component",
-          "target": "components/snap-cn/animated-bar-chart.tsx"
-        }
-      ]
-    },
-    {
-      "name": "progress-ring",
-      "type": "registry:component",
-      "title": "Progress Ring",
-      "description": "Animated percentage ring or bar that sweeps to its target with a rolling count-up readout.",
-      "dependencies": [
-        "remotion"
-      ],
-      "registryDependencies": [
-        "@snap-cn/counter"
-      ],
-      "files": [
-        {
-          "path": "progress-ring/index.tsx",
-          "type": "registry:component",
-          "target": "components/snap-cn/progress-ring.tsx"
-        }
-      ]
-    },
-    {
-      "name": "comparison-table",
-      "type": "registry:component",
-      "title": "Comparison Table",
-      "description": "Us-vs-them feature table — rows stagger in, checks draw in accent blue, crosses fade to muted, highlighted column wears an accent band.",
-      "dependencies": [
-        "remotion"
-      ],
-      "files": [
-        {
-          "path": "comparison-table/index.tsx",
-          "type": "registry:component",
-          "target": "components/snap-cn/comparison-table.tsx"
-        }
-      ]
-    },
-    {
-      "name": "data-flow-pipes",
-      "type": "registry:component",
-      "title": "Data Flow Pipes",
-      "description": "Animated integration diagram — packets pulse along hairline pipes between product nodes, showing data fanning out through your system.",
-      "dependencies": [
-        "remotion"
-      ],
-      "files": [
-        {
-          "path": "data-flow-pipes/index.tsx",
-          "type": "registry:component",
-          "target": "components/snap-cn/data-flow-pipes.tsx"
         }
       ]
     },
@@ -405,6 +243,27 @@
           "path": "follower-rush/index.tsx",
           "type": "registry:component",
           "target": "components/snap-cn/follower-rush.tsx"
+        }
+      ]
+    },
+    {
+      "name": "prompt-zoom",
+      "type": "registry:component",
+      "title": "Prompt Zoom",
+      "description": "An assistant landing screen that offers its suggestions, then cuts — hard, in a single frame — into the caret, where the prompt types itself. The push-in is a measured 2.547× anchored on the text insertion point, not an animated zoom.",
+      "dependencies": [
+        "remotion",
+        "@remotion/google-fonts"
+      ],
+      "registryDependencies": [
+        "@snap-cn/snap-cn-ui",
+        "@snap-cn/input"
+      ],
+      "files": [
+        {
+          "path": "prompt-zoom/index.tsx",
+          "type": "registry:component",
+          "target": "components/snap-cn/prompt-zoom.tsx"
         }
       ]
     },
@@ -437,25 +296,6 @@
           "path": "moodboard-reveal/index.tsx",
           "type": "registry:component",
           "target": "components/snap-cn/moodboard-reveal.tsx"
-        }
-      ]
-    },
-    {
-      "name": "pricing-card",
-      "type": "registry:component",
-      "title": "Pricing Card",
-      "description": "Animated pricing tiers for the offer beat — prices count in on a tabular reel, features check off with a stagger, and the popular tier gets an accent border, tint and badge.",
-      "dependencies": [
-        "remotion"
-      ],
-      "registryDependencies": [
-        "@snap-cn/counter"
-      ],
-      "files": [
-        {
-          "path": "pricing-card/index.tsx",
-          "type": "registry:component",
-          "target": "components/snap-cn/pricing-card.tsx"
         }
       ]
     },

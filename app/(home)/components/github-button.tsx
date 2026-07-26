@@ -17,7 +17,11 @@ export async function GithubButton() {
     >
       <GitHubIcon className="size-4" />
       <span className="hidden sm:inline">Star</span>
-      {stars !== null && (
+      {/* `> 0`, not `!== null`: the count used to be dead code, because the repo
+          it asked about did not exist and the fetch always failed. Now that it
+          resolves, a fresh repo would render a literal "Star 0". No count reads
+          better than a count of none. */}
+      {stars !== null && stars > 0 && (
         <span className="inline-flex items-center gap-1 tabular-nums text-foreground">
           <Star className="size-3.5 fill-current" />
           {formatStars(stars)}

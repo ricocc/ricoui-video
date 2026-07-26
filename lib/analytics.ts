@@ -3,24 +3,19 @@
 import { useOpenPanel } from "@openpanel/nextjs";
 import { useCallback } from "react";
 
-export type PreviewSurface =
-  | "hero"
-  | "bento"
-  | "landing_code_showcase"
-  | "docs";
+export type PreviewSurface = "hero" | "docs";
 
 export type CtaId =
   | "hero_browse"
   | "hero_ui_badge"
-  | "bento_browse"
-  | "final_cta"
+  | "showcase_card"
   | "github_header";
 
 type AnalyticsEvents = {
   install_command_copied: {
     component: string;
     package_manager: "pnpm" | "npm" | "yarn" | "bun" | "prompt";
-    surface: "docs" | "landing" | "bento";
+    surface: "docs" | "landing";
   };
   preview_played: {
     component: string;

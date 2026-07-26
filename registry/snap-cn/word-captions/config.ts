@@ -2,6 +2,8 @@ import {
   type ComponentConfig,
   FONT_WEIGHT_OPTIONS,
   FPS,
+  H,
+  W,
 } from "@/lib/customizer-config";
 
 export const wordCaptionsConfig: ComponentConfig = {
@@ -44,7 +46,7 @@ export const wordCaptionsConfig: ComponentConfig = {
     },
     aspect: {
       type: "select",
-      default: "9:16",
+      default: "16:9",
       options: ["16:9", "1:1", "9:16"],
       label: "Aspect preset",
     },
@@ -80,11 +82,7 @@ export const wordCaptionsConfig: ComponentConfig = {
   },
   durationInFrames: 96,
   fps: FPS,
-  compositionWidth: 1080,
-  compositionHeight: 1920,
-  // Stands in for the screen recording the captions are burned onto.
-  previewBackdrop: {
-    type: "gradient",
-    value: "linear-gradient(165deg, #1D2939 0%, #101828 55%, #0A0A0B 100%)",
-  },
+  compositionWidth: W,
+  compositionHeight: H,
+  previewBackdrop: { type: "color", value: "#FAFAFA" },
 };

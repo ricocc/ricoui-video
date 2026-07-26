@@ -8,7 +8,7 @@ export const PEACH = "#FFB38E";
 export const LAVENDER = "#D4B3FF";
 export const MINT = "#A1EEBD";
 
-export const GITHUB_URL = "https://github.com/SriNath693/snap-cn";
+export const GITHUB_URL = "https://github.com/snapcndev/snapcn.dev";
 
 /** Canonical example install command shown on the landing page. */
 export const INSTALL_COMMAND = "npx shadcn@latest add snap-cn/text-reveal";
@@ -48,7 +48,52 @@ export const NAV_LINKS: NavLink[] = [
   { href: "/docs/getting-started/introduction", label: "Docs" },
 ];
 
-export const FOOTER_NAV: NavLink[] = [
-  { href: "/docs/getting-started/introduction", label: "Docs" },
-  { href: GITHUB_URL, label: "GitHub" },
+/**
+ * The footer, by column. Single source of truth, like `NAV_LINKS`.
+ *
+ * Every href here is a route that exists — the component sections come from the
+ * per-section `meta.json` files under `content/docs`, the gallery ones from
+ * `app/docs/(gallery)`. A footer is the easiest place in a site to accumulate
+ * links to pages nobody ever built, so nothing unshipped goes in this list.
+ */
+export type FooterColumn = { title: string; links: NavLink[] };
+
+export const FOOTER_COLUMNS: FooterColumn[] = [
+  {
+    title: "Components",
+    links: [
+      { href: "/docs/text", label: "Text & Titles" },
+      { href: "/docs/captions", label: "Captions" },
+      { href: "/docs/logos", label: "Logos" },
+      { href: "/docs/screens", label: "Screens & Devices" },
+      { href: "/docs/social", label: "Social Proof" },
+      { href: "/docs/scenes", label: "Scenes" },
+      { href: "/docs/ai-input", label: "AI Chat Input" },
+    ],
+  },
+  {
+    title: "Documentation",
+    links: [
+      { href: "/docs/getting-started/introduction", label: "Introduction" },
+      { href: "/docs/getting-started/installation", label: "Installation" },
+      { href: "/docs/getting-started/agent-skill", label: "Agent skill" },
+    ],
+  },
+  {
+    title: "Browse",
+    links: [
+      { href: "/docs/components", label: "All components" },
+      { href: "/docs/showcase", label: "Showcase" },
+      { href: "/docs/video-editor", label: "Video editor" },
+    ],
+  },
+  {
+    title: "Project",
+    links: [
+      { href: GITHUB_URL, label: "GitHub" },
+      { href: `${GITHUB_URL}/blob/main/LICENSE`, label: "MIT license" },
+      { href: `${GITHUB_URL}/issues`, label: "Issues" },
+      { href: "https://x.com/SriNath693", label: "X" },
+    ],
+  },
 ];

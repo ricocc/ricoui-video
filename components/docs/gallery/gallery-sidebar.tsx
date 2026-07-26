@@ -1,9 +1,9 @@
 "use client";
 
 import { ArrowUpRight, ChevronsLeft } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { SearchButton } from "@/components/search-button";
+import { SnapCnLogo } from "@/components/snapcn-logo";
 import { GITHUB_URL } from "@/config/site";
 import { GALLERY_COUNT } from "@/lib/gallery-data";
 import { cn } from "@/lib/utils";
@@ -34,20 +34,13 @@ export function GallerySidebar({
     <aside
       aria-hidden={collapsed}
       className={cn(
-        "fixed top-0 left-0 z-30 hidden h-screen w-[300px] flex-col overflow-y-auto bg-background px-6 py-5 transition-transform duration-300 ease-out lg:flex",
+        "fixed top-0 left-0 z-30 hidden h-screen w-[300px] flex-col overflow-y-auto border-border border-r bg-background px-6 py-5 transition-transform duration-300 ease-out lg:flex",
         collapsed && "-translate-x-full",
       )}
     >
       <div className="flex items-center justify-between gap-2">
         <Link href="/" aria-label="snap-cn home" className="shrink-0">
-          <Image
-            src="/logo/snapcn.png"
-            alt="snap-cn"
-            width={464}
-            height={409}
-            priority
-            className="h-7 w-auto rounded-md"
-          />
+          <SnapCnLogo />
         </Link>
         <div className="flex items-center gap-2">
           <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
@@ -72,7 +65,7 @@ export function GallerySidebar({
 
       <nav className="mt-8 flex flex-col">
         {DOCS_SECTIONS.map((item) => {
-          const active = isActive(item.match);
+          const active = isActive(item);
           return (
             <Link
               key={item.href}

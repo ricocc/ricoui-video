@@ -1,27 +1,77 @@
 import { RootProvider } from "fumadocs-ui/provider/next";
 import type { Metadata } from "next";
-import { Caveat, Geist, Geist_Mono, Inter, Outfit } from "next/font/google";
+import { Caveat, Geist, Geist_Mono, Outfit } from "next/font/google";
+import localFont from "next/font/local";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import "./globals.css";
 import { OpenPanelComponent } from "@openpanel/nextjs";
 import { cn } from "@/lib/utils";
 import { ThemeShortcut } from "./theme-shortcut";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
+/**
+ * Saans, the face simplifyingai.com is set in — copied from that project rather
+ * than re-derived, so the two sites stay one voice. (Serrif came over with it and
+ * was never set on anything; it is gone.)
+ *
+ * These are the *site's* faces only. `--font-geist-sans` below is a separate
+ * thing and must stay: the registry's scenes render through it, and a Remotion
+ * bundle has none of this CSS, so a locally-hosted face would silently fall
+ * back to Times in the mp4 (see the design-system skill, rule 4).
+ */
+const saans = localFont({
+  variable: "--font-sans",
+  display: "swap",
+  src: [
+    { path: "./fonts/Saans-Regular.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/Saans-Medium.woff2", weight: "500", style: "normal" },
+  ],
+});
 
+/**
+ * Chillax (Fontshare, free for commercial use), self-hosted like the others so
+ * paragraphs do not wait on a third-party CDN. Identified off a specimen by its
+ * signatures: a tiny rounded counter in the A, a shallow rounded vertex on the
+ * M, and fillets where strokes meet — Rubik and Poppins both miss all three.
+ */
+const chillax = localFont({
+  variable: "--font-body",
+  display: "swap",
+  src: [
+    { path: "./fonts/Chillax-400.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/Chillax-500.woff2", weight: "500", style: "normal" },
+    { path: "./fonts/Chillax-600.woff2", weight: "600", style: "normal" },
+    { path: "./fonts/Chillax-700.woff2", weight: "700", style: "normal" },
+  ],
+});
+
+/**
+ * `preload: false` on everything below is deliberate and measured.
+ *
+ * next/font emits a blocking `<link rel="preload">` per weight on *every* page
+ * that mounts this layout — 430KB of woff2 on the landing page, more than all of
+ * its JS. None of these four faces paint a single glyph there. Without preload
+ * they still load, on the pages that actually use them, at the moment a rule
+ * asks for one. Saans and Chillax keep theirs: they are the h1 and the body copy
+ * of the first screen.
+ */
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  // Scenes render through this; no site chrome is set in it.
+  preload: false,
 });
 
+// Preloaded, unlike its siblings: the hero's install button is set in it.
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
 
+// `--font-display`: docs headings, showcase and the video editor.
 const outfit = Outfit({
   variable: "--font-display",
   subsets: ["latin"],
+  preload: false,
 });
 
 // Handwritten face for the gallery sidebar's "new" scribble only.
@@ -29,6 +79,7 @@ const caveat = Caveat({
   variable: "--font-scribble",
   weight: "600",
   subsets: ["latin"],
+  preload: false,
 });
 
 const SITE_URL = "https://snapcn.dev";
@@ -87,7 +138,8 @@ export default function RootLayout({
         outfit.variable,
         caveat.variable,
         "font-sans",
-        inter.variable,
+        saans.variable,
+        chillax.variable,
       )}
     >
       <body className="min-h-full flex flex-col">

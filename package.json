@@ -6,7 +6,7 @@
   "homepage": "https://snapcn.dev",
   "repository": {
     "type": "git",
-    "url": "https://github.com/SriNath693/snap-cn.git"
+    "url": "https://github.com/snapcndev/snapcn.dev.git"
   },
   "scripts": {
     "dev": "next dev",
