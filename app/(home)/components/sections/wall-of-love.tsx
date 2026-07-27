@@ -31,9 +31,7 @@ const POSTS = [
     label: "Post about snap-cn",
     // Written in the reader's voice, not ours — they are the one posting it, and
     // a line of marketing copy in the first person is the thing people delete.
-    text: `snap-cn: ready-made Remotion components for video, installed with the shadcn CLI. Copy the code, own it forever.
-
-${SITE_URL}`,
+    text: `@snapcn: ready-made Remotion components for video, installed with the shadcn CLI. Copy the code, own it forever.`,
     primary: true,
   },
   {
