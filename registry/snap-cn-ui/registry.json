@@ -8,10 +8,7 @@
       "type": "registry:lib",
       "title": "snap-cn UI Core",
       "description": "Shared timeline-fold hook, theme context, and color math for snap-cn UI primitives.",
-      "dependencies": [
-        "remotion",
-        "culori"
-      ],
+      "dependencies": ["remotion", "culori"],
       "files": [
         {
           "path": "core/timeline.ts",
@@ -50,9 +47,7 @@
       "type": "registry:component",
       "title": "UI Caret",
       "description": "A blinking text caret — a controlled vertical bar, or a pure motion atom that blinks deterministically from useCurrentFrame.",
-      "dependencies": [
-        "remotion"
-      ],
+      "dependencies": ["remotion"],
       "registryDependencies": [],
       "files": [
         {
@@ -67,13 +62,8 @@
       "type": "registry:component",
       "title": "UI Input",
       "description": "A text input whose idle/hover/active/typing/invalid state is a pure function of the timeline; the focus ring, border, caret, and value reveal are keyframed presets.",
-      "dependencies": [
-        "remotion"
-      ],
-      "registryDependencies": [
-        "@snap-cn-ui/snap-cn-ui",
-        "@snap-cn-ui/caret"
-      ],
+      "dependencies": ["remotion"],
+      "registryDependencies": ["@snap-cn-ui/snap-cn-ui", "@snap-cn-ui/caret"],
       "files": [
         {
           "path": "input/index.tsx",

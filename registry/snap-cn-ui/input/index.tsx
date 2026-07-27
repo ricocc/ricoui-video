@@ -1,5 +1,6 @@
 "use client";
 
+import { cva } from "class-variance-authority";
 import { Caret } from "@/components/snap-cn/caret";
 import {
   mixOklch,
@@ -7,6 +8,7 @@ import {
   type SnapCnTheme,
   useSnapCnTheme,
 } from "@/lib/snap-cn-ui";
+import { cn } from "@/lib/utils";
 
 export type InputState =
   | "idle"
@@ -30,16 +32,40 @@ export interface InputProps {
   className?: string;
 }
 
-const FIELD_WIDTH = 320;
+/**
+ * The control, as classes.
+ *
+ * This is a shadcn field that happens to be driven by a frame clock, so it is
+ * built the way shadcn builds one: `cva` for the size scale, `cn` for merging,
+ * `data-slot` for targeting. What stays in `style` is *only* what is tweened —
+ * see the note on the render below.
+ */
+const inputVariants = cva(
+  "relative flex items-center border border-solid tracking-[-0.01em]",
+  {
+    variants: {
+      size: {
+        sm: "h-9 px-3 text-[13px]",
+        default: "h-10 px-3.5 text-[15px]",
+        lg: "h-12 px-4 text-[17px]",
+      },
+      fullWidth: { true: "w-full", false: "w-80" },
+    },
+    defaultVariants: { size: "default", fullWidth: false },
+  },
+);
 
-const SIZE_STYLES: Record<
-  InputSize,
-  { height: number; padding: number; fontSize: number }
-> = {
-  sm: { height: 36, padding: 12, fontSize: 13 },
-  default: { height: 40, padding: 14, fontSize: 15 },
-  lg: { height: 48, padding: 16, fontSize: 17 },
-};
+/** The placeholder overlays the value, so it needs the field's own inset. */
+const placeholderVariants = cva(
+  "pointer-events-none absolute whitespace-nowrap",
+  {
+    variants: { size: { sm: "left-3", default: "left-3.5", lg: "left-4" } },
+    defaultVariants: { size: "default" },
+  },
+);
+
+/** `Caret` takes a pixel height, not a class — so this one number stays a number. */
+const CARET_HEIGHT: Record<InputSize, number> = { sm: 14, default: 17, lg: 19 };
 
 export interface InputStyle {
   borderColor: string;
@@ -163,7 +189,6 @@ export function Input({
     ...(primary ? { primary } : {}),
   });
 
-  const sizeStyle = SIZE_STYLES[size];
   const ctx = inputStyleContext(theme);
   const v = style ?? inputStyle(state, ctx);
   const revealed = revealedText(
@@ -172,56 +197,45 @@ export function Input({
   );
 
   return (
-    <div
-      style={{
-        position: "absolute",
-        inset: 0,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "transparent",
-        fontFamily:
-          "var(--font-geist-sans), -apple-system, BlinkMacSystemFont, sans-serif",
-      }}
-    >
+    // No font-family. A shadcn Input does not set one — it inherits, and the
+    // hard-coded `var(--font-geist-sans)` that used to be here resolved on the
+    // site and to nothing in a render, which is the bug this tier existed to
+    // avoid.
+    <div className="absolute inset-0 flex items-center justify-center">
       <div
-        className={className}
+        data-slot="input"
+        data-state={state}
+        className={cn(inputVariants({ size, fullWidth }), className)}
+        // Everything left in `style` is a value being *tweened between shadcn
+        // states* by `use-input-transition` — `mixOklch(idleBorder → ring)`, a
+        // ring growing 0→3px. A class is a binary state; this component's whole
+        // job is the 300ms in between, so these cannot be classes and are not a
+        // compromise. `borderRadius` follows the theme token.
         style={{
-          position: "relative",
-          display: "flex",
-          alignItems: "center",
-          width: fullWidth ? "100%" : FIELD_WIDTH,
-          height: sizeStyle.height,
-          padding: `0 ${sizeStyle.padding}px`,
-          fontSize: sizeStyle.fontSize,
-          letterSpacing: "-0.01em",
           background: v.background,
-          border: `1px solid ${v.borderColor}`,
+          borderColor: v.borderColor,
           borderRadius: theme.radius,
           boxShadow: `0 0 0 ${v.ringWidth}px ${v.ringColor}`,
         }}
       >
-        {}
         <span
+          data-slot="input-placeholder"
+          className={placeholderVariants({ size })}
           style={{
-            position: "absolute",
-            left: sizeStyle.padding,
             color: ctx.mutedForeground,
             opacity: v.valueReveal > 0 ? 0 : v.placeholderOpacity,
-            pointerEvents: "none",
-            whiteSpace: "nowrap",
           }}
         >
           {placeholder}
         </span>
-        {}
-        <div style={{ display: "flex", alignItems: "center", minWidth: 0 }}>
-          <span style={{ whiteSpace: "nowrap", color: ctx.foreground }}>
+
+        <div className="flex min-w-0 items-center">
+          <span className="whitespace-nowrap" style={{ color: ctx.foreground }}>
             {revealed}
           </span>
           <Caret
             color={ctx.foreground}
-            height={Math.round(sizeStyle.fontSize * 1.1)}
+            height={CARET_HEIGHT[size]}
             radius={1}
             opacity={v.caretOpacity}
             marginLeft={revealed.length > 0 ? 4 : 0}
