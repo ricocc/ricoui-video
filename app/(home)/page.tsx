@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Changelog } from "./components/sections/changelog";
-import { ComingSoon } from "./components/sections/coming-soon";
 import { Hero } from "./components/sections/hero";
 import { ShowcaseCarousel } from "./components/sections/showcase-carousel";
 import { WallOfLove } from "./components/sections/wall-of-love";
@@ -52,7 +51,6 @@ export default function Page() {
       <ShowcaseCarousel />
       <Changelog />
       <WallOfLove />
-      <ComingSoon />
     </>
   );
 }

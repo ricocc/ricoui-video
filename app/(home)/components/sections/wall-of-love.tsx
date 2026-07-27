@@ -5,11 +5,10 @@ import { FadeUp } from "../fade-up";
 /**
  * The wall of love, before there is a wall.
  *
- * There are no testimonials yet, so there are none on this page — the same rule
- * `coming-soon` follows. Inventing three smiling quotes would be the one thing on
- * the site that is not true, and a wall of real posts is worth waiting for. What
- * ships now is the half that can be honest: the ask, with the post already
- * written.
+ * There are no testimonials yet, so there are none on this page. Inventing three
+ * smiling quotes would be the one thing on the site that is not true, and a wall
+ * of real posts is worth waiting for. What ships now is the half that can be
+ * honest: the ask, with the post already written.
  *
  * ## Why these are plain links
  *
