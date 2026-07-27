@@ -26,20 +26,34 @@ export function getServeUrl(): Promise<string> {
       return PREBUNDLED_DIR;
     }
     try {
+      // Imported here, not at module scope. This file is reachable from the
+      // /api/render route, and `@remotion/tailwind-v4` pulls in the native
+      // `@tailwindcss/oxide` binary — which Turbopack cannot place in an ESM
+      // chunk, so a static import fails the whole site build. It is only ever
+      // needed on this Node-side path.
+      const { enableTailwind } = await import(
+        /* webpackIgnore: true */ /* turbopackIgnore: true */
+        "@remotion/tailwind-v4"
+      );
       return await bundle({
         entryPoint: ENTRY_POINT,
         // Webpack doesn't read tsconfig `paths`; teach it every alias the
         // registry relies on (must match scripts/bundle-remotion.mts).
-        webpackOverride: (config) => ({
-          ...config,
-          resolve: {
-            ...config.resolve,
-            alias: {
-              ...(config.resolve?.alias ?? {}),
-              ...remotionWebpackAlias(process.cwd()),
+        // Tailwind first, then the aliases. Without `enableTailwind` every
+        // class in a registry component is inert in the render.
+        webpackOverride: (raw) => {
+          const config = enableTailwind(raw);
+          return {
+            ...config,
+            resolve: {
+              ...config.resolve,
+              alias: {
+                ...(config.resolve?.alias ?? {}),
+                ...remotionWebpackAlias(process.cwd()),
+              },
             },
-          },
-        }),
+          };
+        },
       });
     } catch (err) {
       // Don't poison the cache on failure — let the next render retry the bundle.

@@ -7,6 +7,7 @@ import {
   getCompositions,
   renderMedia,
 } from "@remotion/renderer";
+import { enableTailwind } from "@remotion/tailwind-v4";
 import { tsconfigWebpackAlias } from "./tsconfig-webpack-alias.mts";
 
 /**
@@ -58,7 +59,10 @@ async function main() {
   console.log("Bundling demos entry…");
   const serveUrl = await bundle({
     entryPoint,
-    webpackOverride: (config) => {
+    webpackOverride: (raw) => {
+      // Compile Tailwind into the bundle — without it every class in a
+      // component is inert in the render (measured: a red box came out white).
+      const config = enableTailwind(raw);
       // Remotion's default alias is an object; fold it into the ordered array
       // form (first match wins) so our specific entries keep their precedence.
       const existing = Object.entries(config.resolve?.alias ?? {}).map(

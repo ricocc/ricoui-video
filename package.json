@@ -71,6 +71,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.0",
+    "@remotion/tailwind-v4": "4.0.473",
     "@tailwindcss/postcss": "^4",
     "@types/culori": "^4.0.0",
     "@types/mdx": "^2.0.14",

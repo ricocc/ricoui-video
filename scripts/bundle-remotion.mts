@@ -1,6 +1,7 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { bundle } from "@remotion/bundler";
+import { enableTailwind } from "@remotion/tailwind-v4";
 import { remotionWebpackAlias } from "../lib/server/remotion-aliases.ts";
 
 /**
@@ -26,16 +27,19 @@ async function main() {
     // The Remotion bundler (webpack) doesn't read tsconfig `paths`, so teach it
     // every alias src/remotion/Root.tsx + the whole registry rely on. Without
     // this, imports like `@/lib/snap-cn-ui` fail to resolve.
-    webpackOverride: (config) => ({
-      ...config,
-      resolve: {
-        ...config.resolve,
-        alias: {
-          ...(config.resolve?.alias ?? {}),
-          ...remotionWebpackAlias(root),
+    webpackOverride: (raw) => {
+      const config = enableTailwind(raw);
+      return {
+        ...config,
+        resolve: {
+          ...config.resolve,
+          alias: {
+            ...(config.resolve?.alias ?? {}),
+            ...remotionWebpackAlias(root),
+          },
         },
-      },
-    }),
+      };
+    },
   });
   console.log(`Remotion bundle ready at: ${serveUrl}`);
 }
