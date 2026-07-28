@@ -4,6 +4,27 @@
   "homepage": "https://snapcn.dev",
   "items": [
     {
+      "name": "answer-stream",
+      "title": "Answer Stream",
+      "description": "The beat after send: a macro shot on the button that cuts — hard, on its fastest frame — to the answer building itself on the page, while the camera pulls back 1.364× about a focal point above the frame to keep up with it. Every word arrives hot and cools to the foreground.",
+      "dependencies": [
+        "remotion",
+        "@remotion/google-fonts"
+      ],
+      "registryDependencies": [
+        "@snap-cn/snap-cn-ui",
+        "@snap-cn/input"
+      ],
+      "files": [
+        {
+          "path": "registry/snap-cn/answer-stream/index.tsx",
+          "type": "registry:component",
+          "target": "components/snap-cn/answer-stream.tsx"
+        }
+      ],
+      "type": "registry:component"
+    },
+    {
       "name": "text-reveal",
       "title": "Text Reveal",
       "description": "One staggered enter/exit text animator: fade, slide, blur, scale, mask and tracking effects over character, word, line or block units, with 14 classic looks as presets.",

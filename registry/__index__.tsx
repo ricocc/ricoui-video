@@ -1,5 +1,7 @@
 import type React from "react";
 import { type ComponentConfig, SHARED_CONTROLS } from "@/lib/customizer-config";
+import { AnswerStream } from "@/registry/snap-cn/answer-stream";
+import { answerStreamConfig } from "@/registry/snap-cn/answer-stream/config";
 import { FollowerRush } from "@/registry/snap-cn/follower-rush";
 import { followerRushConfig } from "@/registry/snap-cn/follower-rush/config";
 import { HeroLaunch } from "@/registry/snap-cn/hero-launch";
@@ -45,6 +47,7 @@ export interface RegistryEntry {
 }
 
 const registry: Record<string, RegistryEntry> = {
+  "answer-stream": { Component: AnswerStream, config: answerStreamConfig },
   "follower-rush": { Component: FollowerRush, config: followerRushConfig },
   "hero-launch": { Component: HeroLaunch, config: heroLaunchConfig },
   "karaoke-captions": {
