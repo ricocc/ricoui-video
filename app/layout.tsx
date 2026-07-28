@@ -130,6 +130,9 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
+      // Tells Next to suspend `scroll-behavior: smooth` during route
+      // transitions, so a navigation jumps to the top instead of animating.
+      data-scroll-behavior="smooth"
       className={cn(
         "h-full",
         "antialiased",
