@@ -1,0 +1,97 @@
+---
+title: Answer Stream
+description: The beat after send — a macro shot on the button that cuts hard to the answer building itself, while the camera pulls back to keep up with it
+---
+
+<ComponentPreview name="answer-stream" />
+
+## Installation
+
+<InstallBlock name="answer-stream" />
+
+## Usage
+
+It opens where [Prompt Zoom](/docs/ai-input/prompt-zoom) leaves you — close on the composer — and carries through the send, the cut, and the answer.
+
+```tsx
+// src/Root.tsx
+import { Composition } from "remotion";
+import { AnswerStream } from "@/components/snap-cn/answer-stream";
+
+const ReplyScene = () => (
+  <AnswerStream
+    question="How do I rank higher in AI answers?"
+    answer={"Analysing your prompt gaps…\nFound 27 prompts you should rank for and don't yet."}
+    headline="Your AI visibility score: 34% — here's how I'd fix it:"
+  />
+);
+
+export const RemotionRoot = () => (
+  <Composition
+    id="AnswerStream"
+    component={ReplyScene}
+    durationInFrames={150}
+    fps={30}
+    width={1280}
+    height={720}
+  />
+);
+```
+
+## Scene to scene, the frame cuts
+
+Read frame by frame, the reference has exactly one grammar for changing shot, and it is a **hard cut** — one frame wide, no blur, no ramp. What makes the cuts invisible is not a transition. It is what happens either side of them.
+
+**Every cut lands on motion.** The camera is eight frames into an accelerating push toward the send button when the cut fires. It is moving fastest at the moment it is replaced.
+
+**Every cut is followed by a glide, not a stop.** The answer page arrives 27px high and settles down over 15 frames on an ease-out. Cut to a static frame and the edit becomes the loudest thing in the shot.
+
+The only *moves* are inside a shot, and there are two kinds: a slow drift that never quite stops, and one fast blurred push onto whatever is about to happen.
+
+## The pull-back is fitted to the content
+
+As the answer grows — paragraph, then headline, then four cards, then the composer sliding up — the camera pulls back and rises to keep the block in frame.
+
+Tracking the column's left and right edges across the move recovers a scale of **1.364× → 1.0** about a fixed point at **(0.5, −0.548)** of the frame: dead centre horizontally, and 273px *above the top edge*. Both edges independently agree on that point to within 1px, which is what makes it a measurement rather than a guess. The focal point being above the frame is the whole reason the page appears to **rise** as it shrinks, instead of collapsing toward its own middle.
+
+Peak velocity sits at 48–52% of the move, which is a cubic in-out and rules out a spring — a spring peaks at a third. Measured back off the rendered frames against the reference's, the two curves start together, end together and part by at most 0.048 of scale near the midpoint.
+
+`pullbackFrom` is expressed against where the shot **settles**, not where the pull-back bottoms out. It overshoots its mark by 2.8% and creeps back onto it, and normalising against the bottom of that move instead puts every constant 2.8% out.
+
+The move carries **motion blur** derived from the camera's own speed — a frame that carries a typical element `d` px smears it by `d/4` — rather than dialled in by eye.
+
+## Words arrive hot
+
+Containers land empty and fill: the question pill and each of the four cards appear as a bare surface first, and their text streams in after. Each word lands at `accentColor` and cools to `foreground` on a fixed clock, so the lit band at the head of the stream is `wordsPerSecond × coolSeconds` words wide — six, on the reference — no matter how fast you run it.
+
+Words that have not landed are hidden, not absent. Removing them lets the line reflow underneath and every word already on screen shifts as the next one arrives; on the reference they do not move at all.
+
+## Props
+
+| prop | default | |
+| --- | --- | --- |
+| `question` | — | fills the pill, and stays in the composer |
+| `answer` | — | `\n` is a hard break; everything else wraps |
+| `headline` | — | lands under the reply, introduces the cards |
+| `cards` | four | `{ title, body, icon? }` — `icon` is an SVG path on a 24×24 box |
+| `commitAt` | `1.0` | when the push into the button starts accelerating |
+| `cutAt` | `1.284` | when the shot cuts. One frame, never a ramp |
+| `pullbackAt` | `1.933` | when the camera starts keeping up |
+| `pullbackDuration` | `1.1` | |
+| `pullbackFrom` | `1.364` | relative to where the shot settles |
+| `pullbackUndershoot` | `0.028` | how far past its mark it goes first |
+| `focusX` / `focusY` | `0.5` / `-0.548` | above the frame, on purpose |
+| `macroZoom` | `2.36` | the opening shot on the send button |
+| `wordsPerSecond` | `25` | |
+| `coolSeconds` | `0.23` | how long a word stays lit |
+| `blur` | `3` | ceiling on the camera's motion blur |
+
+Plus `accentColor`, `theme`, `mode` and `speed`, like every other component.
+
+## Notes
+
+The preview above plays a **rendered mp4**, not a live `<Player>`. The pull-back re-shapes every line of type on the page at a new size for 33 consecutive frames; a frame that misses its budget in the browser is shown for the wrong length of time, and the eye reads that as the answer sticking as it arrives.
+
+The reference has no button press — its cursor is already down when the shot opens, and the accelerating push does all the work. Synthesised, the cut needs a visible cause, so there is a three-frame dip on `commitAt`.
+
+The colours and the copy are **not** measured. The reference is a specific product with its own coral, its own four icon tints and its own marketing lines; none of that belongs in a component that lands next to somebody else's `Input`. The paint is the shadcn token set, the composer takes its surface from the `Input` primitive's own style context, and every string is a prop.

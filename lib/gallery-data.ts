@@ -220,6 +220,14 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     category: "ai-input",
     href: "/docs/ai-input/prompt-zoom",
   },
+  {
+    name: "Answer Stream",
+    description:
+      "The beat after send — a macro shot on the button cuts hard to the answer building itself, while the camera pulls back about a focal point above the frame to keep up with it",
+    category: "ai-input",
+    href: "/docs/ai-input/answer-stream",
+    tile: "wide",
+  },
 ];
 
 export const GALLERY_COUNT = GALLERY_ITEMS.length;

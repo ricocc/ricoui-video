@@ -82,6 +82,12 @@ export const RENDERED_DEMOS: readonly string[] = [
   // Player mispaces on a high-refresh display (and stalls on outright at mount).
   // The render is a clean, even undulation.
   "follower-rush",
+  // A camera pull-back that scales the whole page — three paragraphs, a headline
+  // and four cards of type — over 33 frames, while ~110 words are streaming into
+  // it. Every frame re-shapes every line at a brand-new size, and one that misses
+  // its budget is shown for the wrong length of time; the eye reads that as the
+  // answer sticking as it arrives. The file pulls back smoothly.
+  "answer-stream",
 ];
 
 /**
