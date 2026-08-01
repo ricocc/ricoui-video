@@ -3,7 +3,7 @@
 import { Player } from "@remotion/player";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
-import { type MouseEvent, useMemo } from "react";
+import { type MouseEvent, useMemo, useRef } from "react";
 import { AbsoluteFill, Img } from "remotion";
 import {
   CATEGORY_ICONS,
@@ -15,6 +15,7 @@ import {
 import { resolvePreview } from "@/lib/gallery-preview";
 import { RenderedDemo, renderedDemoSrc } from "@/lib/rendered-demos";
 import { useLazyPlayer } from "../use-lazy-player";
+import { cardAttr, morphFromCard } from "./shared-media-transition";
 
 /**
  * A single reference-style gallery card: a live Remotion preview that fills the
@@ -32,11 +33,13 @@ export function GalleryCard({
   onOpen,
 }: {
   item: GalleryItem;
-  /** When provided, a plain click opens the overlay instead of navigating. */
-  onOpen?: (slug: string) => void;
+  /** When provided, a plain click opens the overlay instead of navigating.
+   *  May return the state-commit promise so the morph can wait for it. */
+  onOpen?: (slug: string) => unknown;
 }) {
   const slug = slugFromHref(item.href);
   const { containerRef, playerRef, mounted } = useLazyPlayer();
+  const cardRef = useRef<HTMLAnchorElement>(null);
 
   const preview = useMemo(() => resolvePreview(slug), [slug]);
   // Cards only ever show the default scene, so a rendered demo is always the
@@ -57,7 +60,10 @@ export function GalleryCard({
       return;
     }
     event.preventDefault();
-    onOpen(slug);
+    // The card flies into the overlay's preview slot rather than the overlay
+    // appearing as a second copy of it. Falls back to a plain open where the
+    // browser has no view transitions or the user asked for less motion.
+    morphFromCard(cardRef.current, () => onOpen(slug));
   };
 
   // Blocks paint their own full-bleed backdrop fill, exactly like PreviewStage
@@ -101,11 +107,36 @@ export function GalleryCard({
 
   return (
     <Link
+      ref={cardRef}
+      {...cardAttr(slug)}
       href={item.href}
       onClick={handleClick}
       title={item.name}
       aria-label={`${item.name}: ${item.description}`}
-      className="group/card relative mb-5 block break-inside-avoid overflow-hidden bg-gallery-card outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
+      // `rounded-2xl` is 1.8 × --radius ≈ 8px — softened corners, still reading
+      // as a rectangle of video rather than a pill. `overflow-hidden` clips the
+      // player/mp4 to it (verified: the corner really does cut the video, not
+      // just the mat behind it).
+      //
+      // A ring, NOT a border — the difference is load-bearing.
+      //
+      // `aspectRatio` below applies to the *border* box, but the preview is an
+      // `absolute inset-0` child and so fills the *content* box. A 1px border
+      // makes those two ratios differ (on a 314px 16:9 card: 1.77778 vs
+      // 1.78669), `object-contain` then fits the video by height, and 0.78px of
+      // `bg-gallery-card` is left down each side — a mat on the left and right
+      // and none top or bottom, which reads as the edge being thicker on the
+      // sides. A ring is a box-shadow: same hairline, no box changed, so the
+      // video fills the card exactly and all four edges measure the same.
+      //
+      // Weight: `/30` sits deliberately below a control's edge. This is a ~300px
+      // picture, not a 40px input, so the token is dialled *down* rather than up
+      // (design-system rule 3b, run in the other direction) — it is only here to
+      // stop a near-white preview bleeding into the page.
+      //
+      // `mb-3` must stay equal to the grid's `gap-3`: this margin is the only
+      // thing making the vertical gutter, so the two drift apart if one moves.
+      className="group/card relative mb-3 block break-inside-avoid overflow-hidden rounded-2xl bg-gallery-card outline-none ring-1 ring-border/30 focus-visible:ring-2 focus-visible:ring-ring/40"
       style={{ aspectRatio }}
     >
       <div ref={containerRef} className="absolute inset-0">

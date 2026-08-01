@@ -34,7 +34,10 @@ export function GallerySidebar({
     <aside
       aria-hidden={collapsed}
       className={cn(
-        "fixed top-0 left-0 z-30 hidden h-screen w-[300px] flex-col overflow-y-auto border-border border-r bg-background px-6 py-5 transition-transform duration-300 ease-out lg:flex",
+        // No border-r: the rail and the grid share one background, and the
+        // whitespace between them is the separation. A rule down the full height
+        // only chops the page in two.
+        "fixed top-0 left-0 z-30 hidden h-screen w-[var(--gallery-sidebar-w-open)] flex-col overflow-y-auto bg-background px-5 py-5 transition-transform duration-300 ease-out lg:flex",
         collapsed && "-translate-x-full",
       )}
     >
@@ -43,7 +46,7 @@ export function GallerySidebar({
           <SnapCnLogo />
         </Link>
         <div className="flex items-center gap-2">
-          <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
+          <span className="flex items-center gap-1.5 text-[13px] text-muted-foreground">
             <span
               className="size-1.5 rounded-full bg-primary"
               aria-hidden="true"
@@ -61,7 +64,7 @@ export function GallerySidebar({
         </div>
       </div>
 
-      <SearchButton className="mt-6" />
+      <SearchButton className="mt-6 text-[13px]" />
 
       <nav className="mt-8 flex flex-col">
         {DOCS_SECTIONS.map((item) => {
@@ -71,10 +74,13 @@ export function GallerySidebar({
               key={item.href}
               href={item.href}
               aria-current={active ? "page" : undefined}
+              // 13px on a 1.8 leading = a 23.4px pitch, measured off the
+              // reference rail (23.5px). The old 15px/leading-loose/py-1 came to
+              // 38px, which is why the rail read as oversized.
               className={
                 active
-                  ? "flex items-center gap-1.5 py-1 text-[15px] leading-loose text-foreground"
-                  : "flex items-center gap-1.5 py-1 text-[15px] leading-loose text-foreground/65 transition-colors hover:text-foreground"
+                  ? "flex items-center gap-1.5 text-[13px] leading-[1.8] text-foreground"
+                  : "flex items-center gap-1.5 text-[13px] leading-[1.8] text-foreground/65 transition-colors hover:text-foreground"
               }
             >
               {item.label}
@@ -94,7 +100,7 @@ export function GallerySidebar({
           <GitHubIcon className="size-5 text-foreground" />
         </div>
         <div>
-          <p className="text-[15px] font-medium text-foreground">
+          <p className="text-[13px] font-medium text-foreground">
             Star snap-cn
           </p>
           <p className="text-[13px] text-muted-foreground">
@@ -114,7 +120,12 @@ export function GallerySidebar({
           Star on GitHub
           <ArrowUpRight className="size-3.5" />
         </a>
-        <div className="my-1 h-px w-28 bg-border" />
+        {/* Full-width hairline with a short near-black head, as on the
+            reference rail — the dark segment is what reads as a rule end-stop;
+            a bare 1px line at this width just looks like a gap. */}
+        <div className="my-1 h-px w-full bg-border">
+          <div className="h-px w-[13px] bg-foreground" />
+        </div>
         <p className="text-[13px] text-muted-foreground">
           MIT licensed · own your code.
         </p>

@@ -2,6 +2,7 @@
 
 import { ChevronsRight } from "lucide-react";
 import { type ReactNode, useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
 import { GallerySidebar } from "./gallery-sidebar";
 
 /**
@@ -16,14 +17,18 @@ export function GalleryFrame({ children }: { children: ReactNode }) {
   const [collapsed, setCollapsed] = useState(false);
 
   useEffect(() => {
-    document.documentElement.style.setProperty(
-      "--gallery-sidebar-w",
+    const root = document.documentElement.style;
+    if (collapsed) {
       // Zero, so a closed sidebar leaves the content column with the same 32px
       // (`lg:px-8`) down both edges. Reserving a rail here instead put 80px on
       // the left against 32px on the right, which reads as the page having
       // slipped sideways.
-      collapsed ? "0px" : "300px",
-    );
+      root.setProperty("--gallery-sidebar-w", "0px");
+    } else {
+      // Clear the override rather than re-stating the open width, so the
+      // stylesheet's `--gallery-sidebar-w-open` stays the only place it lives.
+      root.removeProperty("--gallery-sidebar-w");
+    }
   }, [collapsed]);
 
   return (
@@ -53,7 +58,20 @@ export function GalleryFrame({ children }: { children: ReactNode }) {
       ) : null}
 
       <div className="min-h-screen transition-[padding] duration-300 ease-out lg:pl-[var(--gallery-sidebar-w)]">
-        <div className="px-6 lg:px-8">{children}</div>
+        {/* The 32px left gutter exists to house the reopen button above, and
+            that button only exists when the rail is closed. With the rail open
+            it was 32px of nothing between the rail's text and the first card —
+            on top of the rail's own 20px of right padding. So: 16px while open,
+            back to the button's 32px while collapsed. The right stays at 32px;
+            that edge is the window, not a neighbour. */}
+        <div
+          className={cn(
+            "px-6 transition-[padding] duration-300 ease-out lg:pr-8",
+            collapsed ? "lg:pl-8" : "lg:pl-4",
+          )}
+        >
+          {children}
+        </div>
       </div>
     </>
   );

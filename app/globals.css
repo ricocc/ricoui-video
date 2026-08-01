@@ -138,11 +138,18 @@
   --gallery-chip: rgb(255 255 255 / 0.65);
   --annotation-new: #ec4899;
 
-  /* Width of the fixed gallery sidebar. The collapsible frame flips this to 0px
-     when collapsed; the main content's left padding and the detail overlay's
-     left offset both read it, so the overlay sits beside the sidebar (never
-     over it) and everything stays in sync from one value. */
-  --gallery-sidebar-w: 300px;
+  /* Width of the fixed gallery sidebar — change it here and nowhere else.
+     It used to say that and not mean it: the rail hardcoded `w-[300px]` and the
+     frame hardcoded its own "300px", so one value lived in three files.
+
+     Two variables, because they answer different questions. The rail is always
+     this wide — it collapses by sliding off-screen, so a zero-width rail would
+     have nothing to slide. What goes to zero is the *space reserved for it*,
+     which is what the content padding and the detail overlay's left offset
+     read. So the frame only ever touches `--gallery-sidebar-w`, and clears the
+     override to reopen rather than re-stating the number. */
+  --gallery-sidebar-w-open: 260px;
+  --gallery-sidebar-w: var(--gallery-sidebar-w-open);
 }
 
 .dark {
@@ -216,6 +223,25 @@
     @apply font-sans;
     scroll-behavior: smooth;
     scroll-padding-top: 80px;
+  }
+
+  /* The gallery card ↔ overlay morph (see shared-media-transition.ts).
+     The group animates the box from the card's rect to the overlay's; the
+     old/new snapshots cross-fade inside it while it travels, because the two
+     are different sizes and a straight stretch would visibly distort the frame.
+     Curve is a soft ease-out — enough to decelerate, not so aggressive that the
+     last 40% of the distance is spent looking stationary. */
+  ::view-transition-group(gallery-media) {
+    animation-duration: 320ms;
+    animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  ::view-transition-old(gallery-media),
+  ::view-transition-new(gallery-media) {
+    animation-duration: 320ms;
+    animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+    /* Both snapshots fill the travelling box, so neither letterboxes mid-flight. */
+    height: 100%;
+    object-fit: cover;
   }
 }
 
@@ -295,13 +321,28 @@
   .wall .wall-track {
     width: var(--wall-span, 100%);
   }
+
+  /* `canMorph()` already declines to start one, so this only catches a
+     transition begun before the setting changed mid-flight. Belt and braces:
+     a half-finished morph is worse than none. */
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
 }
 
 .prose figure.shiki {
   background-color: var(--muted) !important;
   border-width: 0 !important;
   box-shadow: none !important;
-  border-radius: var(--radius-xl);
+  /* `--radius-2xl` (8px), not `--radius-xl` (6px). A radius reads relative to
+     the surface it turns: 6px is a soft corner on a 40px control and a square
+     one on a 690px slab of code, which is why these blocks looked sharp next to
+     a props table that was already at 8. Every large surface in the docs — code
+     blocks, the install command, the props table, the gallery cards — is on this
+     one value now. */
+  border-radius: var(--radius-2xl);
 }
 .prose figure.shiki pre,
 .prose figure.shiki [class*="bg-"] {

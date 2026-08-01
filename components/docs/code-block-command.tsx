@@ -61,7 +61,7 @@ export function CodeBlockCommand({
   return (
     <div
       className={cn(
-        "not-prose relative overflow-hidden rounded-xl",
+        "not-prose relative overflow-hidden rounded-2xl",
         variant === "outline" ? "border border-border bg-card" : "bg-muted",
       )}
     >

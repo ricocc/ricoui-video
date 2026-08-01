@@ -8,7 +8,13 @@ import {
   CopyIcon,
   XIcon,
 } from "lucide-react";
-import { type ReactNode, useEffect, useMemo, useState } from "react";
+import {
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import {
   GALLERY_CATEGORIES,
   type GalleryItem,
@@ -16,6 +22,7 @@ import {
 } from "@/lib/gallery-data";
 import { resolvePreview } from "@/lib/gallery-preview";
 import { PreviewStage } from "@/lib/ui-preview-internals";
+import { morphToCard, SHARED_MEDIA } from "./shared-media-transition";
 
 const CATEGORY_LABEL = new Map(GALLERY_CATEGORIES.map((c) => [c.id, c.label]));
 
@@ -74,11 +81,22 @@ export function GalleryDetailOverlay({
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
+  // Fly back into the card instead of fading out over it. Wrapped here rather
+  // than at each call site so every close path — ×, Escape, backdrop — goes
+  // through it.
+  const closeWithMorph = useCallback(() => {
+    if (!item) {
+      onClose();
+      return;
+    }
+    morphToCard(slugFromHref(item.href), onClose);
+  }, [item, onClose]);
+
   return (
     <Dialog.Root
       open={mounted && item !== null}
       onOpenChange={(open) => {
-        if (!open) onClose();
+        if (!open) closeWithMorph();
       }}
     >
       <Dialog.Portal>
@@ -90,8 +108,13 @@ export function GalleryDetailOverlay({
           {shown ? (
             <OverlayBody
               item={shown}
+              // Only while genuinely open. Base UI keeps this popup mounted
+              // through its close animation, so if the preview kept the name it
+              // would still be holding it when the card reclaims it on the way
+              // back — two holders, and the browser skips the morph entirely.
+              holdsSharedName={item !== null}
               docBody={docBodies?.[slugFromHref(shown.href)]}
-              onClose={onClose}
+              onClose={closeWithMorph}
               onPrev={onPrev}
               onNext={onNext}
             />
@@ -104,12 +127,15 @@ export function GalleryDetailOverlay({
 
 function OverlayBody({
   item,
+  holdsSharedName,
   docBody,
   onClose,
   onPrev,
   onNext,
 }: {
   item: GalleryItem;
+  /** Whether this preview currently owns the shared view-transition name. */
+  holdsSharedName: boolean;
   /** The component's full documentation, rendered inline (the overlay is the
    *  docs — there is no standalone page). */
   docBody?: ReactNode;
@@ -225,9 +251,14 @@ function OverlayBody({
         // readable/selectable (backdrop-to-close still works from the aside).
         <div className="pointer-events-auto relative flex-1 overflow-y-auto md:h-full">
           <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-10 md:py-12">
+            {/* Claims the name the clicked card just released, so the browser
+                treats the two as one element and flies it here. No zoom-in: the
+                morph *is* the entrance, and running both fights itself. */}
             <div
               key={slug}
-              className="duration-300 ease-out group-data-[open]/ov:animate-in group-data-[open]/ov:fade-in-0 group-data-[open]/ov:zoom-in-95"
+              style={{
+                viewTransitionName: holdsSharedName ? SHARED_MEDIA : undefined,
+              }}
             >
               {preview ? (
                 <PreviewStage
@@ -252,9 +283,14 @@ function OverlayBody({
         // fall through to Base UI's backdrop and close the overlay natively;
         // only the preview wrapper is interactive. Escape and × also close.
         <div className="relative flex flex-1 items-center justify-center p-6 md:p-12">
+          {/* Same shared element as the docs-mode wrapper above — only one of
+              the two branches is ever mounted, so the name stays unique. */}
           <div
             key={slug}
-            className="pointer-events-auto w-full max-w-3xl duration-300 ease-out group-data-[open]/ov:animate-in group-data-[open]/ov:fade-in-0 group-data-[open]/ov:zoom-in-95"
+            className="pointer-events-auto w-full max-w-3xl"
+            style={{
+              viewTransitionName: holdsSharedName ? SHARED_MEDIA : undefined,
+            }}
           >
             {preview ? (
               <PreviewStage

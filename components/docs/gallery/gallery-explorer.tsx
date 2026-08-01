@@ -111,7 +111,9 @@ export function GalleryExplorer({
 
   return (
     <div className="not-prose">
-      <div className="sticky top-0 z-30 -mx-6 border-b border-border bg-background/90 px-6 py-3 backdrop-blur lg:-mx-8 lg:px-8">
+      {/* No border-b. The bar is sticky and already separates itself when it
+          overlaps the grid — the blurred background is the affordance. */}
+      <div className="sticky top-0 z-30 -mx-6 bg-background/90 px-6 py-3 backdrop-blur lg:-mx-8 lg:px-8">
         <div className="flex items-center gap-2">
           <div
             className="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden"
@@ -161,7 +163,10 @@ export function GalleryExplorer({
         </div>
       </div>
 
-      <div className="mt-6 columns-1 gap-5 sm:columns-2 xl:columns-3 min-[100rem]:columns-4">
+      {/* Four across from `xl` up. The old ladder only reached four at 100rem,
+          so every normal desktop sat at three. `gap-3` is paired with the card's
+          own `mb-3` — the margin is what makes the vertical gutter. */}
+      <div className="mt-6 columns-1 gap-3 sm:columns-2 lg:columns-3 xl:columns-4">
         {items.map((item) => (
           <GalleryCard
             key={item.href}

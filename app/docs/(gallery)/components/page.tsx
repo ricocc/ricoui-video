@@ -125,7 +125,9 @@ export default async function ComponentsGalleryPage() {
 function GalleryGridFallback() {
   return (
     <div className="not-prose">
-      <div className="sticky top-0 z-30 -mx-6 border-b border-border bg-background/90 px-6 py-3 backdrop-blur lg:-mx-8 lg:px-8">
+      {/* Matches GalleryExplorer's bar exactly — no border-b, or the fallback
+          flashes a rule that the real bar does not have. */}
+      <div className="sticky top-0 z-30 -mx-6 bg-background/90 px-6 py-3 backdrop-blur lg:-mx-8 lg:px-8">
         <div className="flex items-center gap-2">
           <div className="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto">
             <span className="shrink-0 rounded-full bg-foreground px-3.5 py-1.5 text-sm font-medium text-background">
@@ -146,7 +148,8 @@ function GalleryGridFallback() {
           </span>
         </div>
       </div>
-      <div className="mt-6 columns-1 gap-5 sm:columns-2 xl:columns-3 min-[100rem]:columns-4">
+      {/* Keep in step with GalleryExplorer's grid. */}
+      <div className="mt-6 columns-1 gap-3 sm:columns-2 lg:columns-3 xl:columns-4">
         {GALLERY_ITEMS.map((item) => (
           <GalleryCard key={item.href} item={item} />
         ))}
