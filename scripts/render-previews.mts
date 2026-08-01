@@ -154,8 +154,8 @@ async function main() {
  *
  * Nothing ever paints one of these at 1280. There are three consumers and they
  * are all cards: the showcase wall (`stageWidth * 0.2` — 288 CSS px on a 1440
- * stage) and the two masonry grids in the docs (`columns-2` → `xl:columns-3`, so
- * ~400 CSS px). The widest any of them gets on a 2× display is ~800 device
+ * stage) and the two masonry grids in the docs (`sm:columns-2` → `xl:columns-4`,
+ * so ~300 CSS px). The widest any of them gets on a 2× display is ~600 device
  * pixels, and 960 clears that with room left over.
  *
  * The 320 pixels above it were costing 4.2MB across the eleven demos and 44% of

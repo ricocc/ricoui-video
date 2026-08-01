@@ -88,6 +88,25 @@ export const RENDERED_DEMOS: readonly string[] = [
   // its budget is shown for the wrong length of time; the eye reads that as the
   // answer sticking as it arrives. The file pulls back smoothly.
   "answer-stream",
+
+  // ── Rendered for coverage, not because the Player misrepresents them ───────
+  // Everything above earned its place by failing in a live Player. The eight
+  // below were added deliberately so that *every* component in the barrel ships
+  // a demo the site can play without booting Remotion. They are held to the same
+  // contract as the rest: change the component, re-render the file, commit it.
+  // `pnpm run render:previews --only <slug>` if you only touched one.
+  //
+  // If any of these ever costs more than it earns, the fix is to delete the line
+  // — `renderedDemoSrc` returns null and the page falls straight back to the
+  // live `<Player>`. Nothing else has to change.
+  "text-highlight",
+  "text-build",
+  "word-captions",
+  "karaoke-captions",
+  "phone-frame",
+  "terminal-simulator",
+  "orbit-gallery",
+  "prompt-zoom",
 ];
 
 /**
