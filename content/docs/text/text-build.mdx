@@ -14,6 +14,12 @@ soft blur pulse while they travel.
 
 <InstallBlock name="text-build" />
 
+## Component code
+
+The exact file `shadcn add` copies into your project.
+
+<ComponentSource name="text-build" />
+
 ## Usage
 
 ```tsx
@@ -120,7 +126,7 @@ Set `axis="y"` to build a centered stack of rows instead of a single line:
     {
       name: "color",
       type: "string",
-      default: "\"#101828\"",
+      default: "theme.foreground",
       description: "Text color (any valid CSS color)",
     },
     {
@@ -139,6 +145,18 @@ Set `axis="y"` to build a centered stack of rows instead of a single line:
       name: "className",
       type: "string",
       description: "Optional className passed to the wrapping element",
+    },
+    {
+      name: "theme",
+      type: "Partial<SnapCnTheme>",
+      description:
+        "Design-system token overrides. Anything you leave out falls back to the shadcn defaults",
+    },
+    {
+      name: "mode",
+      type: "\"light\" | \"dark\"",
+      description:
+        "Which end of the design system to resolve tokens against",
     },
   ]}
 />

@@ -9,6 +9,12 @@ description: A headline types itself out, then one word cycles on a 3D flip — 
 
 <InstallBlock name="word-flip" />
 
+## Component code
+
+The exact file `shadcn add` copies into your project.
+
+<ComponentSource name="word-flip" />
+
 ## Usage
 
 ```tsx
@@ -105,7 +111,9 @@ sits still.
 | `perspective` | `number` | `6.5` | 3D depth, in em. Smaller is a stronger perspective. |
 | `fontFamily` | `string` | app sans stack | The typeface. |
 | `fontSize` | `number` | `72` | |
-| `color` | `string` | `"#101828"` | The static part of the sentence. |
+| `color` | `string` | `theme.foreground` | The static part of the sentence. |
+| `theme` | `Partial<SnapCnTheme>` | — | Design-system token overrides. |
+| `mode` | `"light" \| "dark"` | `"light"` | Which end of the system to resolve against. |
 | `fontWeight` | `number` | `600` | |
 | `speed` | `number` | `1` | |
 

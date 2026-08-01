@@ -26,6 +26,12 @@ nothing reflows.
 
 <InstallBlock name="text-reveal" />
 
+## Component code
+
+The exact file `shadcn add` copies into your project.
+
+<ComponentSource name="text-reveal" />
+
 ## Usage
 
 ```tsx
@@ -87,7 +93,7 @@ is still falling back, which reads as one muddled move instead of two.
     {
       name: "color",
       type: "string",
-      default: "\"#101828\"",
+      default: "theme.foreground",
       description: "Text color (any valid CSS color)",
     },
     {
@@ -185,6 +191,18 @@ is still falling back, which reads as one muddled move instead of two.
       name: "className",
       type: "string",
       description: "Optional className passed to the line element",
+    },
+    {
+      name: "theme",
+      type: "Partial<SnapCnTheme>",
+      description:
+        "Design-system token overrides. Anything you leave out falls back to the shadcn defaults",
+    },
+    {
+      name: "mode",
+      type: "\"light\" | \"dark\"",
+      description:
+        "Which end of the design system to resolve tokens against",
     },
   ]}
 />

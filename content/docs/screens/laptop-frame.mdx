@@ -9,6 +9,12 @@ description: MacBook-style laptop that opens, runs a notch notification, then di
 
 <InstallBlock name="laptop-frame" />
 
+## Component code
+
+The exact file `shadcn add` copies into your project.
+
+<ComponentSource name="laptop-frame" />
+
 ## Usage
 
 The lid **opens**, the notch runs its idle → connecting → connected notification,
@@ -107,13 +113,13 @@ for a plain lid, or change `notchLabel` and `batteryLevel` to suit the scene.
     {
       name: "bezelColor",
       type: "string",
-      default: "\"#1D1D1F\"",
+      default: "dark neutral from theme",
       description: "Lid shell and deck base color (space-grey by default)",
     },
     {
       name: "screenColor",
       type: "string",
-      default: "\"#FFFFFF\"",
+      default: "theme.card",
       description: "Screen fill rendered behind the content",
     },
     {
@@ -132,7 +138,7 @@ for a plain lid, or change `notchLabel` and `batteryLevel` to suit the scene.
     {
       name: "shadow",
       type: "string",
-      default: "\"0 40px 80px rgba(10,12,20,0.45)\"",
+      default: "derived from theme.background",
       description: "CSS box-shadow under the deck. Empty string disables it",
     },
     {
@@ -182,6 +188,18 @@ for a plain lid, or change `notchLabel` and `batteryLevel` to suit the scene.
       name: "className",
       type: "string",
       description: "Optional className passed to the outer wrapper",
+    },
+    {
+      name: "theme",
+      type: "Partial<SnapCnTheme>",
+      description:
+        "Design-system token overrides. Anything you leave out falls back to the shadcn defaults",
+    },
+    {
+      name: "mode",
+      type: "\"light\" | \"dark\"",
+      description:
+        "Which end of the design system to resolve tokens against",
     },
   ]}
 />

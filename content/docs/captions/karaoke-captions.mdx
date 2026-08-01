@@ -9,6 +9,12 @@ description: Full-line captions with a progressive fill sweep across the spoken 
 
 <InstallBlock name="karaoke-captions" />
 
+## Component code
+
+The exact file `shadcn add` copies into your project.
+
+<ComponentSource name="karaoke-captions" />
+
 ## Usage
 
 The whole line stays on screen while a color fill sweeps left-to-right across the
@@ -32,7 +38,7 @@ const CaptionScene = () => (
         emphasize: [4], // "automatically" in accent blue
       },
     ]}
-    theme="light"
+    mode="light"
     aspect="landscape"
     pill
   />
@@ -196,16 +202,22 @@ off its baseline exactly like real caption type.
         "Comma-separated words of text to emphasize (case-insensitive, punctuation ignored). Only used with the text fallback",
     },
     {
-      name: "theme",
+      name: "mode",
       type: "\"light\" | \"dark\"",
-      default: "\"light\"",
+      default: "\"dark\"",
       description:
-        "Sweep palette and pill surface: light fills #667085 → #101828, dark fills a translucent-white ramp → #FAFAFA",
+        "Which end of the design system to resolve tokens against",
+    },
+    {
+      name: "theme",
+      type: "Partial<SnapCnTheme>",
+      description:
+        "Design-system token overrides. Anything you leave out falls back to the shadcn defaults",
     },
     {
       name: "accentColor",
       type: "string",
-      default: "\"#266DF0\"",
+      default: "theme.primary",
       description: "Fill color of emphasized words",
     },
     {

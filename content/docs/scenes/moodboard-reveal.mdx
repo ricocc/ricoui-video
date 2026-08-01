@@ -9,6 +9,12 @@ description: A kinetic headline, a scattered photo gallery, a camera push from d
 
 <InstallBlock name="moodboard-reveal" />
 
+## Component code
+
+The exact file `shadcn add` copies into your project.
+
+<ComponentSource name="moodboard-reveal" />
+
 ## Usage
 
 A four-beat, camera-drives-through montage:
@@ -95,13 +101,13 @@ any change: `pnpm run render:previews --only moodboard-reveal`.
     {
       name: "darkColor",
       type: "string",
-      default: "\"#0A0A0A\"",
+      default: "dark theme background",
       description: "Near-black starting background",
     },
     {
       name: "lightColor",
       type: "string",
-      default: "\"#E7E7E7\"",
+      default: "light theme background",
       description: "Off-white ending background",
     },
     {
@@ -114,6 +120,18 @@ any change: `pnpm run render:previews --only moodboard-reveal`.
       name: "className",
       type: "string",
       description: "Optional className passed to the outer wrapper",
+    },
+    {
+      name: "theme",
+      type: "Partial<SnapCnTheme>",
+      description:
+        "Design-system token overrides. Anything you leave out falls back to the shadcn defaults",
+    },
+    {
+      name: "mode",
+      type: "\"light\" | \"dark\"",
+      description:
+        "Which end of the design system to resolve tokens against",
     },
   ]}
 />

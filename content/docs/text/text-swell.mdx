@@ -47,6 +47,12 @@ speed; `letterHold` adds a flat top (leave it at `0` for a clean quick pop).
 
 <InstallBlock name="text-swell" />
 
+## Component code
+
+The exact file `shadcn add` copies into your project.
+
+<ComponentSource name="text-swell" />
+
 ## Usage
 
 ```tsx
@@ -142,7 +148,7 @@ or shorter words** — the cap lifts as the line gets narrower.
     {
       name: "color",
       type: "string",
-      default: "\"#101828\"",
+      default: "theme.foreground",
       description: "Text color (any valid CSS color)",
     },
     {
@@ -289,6 +295,18 @@ or shorter words** — the cap lifts as the line gets narrower.
       name: "className",
       type: "string",
       description: "Optional className passed to the line element",
+    },
+    {
+      name: "theme",
+      type: "Partial<SnapCnTheme>",
+      description:
+        "Design-system token overrides. Anything you leave out falls back to the shadcn defaults",
+    },
+    {
+      name: "mode",
+      type: "\"light\" | \"dark\"",
+      description:
+        "Which end of the design system to resolve tokens against",
     },
   ]}
 />

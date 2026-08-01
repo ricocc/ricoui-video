@@ -9,6 +9,12 @@ description: A mark wipes a wordmark open, spins into its lockup, then swings wi
 
 <InstallBlock name="text-highlight" />
 
+## Component code
+
+The exact file `shadcn add` copies into your project.
+
+<ComponentSource name="text-highlight" />
+
 ## Usage
 
 ```tsx
@@ -182,13 +188,13 @@ will not match the mark it is supposed to be coming out of.
     {
       name: "baseColor",
       type: "string",
-      default: "\"#101828\"",
+      default: "theme.foreground",
       description: "Color of the surrounding copy (and the span before emphasis)",
     },
     {
       name: "accentColor",
       type: "string",
-      default: "\"#266DF0\"",
+      default: "theme.primary",
       description:
         "Accent used for the marker tint, underline, and strike line; the marker fill is a 16% alpha tint so text stays readable",
     },
@@ -297,7 +303,7 @@ will not match the mark it is supposed to be coming out of.
     {
       name: "shineColor",
       type: "string",
-      default: "\"#FAFAFA\"",
+      default: "lighter of theme.card / theme.foreground",
       description: "Shimmer only: color of the sweeping shine",
     },
     {
@@ -322,6 +328,18 @@ will not match the mark it is supposed to be coming out of.
       name: "className",
       type: "string",
       description: "Optional className passed to the sentence span",
+    },
+    {
+      name: "theme",
+      type: "Partial<SnapCnTheme>",
+      description:
+        "Design-system token overrides. Anything you leave out falls back to the shadcn defaults",
+    },
+    {
+      name: "mode",
+      type: "\"light\" | \"dark\"",
+      description:
+        "Which end of the design system to resolve tokens against",
     },
   ]}
 />

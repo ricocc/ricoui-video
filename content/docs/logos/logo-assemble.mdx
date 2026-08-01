@@ -9,6 +9,12 @@ description: A scatter of cards collapses into a brand card that is born tilted 
 
 <InstallBlock name="logo-assemble" />
 
+## Component code
+
+The exact file `shadcn add` copies into your project.
+
+<ComponentSource name="logo-assemble" />
+
 ## Usage
 
 A logo build in three beats:
@@ -89,7 +95,7 @@ high-refresh display — so the docs preview plays the **rendered mp4**. Re-rend
     {
       name: "background",
       type: "string",
-      default: "\"#050505\"",
+      default: "theme.background (dark)",
       description: "Backdrop color behind the ring",
     },
     {
@@ -102,6 +108,18 @@ high-refresh display — so the docs preview plays the **rendered mp4**. Re-rend
       name: "className",
       type: "string",
       description: "Optional className passed to the outer wrapper",
+    },
+    {
+      name: "theme",
+      type: "Partial<SnapCnTheme>",
+      description:
+        "Design-system token overrides. Anything you leave out falls back to the shadcn defaults",
+    },
+    {
+      name: "mode",
+      type: "\"light\" | \"dark\"",
+      description:
+        "Which end of the design system to resolve tokens against",
     },
   ]}
 />

@@ -9,6 +9,12 @@ description: Single-camera flythrough — one continuous camera whips from a hea
 
 <InstallBlock name="terminal-simulator" />
 
+## Component code
+
+The exact file `shadcn add` copies into your project.
+
+<ComponentSource name="terminal-simulator" />
+
 ## Usage
 
 Everything lives on **one black canvas** and a **single camera** flies over it —
@@ -97,13 +103,13 @@ accent green, `error` lines red. `zoom` sets the landing zoom of the final punch
     {
       name: "background",
       type: "string",
-      default: "\"#141417\"",
+      default: "theme.card",
       description: "Command-panel surface color",
     },
     {
       name: "borderColor",
       type: "string",
-      default: "\"#26272B\"",
+      default: "theme.border",
       description: "Hairline color for the command-panel ring and divider",
     },
     {
@@ -144,6 +150,18 @@ accent green, `error` lines red. `zoom` sets the landing zoom of the final punch
       name: "className",
       type: "string",
       description: "Optional className passed to the outer container",
+    },
+    {
+      name: "theme",
+      type: "Partial<SnapCnTheme>",
+      description:
+        "Design-system token overrides. Anything you leave out falls back to the shadcn defaults",
+    },
+    {
+      name: "mode",
+      type: "\"light\" | \"dark\"",
+      description:
+        "Which end of the design system to resolve tokens against",
     },
   ]}
 />

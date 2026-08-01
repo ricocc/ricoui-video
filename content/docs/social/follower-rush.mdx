@@ -9,6 +9,12 @@ description: An X-style follower notification that piles up — avatars stack in
 
 <InstallBlock name="follower-rush" />
 
+## Component code
+
+The exact file `shadcn add` copies into your project.
+
+<ComponentSource name="follower-rush" />
+
 ## Usage
 
 Built for the "we blew up" milestone beat. It opens as a single X-style notification — `Manon ✓ followed you` — then reorganizes into a stacked pile as more followers pour in: avatars pop on one by one and the count climbs slowly, then detonates from a couple dozen to the target. As it explodes the flat row bends into a travelling sine wave of faces that scrolls and undulates, with the lead name settling on the last follower and the count landing on the total.
@@ -53,14 +59,21 @@ export const RemotionRoot = () => (
     {
       name: "accentColor",
       type: "string",
-      default: "\"#266DF0\"",
+      default: "theme.primary",
       description: "Accent color — used for the verified badge and the leading new-follower icon",
     },
     {
-      name: "theme",
+      name: "mode",
       type: "\"light\" | \"dark\"",
       default: "\"light\"",
-      description: "Light or dark surface — the hex mirrors the shadcn background/foreground/border tokens",
+      description:
+        "Which end of the design system to resolve tokens against",
+    },
+    {
+      name: "theme",
+      type: "Partial<SnapCnTheme>",
+      description:
+        "Design-system token overrides. Anything you leave out falls back to the shadcn defaults",
     },
     {
       name: "orientation",

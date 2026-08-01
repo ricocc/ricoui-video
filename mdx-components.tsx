@@ -5,6 +5,7 @@ import { CategoryGrid } from "@/components/docs/category-grid";
 import { ComponentCardGrid } from "@/components/docs/component-card-grid";
 import { ComponentExample } from "@/components/docs/component-example";
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { ComponentSource } from "@/components/docs/component-source";
 import { Dependencies } from "@/components/docs/dependencies";
 import { InstallAll } from "@/components/docs/install-all";
 import { InstallBlock } from "@/components/docs/install-block";
@@ -35,6 +36,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
 
     // Custom doc widgets — registrations only, not reimplemented here.
     ComponentPreview,
+    ComponentSource,
     ComponentExample,
     InstallBlock,
     InstallAll,

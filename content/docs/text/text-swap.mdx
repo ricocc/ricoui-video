@@ -9,6 +9,12 @@ description: Replace one line of text with another — by default the old line r
 
 <InstallBlock name="text-swap" />
 
+## Component code
+
+The exact file `shadcn add` copies into your project.
+
+<ComponentSource name="text-swap" />
+
 ## Usage
 
 ```tsx
@@ -160,7 +166,7 @@ component ships a **pre-rendered demo** on the docs site.
     {
       name: "color",
       type: "string",
-      default: "\"#101828\"",
+      default: "theme.foreground",
       description: "Text color (any valid CSS color)",
     },
     {
@@ -179,6 +185,18 @@ component ships a **pre-rendered demo** on the docs site.
       name: "className",
       type: "string",
       description: "Optional className passed to the root container",
+    },
+    {
+      name: "theme",
+      type: "Partial<SnapCnTheme>",
+      description:
+        "Design-system token overrides. Anything you leave out falls back to the shadcn defaults",
+    },
+    {
+      name: "mode",
+      type: "\"light\" | \"dark\"",
+      description:
+        "Which end of the design system to resolve tokens against",
     },
   ]}
 />

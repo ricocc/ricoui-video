@@ -9,6 +9,12 @@ description: Images flip across the screen very fast, the flicker decelerates an
 
 <InstallBlock name="logo-flicker" />
 
+## Component code
+
+The exact file `shadcn add` copies into your project.
+
+<ComponentSource name="logo-flicker" />
+
 ## Usage
 
 A Marvel-Studios-style flicker reveal:
@@ -85,7 +91,7 @@ gentler for photosensitivity.
     {
       name: "background",
       type: "string",
-      default: "\"#050505\"",
+      default: "theme.background (dark)",
       description: "Backdrop color",
     },
     {
@@ -98,6 +104,18 @@ gentler for photosensitivity.
       name: "className",
       type: "string",
       description: "Optional className passed to the outer wrapper",
+    },
+    {
+      name: "theme",
+      type: "Partial<SnapCnTheme>",
+      description:
+        "Design-system token overrides. Anything you leave out falls back to the shadcn defaults",
+    },
+    {
+      name: "mode",
+      type: "\"light\" | \"dark\"",
+      description:
+        "Which end of the design system to resolve tokens against",
     },
   ]}
 />

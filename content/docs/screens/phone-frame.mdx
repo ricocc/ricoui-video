@@ -9,6 +9,12 @@ description: iPhone-style device frame with a dynamic island and a screen slot �
 
 <InstallBlock name="phone-frame" />
 
+## Component code
+
+The exact file `shadcn add` copies into your project.
+
+<ComponentSource name="phone-frame" />
+
 ## Usage
 
 Drop any screen content into the frame — an app UI, an `<OffthreadVideo>` screen
@@ -48,7 +54,7 @@ export const RemotionRoot = () => (
 to the screen. Omit both `children` and `screenSrc` to get the built-in
 ride-summary placeholder — a dark map whose glowing GPS route draws itself while
 stat "insight" pills pop in along it. On light scenes, keep the silver
-`bezelColor`; on dark ones, set `bezelColor="#26272B"`.
+`bezelColor`; on dark ones, pass `mode="dark"` and the shell follows the theme.
 
 Unlike a desktop browser window, this is a portrait device with a real
 dynamic-island cutout and a 3D tilt (`tilt`) or cinematic crane move (`showcase`)
@@ -101,13 +107,13 @@ for hero shots.
     {
       name: "bezelColor",
       type: "string",
-      default: "\"#101828\"",
+      default: "theme.foreground",
       description: "Device shell color. Use #26272B on dark scenes",
     },
     {
       name: "screenColor",
       type: "string",
-      default: "\"#FFFFFF\"",
+      default: "theme.card",
       description: "Screen fill rendered behind the children",
     },
     {
@@ -127,7 +133,7 @@ for hero shots.
     {
       name: "shadow",
       type: "string",
-      default: "\"0 24px 60px rgba(16,24,40,0.18)\"",
+      default: "derived from theme.foreground",
       description: "CSS box-shadow under the device. Empty string disables it",
     },
     {
@@ -172,6 +178,18 @@ for hero shots.
       name: "className",
       type: "string",
       description: "Optional className passed to the outer wrapper",
+    },
+    {
+      name: "theme",
+      type: "Partial<SnapCnTheme>",
+      description:
+        "Design-system token overrides. Anything you leave out falls back to the shadcn defaults",
+    },
+    {
+      name: "mode",
+      type: "\"light\" | \"dark\"",
+      description:
+        "Which end of the design system to resolve tokens against",
     },
   ]}
 />

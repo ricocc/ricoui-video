@@ -9,6 +9,12 @@ description: TikTok-style word-by-word burned-in captions from a timed transcrip
 
 <InstallBlock name="word-captions" />
 
+## Component code
+
+The exact file `shadcn add` copies into your project.
+
+<ComponentSource name="word-captions" />
+
 ## Usage
 
 Feed it a timed transcript — one `{ text, startFrame, endFrame? }` per word, e.g.
@@ -238,20 +244,20 @@ off its baseline exactly like real caption type.
     {
       name: "textColor",
       type: "string",
-      default: "\"#FFFFFF\"",
+      default: "theme.card",
       description: "Caption text color",
     },
     {
       name: "pillColor",
       type: "string",
-      default: "\"rgba(16,24,40,0.55)\"",
+      default: "theme.background @ 55%",
       description:
         "Backdrop pill behind the caption line (rounded 8px). Any CSS color; empty string removes the pill",
     },
     {
       name: "accentColor",
       type: "string",
-      default: "\"#266DF0\"",
+      default: "theme.primary",
       description: "Active-word accent used by the highlight and color styles",
     },
     {
@@ -277,6 +283,18 @@ off its baseline exactly like real caption type.
       name: "className",
       type: "string",
       description: "Optional className passed to the outer wrapper",
+    },
+    {
+      name: "theme",
+      type: "Partial<SnapCnTheme>",
+      description:
+        "Design-system token overrides. Anything you leave out falls back to the shadcn defaults",
+    },
+    {
+      name: "mode",
+      type: "\"light\" | \"dark\"",
+      description:
+        "Which end of the design system to resolve tokens against",
     },
   ]}
 />
