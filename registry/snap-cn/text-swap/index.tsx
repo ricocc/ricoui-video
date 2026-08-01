@@ -1,6 +1,7 @@
 "use client";
 
 import { Easing, interpolate, useCurrentFrame } from "remotion";
+import { type SnapCnTheme, useSnapCnTheme } from "@/lib/snap-cn-ui";
 
 export type TextSwapTransition =
   | "fly-through"
@@ -248,10 +249,14 @@ export interface TextSwapProps {
   overlap?: number;
   microDelay?: number;
   fontSize?: number;
+  /** Overrides the design system's `foreground`. */
   color?: string;
   fontWeight?: number;
   speed?: number;
   className?: string;
+  /** Design-system token overrides. */
+  theme?: Partial<SnapCnTheme>;
+  mode?: "light" | "dark";
 }
 
 export function TextSwap({
@@ -266,12 +271,16 @@ export function TextSwap({
   overlap = 1,
   microDelay = 2,
   fontSize = 72,
-  color = "#101828",
+  color,
   fontWeight = 600,
   speed = 1,
   className,
+  theme,
+  mode,
 }: TextSwapProps) {
   const frame = useCurrentFrame() * speed;
+  const t = useSnapCnTheme(theme, mode);
+  const fill = color ?? t.foreground;
 
   const defaults = TRANSITION_DEFAULTS[transition];
   const motion = TRANSITION_MOTION[transition];
@@ -309,7 +318,7 @@ export function TextSwap({
   const lineStyle: React.CSSProperties = {
     fontSize,
     fontWeight,
-    color,
+    color: fill,
     letterSpacing: "-0.02em",
     fontFamily: fontStack,
     // Hinting bends each glyph's outline so its stems land on whole pixels. As

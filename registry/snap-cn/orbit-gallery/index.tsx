@@ -9,6 +9,12 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
+import {
+  mixOklch,
+  type SnapCnTheme,
+  useSnapCnTheme,
+  withAlpha,
+} from "@/lib/snap-cn-ui";
 
 const TWO_PI = Math.PI * 2;
 /** Lookup resolution for the arc-length reparameterization table. */
@@ -45,8 +51,14 @@ export interface OrbitGalleryProps {
   cornerRadius?: number;
   /** Seconds for the stream to flow one full turnover into the center. */
   orbitSeconds?: number;
+  /** Overrides the design system's `background`. */
   background?: string;
+  /** Overrides the design system's `foreground`. */
   textColor?: string;
+  /** Design-system token overrides. */
+  theme?: Partial<SnapCnTheme>;
+  /** Defaults to `"dark"` — the orbit is a cinematic stage, lit for dark. */
+  mode?: "light" | "dark";
   /** Tiny captions pinned to the bottom edge. Empty strings hide them. */
   footerLeft?: string;
   footerCenter?: string;
@@ -193,8 +205,10 @@ export function OrbitGallery({
   fadeOut = 0,
   cornerRadius = 5,
   orbitSeconds = 40,
-  background = "#050505",
-  textColor = "#ffffff",
+  background,
+  textColor,
+  theme,
+  mode,
   footerLeft = "",
   footerCenter = "",
   footerRight = "",
@@ -203,6 +217,9 @@ export function OrbitGallery({
 }: OrbitGalleryProps) {
   const frame = useCurrentFrame();
   const { width, height, fps, durationInFrames } = useVideoConfig();
+  const tokens = useSnapCnTheme(theme, mode ?? "dark");
+  const stage = background ?? tokens.background;
+  const ink = textColor ?? tokens.foreground;
   const t = frame * speed;
 
   const minDim = Math.min(width, height);
@@ -245,7 +262,7 @@ export function OrbitGallery({
   return (
     <AbsoluteFill
       className={className}
-      style={{ backgroundColor: background, fontFamily: FONT_STACK }}
+      style={{ backgroundColor: stage, fontFamily: FONT_STACK }}
     >
       {cards.map((card) => {
         const p = archimedeanPoint(card.n, R, turns);
@@ -295,8 +312,11 @@ export function OrbitGallery({
                 blurPx > 0.15 ? `blur(${blurPx.toFixed(2)}px)` : undefined,
               borderRadius: rad,
               overflow: "hidden",
-              backgroundColor: "#101010",
-              boxShadow: `0 ${(ch * 0.12).toFixed(1)}px ${(ch * 0.3).toFixed(1)}px rgba(0,0,0,0.4)`,
+              backgroundColor: mixOklch(stage, tokens.card, 0.35),
+              boxShadow: `0 ${(ch * 0.12).toFixed(1)}px ${(ch * 0.3).toFixed(1)}px ${withAlpha(
+                mixOklch(stage, "#000", 0.75),
+                0.4,
+              )}`,
             }}
           >
             <OrbitTile
@@ -323,8 +343,10 @@ export function OrbitGallery({
             marginLeft: -(width * 0.66) / 2,
             marginTop: -(height * 0.5) / 2,
             borderRadius: "50%",
-            backgroundImage:
-              "radial-gradient(ellipse at center, rgba(5,5,5,0.62) 0%, rgba(5,5,5,0.34) 42%, transparent 70%)",
+            backgroundImage: `radial-gradient(ellipse at center, ${withAlpha(
+              stage,
+              0.62,
+            )} 0%, ${withAlpha(stage, 0.34)} 42%, transparent 70%)`,
             opacity: intro,
             zIndex: 9,
           }}
@@ -346,7 +368,7 @@ export function OrbitGallery({
               fontWeight: 500,
               letterSpacing: "-0.015em",
               lineHeight: 1.08,
-              color: textColor,
+              color: ink,
               maxWidth: "82%",
               opacity: interpolate(t, [8, 34], [0, 1], {
                 extrapolateLeft: "clamp",
@@ -373,7 +395,7 @@ export function OrbitGallery({
               marginTop: titleSize * 0.42,
               fontSize: titleSize * 0.26,
               letterSpacing: "0.02em",
-              color: textColor,
+              color: ink,
               opacity:
                 0.65 *
                 interpolate(t, [16, 40], [0, 1], {
@@ -402,10 +424,10 @@ export function OrbitGallery({
               marginTop: titleSize * 0.5,
               padding: `${titleSize * 0.14}px ${titleSize * 0.34}px`,
               borderRadius: 9999,
-              backgroundColor: "rgba(255,255,255,0.14)",
+              backgroundColor: withAlpha(ink, 0.14),
               fontSize: titleSize * 0.23,
               fontWeight: 500,
-              color: textColor,
+              color: ink,
               opacity: interpolate(t, [24, 44], [0, 1], {
                 extrapolateLeft: "clamp",
                 extrapolateRight: "clamp",
@@ -434,7 +456,7 @@ export function OrbitGallery({
             display: "flex",
             justifyContent: "space-between",
             fontSize: titleSize * 0.22,
-            color: textColor,
+            color: ink,
             opacity:
               0.78 *
               interpolate(t, [30, 50], [0, 1], {

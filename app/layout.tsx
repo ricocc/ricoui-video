@@ -6,6 +6,7 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 import "./globals.css";
 import { OpenPanelComponent } from "@openpanel/nextjs";
 import { cn } from "@/lib/utils";
+import { SnapCnThemeBridge } from "./snap-cn-theme-bridge";
 import { ThemeShortcut } from "./theme-shortcut";
 
 /**
@@ -154,7 +155,7 @@ export default function RootLayout({
             }}
           >
             <ThemeShortcut />
-            {children}
+            <SnapCnThemeBridge>{children}</SnapCnThemeBridge>
           </RootProvider>
         </NuqsAdapter>
         <OpenPanelComponent

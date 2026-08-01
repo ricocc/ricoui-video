@@ -11,14 +11,19 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
+import { type SnapCnTheme, useSnapCnTheme } from "@/lib/snap-cn-ui";
 
 export interface TextSwellProps {
   /** The sentence to assemble. Its first word leads, and everything else pushes it left. */
   text?: string;
   /** Final font size in px (the size the line settles at). */
   fontSize?: number;
+  /** Overrides the design system's `foreground`. */
   color?: string;
   fontWeight?: number | string;
+  /** Design-system token overrides. */
+  theme?: Partial<SnapCnTheme>;
+  mode?: "light" | "dark";
 
   /** Frames the lead word fades in over. */
   introDuration?: number;
@@ -146,8 +151,10 @@ const FIT = 0.97;
 export function TextSwell({
   text = "No extra charge",
   fontSize = 72,
-  color = "#101828",
+  color,
   fontWeight = 600,
+  theme,
+  mode,
   introDuration = 8,
   riseDistance = 0.7,
   riseDuration = 10,
@@ -173,6 +180,8 @@ export function TextSwell({
 }: TextSwellProps) {
   const frame = useCurrentFrame() * speed;
   const { width } = useVideoConfig();
+  const t = useSnapCnTheme(theme, mode);
+  const fill = color ?? t.foreground;
 
   const words = text.split(" ").filter(Boolean);
 
@@ -382,7 +391,7 @@ export function TextSwell({
           display: "inline-block",
           fontSize,
           fontWeight,
-          color,
+          color: fill,
           letterSpacing,
           lineHeight: 1.1,
           whiteSpace: "nowrap",

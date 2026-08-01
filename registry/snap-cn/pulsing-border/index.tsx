@@ -11,16 +11,23 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
-
-const GLOW_COLOR_A = "#266DF0";
-const GLOW_COLOR_B = "#6D9BF5";
+import {
+  mixOklch,
+  parseColor,
+  type SnapCnTheme,
+  toCss,
+  useSnapCnTheme,
+} from "@/lib/snap-cn-ui";
 
 export interface PulsingBorderProps
   extends Omit<PaperPulsingBorderProps, "frame" | "ref"> {
-  /** First glow color. Ignored when `colors` is set explicitly. */
+  /** First glow color. Defaults to the design system's `primary`. */
   glowColorA?: string;
-  /** Second glow color. Ignored when `colors` is set explicitly. */
+  /** Second glow color. Defaults to `primary` lifted toward the page. */
   glowColorB?: string;
+  /** Design-system token overrides. */
+  theme?: Partial<SnapCnTheme>;
+  mode?: "light" | "dark";
 }
 
 /**
@@ -35,17 +42,25 @@ export function PulsingBorder({
   speed = 0.6,
   colorBack = "#00000000",
   colors,
-  glowColorA = GLOW_COLOR_A,
-  glowColorB = GLOW_COLOR_B,
+  glowColorA,
+  glowColorB,
   roundness = 0.08,
   thickness = 0.06,
   intensity = 0.15,
   bloom = 0.2,
   className,
+  theme,
+  mode,
   ...rest
 }: PulsingBorderProps) {
   const frame = useCurrentFrame();
   const { fps, width, height } = useVideoConfig();
+  const t = useSnapCnTheme(theme, mode);
+
+  // The shader parses colors in WebGL, not in CSS — it has no `oklch()`. Tokens
+  // are handed over as concrete rgb, which `toCss`/`mixOklch` already emit.
+  const glowA = glowColorA ?? toCss(parseColor(t.primary));
+  const glowB = glowColorB ?? mixOklch(t.primary, t.background, 0.35);
 
   const [handle] = useState(() => delayRender("pulsing-border"));
   const gate = useCallback(
@@ -68,7 +83,7 @@ export function PulsingBorder({
         speed={0}
         frame={(frame / fps) * speed * 1000}
         colorBack={colorBack}
-        colors={colors ?? [glowColorA, glowColorB]}
+        colors={colors ?? [glowA, glowB]}
         roundness={roundness}
         thickness={thickness}
         intensity={intensity}

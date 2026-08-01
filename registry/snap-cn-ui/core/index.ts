@@ -4,6 +4,7 @@ export {
   parseColor,
   rgbToOklch,
   toCss,
+  withAlpha,
 } from "./color";
 export type { EasingName, SpringName } from "./motion";
 export { easings, springs } from "./motion";

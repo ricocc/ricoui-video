@@ -12,6 +12,7 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
+import { type SnapCnTheme, useSnapCnTheme, withAlpha } from "@/lib/snap-cn-ui";
 
 // Montserrat, 700–900. This is the face the look is actually made of: the caption
 // styles every big channel uses are a heavy geometric grotesque, and Inter at 700
@@ -122,7 +123,12 @@ export interface WordCaptionsProps {
   /** Max width of the caption block in px. */
   maxWidth?: number;
   fontSize?: number;
+  /** Overrides the design system's `foreground`. */
   textColor?: string;
+  /** Design-system token overrides. */
+  theme?: Partial<SnapCnTheme>;
+  /** Defaults to `"dark"` — a caption scrim is lit for footage. */
+  mode?: "light" | "dark";
   /** Backdrop pill behind the caption line. Any CSS color; empty string hides it. */
   pillColor?: string;
   /** Active-word accent used by the `highlight` and `color` styles. */
@@ -547,8 +553,10 @@ export function WordCaptions({
   aspect = "16:9",
   maxWidth,
   fontSize,
-  textColor = "#FFFFFF",
-  pillColor = "rgba(16,24,40,0.55)",
+  textColor,
+  pillColor,
+  theme,
+  mode,
   accentColor = "#FFE81F",
   accentCycle = DEFAULT_ACCENT_CYCLE,
   strokeColor = "#000000",
@@ -561,6 +569,12 @@ export function WordCaptions({
 }: WordCaptionsProps) {
   const frame = useCurrentFrame() * speed;
   const { fps, width, height } = useVideoConfig();
+  // A caption pill is a legibility scrim over footage, so its neutrals come
+  // from the dark end of the system by default. The accent, the outline and
+  // the cycle are the caption's look and stay props (design-system Rule 3c).
+  const t = useSnapCnTheme(theme, mode ?? "dark");
+  const ink = textColor ?? t.foreground;
+  const scrim = pillColor ?? withAlpha(t.background, 0.55);
 
   const look = CAPTION_LOOKS[preset] ?? CAPTION_LOOKS.beast;
   const shortSide = Math.min(width, height);
@@ -689,7 +703,12 @@ export function WordCaptions({
       : {};
 
   const shadow = look.shadow
-    ? { textShadow: `0 ${size * 0.055}px ${size * 0.05}px rgba(0,0,0,0.42)` }
+    ? {
+        textShadow: `0 ${size * 0.055}px ${size * 0.05}px ${withAlpha(
+          t.background,
+          0.42,
+        )}`,
+      }
     : {};
 
   return (
@@ -747,8 +766,8 @@ export function WordCaptions({
               ...typeStyle,
               fontFamily: ROBOTO,
               display: "inline",
-              color: textColor,
-              backgroundColor: "rgba(0,0,0,0.9)",
+              color: ink,
+              backgroundColor: withAlpha(t.background, 0.9),
               padding: `${size * 0.06}px ${size * 0.32}px`,
               boxDecorationBreak: "clone",
               WebkitBoxDecorationBreak: "clone",
@@ -781,7 +800,7 @@ export function WordCaptions({
               ? {
                   padding: `${size * 0.3}px ${size * 0.5}px`,
                   borderRadius: size * 0.22,
-                  backgroundColor: pillColor === "" ? "transparent" : pillColor,
+                  backgroundColor: pillColor === "" ? "transparent" : scrim,
                 }
               : {}),
             opacity: interpolate(frame - group.startFrame, [0, 3], [0, 1], {
@@ -806,7 +825,7 @@ export function WordCaptions({
             // accent (or the block). That is what makes the beat readable AHEAD of
             // the voice instead of only with it.
             const useAccent = isActive && activeStyle !== "pop";
-            const fill = look.block ? "#FFFFFF" : isActive ? accent : textColor;
+            const fill = look.block ? ink : isActive ? accent : ink;
 
             return (
               <span

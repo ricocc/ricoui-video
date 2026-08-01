@@ -11,6 +11,11 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
+import {
+  defaultLightTheme,
+  type SnapCnTheme,
+  useSnapCnTheme,
+} from "@/lib/snap-cn-ui";
 
 /**
  * Pure animation math for TextReveal. Everything in this file is
@@ -100,7 +105,10 @@ export const TEXT_REVEAL_DEFAULTS: TextRevealSettings = {
   exitStagger: 1,
   align: "center",
   fontSize: 72,
-  color: "#101828",
+  // A settings preset has no hook to resolve against, so it takes the token's
+  // value directly rather than a hex — the component itself still prefers the
+  // live theme, and this keeps the customizer's default in step with it.
+  color: defaultLightTheme.foreground,
   fontWeight: 600,
   letterSpacing: "-0.03em",
   speed: 1,
@@ -454,8 +462,12 @@ export interface TextRevealProps {
   text?: string;
   /** Final font size in px (the size the line settles at). */
   fontSize?: number;
+  /** Overrides the design system's `foreground`. */
   color?: string;
   fontWeight?: number | string;
+  /** Design-system token overrides. */
+  theme?: Partial<SnapCnTheme>;
+  mode?: "light" | "dark";
   /** How much larger the lead word starts (2 = twice the final size). */
   initialScale?: number;
   /** Frames the lead word fades in over at the very start. */
@@ -533,8 +545,10 @@ const WORD_EASE = Easing.bezier(0.22, 0.8, 0.36, 1);
 export function TextReveal({
   text = "Meet Acme Billing",
   fontSize = 72,
-  color = "#101828",
+  color,
   fontWeight = 600,
+  theme,
+  mode,
   initialScale = 2.3,
   introDuration = 6,
   holdDuration = 12,
@@ -552,6 +566,8 @@ export function TextReveal({
 }: TextRevealProps) {
   const frame = useCurrentFrame() * speed;
   const { width } = useVideoConfig();
+  const t = useSnapCnTheme(theme, mode);
+  const fill = color ?? t.foreground;
 
   // The lead word is centred in the frame while big, then lands at its natural
   // spot in the line. That needs the line's rendered width and where the lead
@@ -646,7 +662,7 @@ export function TextReveal({
           display: "inline-block",
           fontSize,
           fontWeight,
-          color,
+          color: fill,
           letterSpacing,
           lineHeight: 1.1,
           whiteSpace: "nowrap",

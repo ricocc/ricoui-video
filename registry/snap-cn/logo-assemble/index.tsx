@@ -9,6 +9,12 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
+import {
+  mixOklch,
+  type SnapCnTheme,
+  useSnapCnTheme,
+  withAlpha,
+} from "@/lib/snap-cn-ui";
 
 /**
  * A logo build: a single ring of image cards revolves around the centre, then
@@ -27,10 +33,17 @@ export interface LogoAssembleProps {
   images?: string[];
   /** How many cards ride the ring. */
   count?: number;
-  /** Backdrop color. */
+  /** Backdrop color. Overrides the design system's `background`. */
   background?: string;
   speed?: number;
   className?: string;
+  /** Design-system token overrides. */
+  theme?: Partial<SnapCnTheme>;
+  /**
+   * Defaults to `"dark"`: the shipped `logoSrc` is a white mark, so the stage
+   * has to be dark for it to read. Pass `"light"` with a dark logo asset.
+   */
+  mode?: "light" | "dark";
 }
 
 const FONT_FAMILY =
@@ -170,12 +183,20 @@ export function LogoAssemble({
   middleText = "Cinematic components\nfor React",
   images = DEFAULT_IMAGES,
   count = 10,
-  background = "#050505",
+  background,
   speed = 1,
   className,
+  theme,
+  mode,
 }: LogoAssembleProps) {
   const frame = useCurrentFrame() * speed;
   const { width, height } = useVideoConfig();
+  const t = useSnapCnTheme(theme, mode ?? "dark");
+  const stage = background ?? t.background;
+  // A shadow is cast in the dark direction whatever the mode, so it is walked
+  // from the stage toward black — not toward `foreground`, which is near-white
+  // in dark mode and would light the card from below instead of grounding it.
+  const cardShadow = withAlpha(mixOklch(stage, "#000", 0.75), 0.4);
   const cx = width / 2;
   const cy = height / 2;
   const short = Math.min(width, height);
@@ -211,7 +232,7 @@ export function LogoAssemble({
         position: "absolute",
         inset: 0,
         overflow: "hidden",
-        backgroundColor: background,
+        backgroundColor: stage,
         fontFamily: FONT_FAMILY,
         textRendering: "geometricPrecision",
       }}
@@ -238,7 +259,7 @@ export function LogoAssemble({
                 transform: `scale(${cScale})`,
                 overflow: "hidden",
                 borderRadius: 4,
-                boxShadow: "0 14px 34px rgba(0,0,0,0.4)",
+                boxShadow: `0 14px 34px ${cardShadow}`,
                 ...(isRendering ? {} : { willChange: "transform" as const }),
               }}
             >
@@ -271,7 +292,7 @@ export function LogoAssemble({
             justifyContent: "center",
             textAlign: "center",
             opacity: middleOp,
-            color: "#FFFFFF",
+            color: t.foreground,
             fontSize: Math.round(short * 0.04),
             fontWeight: 600,
             lineHeight: 1.2,
@@ -314,7 +335,7 @@ export function LogoAssemble({
             alignItems: "center",
             opacity: name.opacity,
             transform: `translateX(${name.dx}px)`,
-            color: "#FFFFFF",
+            color: t.foreground,
             fontSize: nameSize,
             fontWeight: 600,
             letterSpacing: "-0.02em",

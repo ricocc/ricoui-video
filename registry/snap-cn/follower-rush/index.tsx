@@ -11,6 +11,7 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
+import { type SnapCnTheme, useSnapCnTheme } from "@/lib/snap-cn-ui";
 
 const { fontFamily: FONT_FAMILY } = loadSans("normal", {
   weights: ["400", "500", "700", "800"],
@@ -34,8 +35,11 @@ export interface Follower {
 export interface FollowerRushProps {
   totalFollowers?: number;
   followers?: Follower[];
+  /** Overrides the design system's `primary`. */
   accentColor?: string;
-  theme?: "light" | "dark";
+  /** Design-system token overrides. */
+  theme?: Partial<SnapCnTheme>;
+  mode?: "light" | "dark";
   orientation?: "horizontal" | "vertical";
   speed?: number;
 }
@@ -48,22 +52,17 @@ interface Theme {
   avatarBg: string;
 }
 
-// Hex mirrors the shadcn design-system tokens (background/foreground/
-// mutedForeground/muted) so the pile-up drops into a shadcn project unchanged.
-const THEMES: Record<"light" | "dark", Theme> = {
-  light: {
-    bg: "#FFFFFF",
-    fg: "#101828",
-    fgMuted: "#667085",
-    avatarBg: "#EAECF0",
-  },
-  dark: {
-    bg: "#141417",
-    fg: "#FAFAFA",
-    fgMuted: "#A1A1AA",
-    avatarBg: "#26262B",
-  },
-};
+// The four surfaces this scene paints, taken from the design system rather
+// than mirrored as hex — so a user's own token overrides reach the pile-up
+// instead of stopping at a copy of the defaults.
+function paletteFrom(t: SnapCnTheme): Theme {
+  return {
+    bg: t.card,
+    fg: t.foreground,
+    fgMuted: t.mutedForeground,
+    avatarBg: t.muted,
+  };
+}
 
 /**
  * How many photos the sample crowd cycles through.
@@ -372,14 +371,17 @@ function FollowLine({
 export function FollowerRush({
   totalFollowers = 5000,
   followers = SAMPLE_FOLLOWERS,
-  accentColor = "#266DF0",
-  theme = "light",
+  accentColor,
+  theme,
+  mode,
   orientation = "horizontal",
   speed = 1,
 }: FollowerRushProps) {
   const frame = useCurrentFrame();
   const { width, height } = useVideoConfig();
-  const t = THEMES[theme] ?? THEMES.light;
+  const tokens = useSnapCnTheme(theme, mode);
+  const t = paletteFrom(tokens);
+  const accent = accentColor ?? tokens.primary;
   const pool = followers.length > 0 ? followers : SAMPLE_FOLLOWERS;
   const isVertical = orientation === "vertical";
 
@@ -532,7 +534,7 @@ export function FollowerRush({
               willChange,
             }}
           >
-            <PersonIcon color={accentColor} size={iconSize} />
+            <PersonIcon color={accent} size={iconSize} />
             <Avatar follower={pool[0]} size={D} ring={ring} theme={t} />
             <div style={{ marginLeft: iconGap * 0.6 }}>
               <FollowLine
@@ -540,7 +542,7 @@ export function FollowerRush({
                 others={0}
                 fontSize={fontSize}
                 theme={t}
-                accent={accentColor}
+                accent={accent}
               />
             </div>
           </div>
@@ -557,7 +559,7 @@ export function FollowerRush({
               opacity: iconOpacity * stackP,
             }}
           >
-            <PersonIcon color={accentColor} size={iconSize} />
+            <PersonIcon color={accent} size={iconSize} />
           </div>
         )}
 
@@ -634,7 +636,7 @@ export function FollowerRush({
             others={shownOthers}
             fontSize={fontSize}
             theme={t}
-            accent={accentColor}
+            accent={accent}
           />
         </div>
       </div>

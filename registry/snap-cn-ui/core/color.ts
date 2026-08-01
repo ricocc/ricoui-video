@@ -85,3 +85,17 @@ export function mixOklch(a: string, b: string, t: number): string {
 export function toCss(color: Rgb): string {
   return formatRgb(color);
 }
+
+/**
+ * A token at partial opacity — for scrims, veils and inner washes.
+ *
+ * A scrim written as a literal `rgba(0,0,0,0.4)` is lit for a light surface and
+ * does nothing on a dark one; `withAlpha(t.foreground, 0.4)` follows the theme
+ * and a user's override. Resolves through `parseColor`, so it inherits the same
+ * `var()` guard — an unresolvable token degrades to black rather than an
+ * invalid colour string mid-render.
+ */
+export function withAlpha(color: string, alpha: number): string {
+  const { r, g, b } = parseColor(color);
+  return formatRgb({ mode: "rgb", r, g, b, alpha });
+}

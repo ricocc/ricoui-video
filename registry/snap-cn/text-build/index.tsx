@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { Easing, interpolate, useCurrentFrame } from "remotion";
+import { type SnapCnTheme, useSnapCnTheme } from "@/lib/snap-cn-ui";
 
 export type TextBuildAxis = "x" | "y";
 
@@ -26,10 +27,14 @@ export interface TextBuildProps {
   /** Cubic-bezier easing for every move. */
   easing?: [number, number, number, number];
   fontSize?: number;
+  /** Overrides the design system's `foreground`. */
   color?: string;
   fontWeight?: number;
   speed?: number;
   className?: string;
+  /** Design-system token overrides. */
+  theme?: Partial<SnapCnTheme>;
+  mode?: "light" | "dark";
 }
 
 const FONT_FAMILY =
@@ -117,12 +122,16 @@ export function TextBuild({
   reflowBlur = 0.8,
   easing = [0.2, 0.8, 0.2, 1],
   fontSize = 72,
-  color = "#101828",
+  color,
   fontWeight = 600,
   speed = 1,
   className,
+  theme,
+  mode,
 }: TextBuildProps) {
   const frame = useCurrentFrame() * speed;
+  const t = useSnapCnTheme(theme, mode);
+  const fill = color ?? t.foreground;
 
   const defaults = AXIS_DEFAULTS[axis];
   const offset = entryOffset ?? defaults.entryOffset;
@@ -169,7 +178,7 @@ export function TextBuild({
           position: "relative",
           fontSize,
           fontWeight,
-          color,
+          color: fill,
           letterSpacing: "-0.03em",
           fontFamily: FONT_FAMILY,
           whiteSpace: "nowrap",

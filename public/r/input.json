@@ -7,8 +7,8 @@
     "remotion"
   ],
   "registryDependencies": [
-    "@snap-cn-ui/snap-cn-ui",
-    "@snap-cn-ui/caret"
+    "@snap-cn/snap-cn-ui",
+    "@snap-cn/caret"
   ],
   "files": [
     {

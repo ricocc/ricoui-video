@@ -8,6 +8,7 @@
  */
 
 import { describe, expect, it } from "vitest";
+import { defaultDarkTheme, defaultLightTheme } from "@/lib/snap-cn-ui";
 
 import {
   activeLineIndex,
@@ -15,7 +16,7 @@ import {
   type CaptionLine,
   emphasisIndices,
   fillProgress,
-  KARAOKE_PALETTES,
+  karaokePalette,
   LINE_FADE_FRAMES,
   linesFromCaptions,
   linesFromText,
@@ -171,14 +172,22 @@ describe("activeLineIndex", () => {
 });
 
 describe("design tokens", () => {
-  it("sweeps muted → ink in light theme", () => {
-    expect(KARAOKE_PALETTES.light.base).toBe("#667085");
-    expect(KARAOKE_PALETTES.light.fill).toBe("#101828");
+  it("sweeps muted → ink, taking both ends from the theme", () => {
+    const light = karaokePalette(defaultLightTheme);
+    expect(light.base).toBe(defaultLightTheme.mutedForeground);
+    expect(light.fill).toBe(defaultLightTheme.foreground);
   });
 
-  it("uses an rgba-white ramp in dark theme", () => {
-    expect(KARAOKE_PALETTES.dark.base).toMatch(/^rgba\(255,255,255/);
-    expect(KARAOKE_PALETTES.dark.fill).toBe("#FAFAFA");
+  it("follows the dark theme rather than a second hardcoded ramp", () => {
+    const dark = karaokePalette(defaultDarkTheme);
+    expect(dark.base).toBe(defaultDarkTheme.mutedForeground);
+    expect(dark.fill).toBe(defaultDarkTheme.foreground);
+    expect(dark.fill).not.toBe(karaokePalette(defaultLightTheme).fill);
+  });
+
+  it("carries a user's token override into the pill", () => {
+    const themed = karaokePalette({ ...defaultLightTheme, border: "#ABCDEF" });
+    expect(themed.pillBorder).toBe("#ABCDEF");
   });
 
   it("defines safe areas for all aspect presets", () => {

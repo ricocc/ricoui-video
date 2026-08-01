@@ -2,13 +2,22 @@
 
 import {
   Easing,
+  getRemotionEnvironment,
   Img,
   interpolate,
   interpolateColors,
   spring,
+  staticFile,
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
+import {
+  parseColor,
+  rgbToOklch,
+  type SnapCnTheme,
+  useSnapCnTheme,
+  withAlpha,
+} from "@/lib/snap-cn-ui";
 
 export type TextHighlightPreset =
   | "logo-wipe"
@@ -25,26 +34,28 @@ export interface TextHighlightSpringConfig {
 }
 
 /**
- * Convert a #RGB or #RRGGBB hex color to an rgba() string with the given
- * alpha. Non-hex inputs (named colors, rgb()…) are returned unchanged so the
- * marker falls back to an opaque fill instead of breaking.
+ * Rewrite root-relative assets through staticFile only while rendering.
+ *
+ * A page serves `/logo/mark.png` from `public/`; a Remotion bundle does not —
+ * it 404s, and `<Img>` turns that into a `cancelRender` that kills the whole
+ * render rather than showing a broken image. Same helper as `logo-flicker`,
+ * `logo-assemble` and `moodboard-reveal`; kept per-file on purpose, because a
+ * registry component has to stand alone in whatever project copies it.
  */
-export function hexToRgba(color: string, alpha: number): string {
-  const hex = color.trim().replace(/^#/, "");
-  if (!/^(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(hex)) {
-    return color;
+function resolveSrc(src: string): string {
+  const isLocal = src.startsWith("/") && !src.startsWith("//");
+  if (isLocal && getRemotionEnvironment().isRendering) {
+    return staticFile(src.replace(/^\/+/, ""));
   }
-  const full =
-    hex.length === 3
-      ? hex
-          .split("")
-          .map((c) => c + c)
-          .join("")
-      : hex;
-  const r = Number.parseInt(full.slice(0, 2), 16);
-  const g = Number.parseInt(full.slice(2, 4), 16);
-  const b = Number.parseInt(full.slice(4, 6), 16);
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  return src;
+}
+
+/** The lighter of two colours — a specular highlight follows the light, not the mode. */
+function lighterOf(a: string, b: string): string {
+  return (rgbToOklch(parseColor(a)).l ?? 0) >=
+    (rgbToOklch(parseColor(b)).l ?? 0)
+    ? a
+    : b;
 }
 
 /** Default line thickness for underline/strikethrough, derived from font size. */
@@ -215,8 +226,13 @@ export interface TextHighlightProps {
   highlight: string;
   after?: string;
   preset?: TextHighlightPreset;
+  /** Overrides the design system's `foreground`. */
   baseColor?: string;
+  /** Overrides the design system's `primary`. */
   accentColor?: string;
+  /** Design-system token overrides. */
+  theme?: Partial<SnapCnTheme>;
+  mode?: "light" | "dark";
   /**
    * Final color of the highlighted span. Defaults to `accentColor` for the
    * "color" and "strikethrough" presets and to `baseColor` otherwise.
@@ -239,7 +255,9 @@ export interface TextHighlightProps {
   /**
    * logo-wipe only: URL of a logo image, the easy way to pass a mark. Loaded
    * through Remotion's `<Img>`, so the frame waits for it instead of rendering a
-   * hole. Use `staticFile()` for an asset in your own `public/`.
+   * hole. A root-relative path (`/logo/mark.png`) is served by your dev server on
+   * a page and by `staticFile()` in a render — this resolves it for both, so you
+   * do not have to. An absolute URL is passed through untouched.
    *
    * The rush blows this up to fill the frame — around 40x. Ship art with the
    * resolution to survive that (a few hundred pixels will turn to mush), or an
@@ -332,15 +350,17 @@ export function TextHighlight({
   highlight,
   after = "",
   preset = "logo-wipe",
-  baseColor = "#101828",
-  accentColor = "#266DF0",
+  baseColor,
+  accentColor,
+  theme,
+  mode,
   highlightedTextColor,
   replaceWith,
   startAt = 6,
   drawDuration = 14,
   springConfig,
   thickness,
-  shineColor = "#FAFAFA",
+  shineColor,
   logo,
   logoSrc,
   logoScale = 1.05,
@@ -358,12 +378,16 @@ export function TextHighlight({
 }: TextHighlightProps) {
   const frame = useCurrentFrame() * speed;
   const { fps, width, height } = useVideoConfig();
+  const t = useSnapCnTheme(theme, mode);
+  const base = baseColor ?? t.foreground;
+  const accent = accentColor ?? t.primary;
+  // A gloss sweep is white light in both modes, so it takes whichever of the
+  // page's two extremes is actually the lighter one rather than a fixed token.
+  const shine = shineColor ?? lighterOf(t.card, t.foreground);
 
   const emphasisColor =
     highlightedTextColor ??
-    (preset === "color" || preset === "strikethrough"
-      ? accentColor
-      : baseColor);
+    (preset === "color" || preset === "strikethrough" ? accent : base);
   const lineThickness = thickness ?? defaultThickness(fontSize);
 
   // High-damping sweep (no bounce) shared by marker + underline.
@@ -377,7 +401,7 @@ export function TextHighlight({
   const textStyle: React.CSSProperties = {
     fontSize,
     fontWeight,
-    color: baseColor,
+    color: base,
     letterSpacing: "-0.02em",
     lineHeight: 1.25,
     fontFamily:
@@ -522,7 +546,7 @@ export function TextHighlight({
                 // The reference runs the wordmark from the accent into the base
                 // colour, left to right. Painted through the glyphs, so it moves
                 // with them and needs no second element.
-                backgroundImage: `linear-gradient(90deg, ${accentColor}, ${emphasisColor})`,
+                backgroundImage: `linear-gradient(90deg, ${accent}, ${emphasisColor})`,
                 backgroundClip: "text",
                 WebkitBackgroundClip: "text",
                 color: "transparent",
@@ -594,7 +618,7 @@ export function TextHighlight({
                   // in frame pixels — the mark pulls ahead of its own colour.
                   translate: `calc(-50% - ${swingPx - inkPx}px) -50%`,
                   borderRadius: "50%",
-                  background: coverColor ?? accentColor,
+                  background: coverColor ?? accent,
                   width: 2 * floodRadius,
                   height: 2 * floodRadius,
                 }}
@@ -622,7 +646,7 @@ export function TextHighlight({
                     // image has decoded. A bare <img> renders frame 0 as a hole
                     // and you find out from someone else's screenshot.
                     <Img
-                      src={logoSrc}
+                      src={resolveSrc(logoSrc)}
                       alt=""
                       style={{
                         display: "block",
@@ -636,7 +660,7 @@ export function TextHighlight({
                       }}
                     />
                   ) : (
-                    <SparkMark size={markSize} color={accentColor} />
+                    <SparkMark size={markSize} color={accent} />
                   ))}
               </div>
             </div>
@@ -656,7 +680,7 @@ export function TextHighlight({
           style={{
             position: "absolute",
             inset: "-0.02em -0.12em",
-            background: hexToRgba(accentColor, 0.16),
+            background: withAlpha(accent, 0.16),
             borderRadius: "0.12em",
             transformOrigin: "left center",
             transform: `scaleX(${sweep})`,
@@ -673,7 +697,7 @@ export function TextHighlight({
                 extrapolateRight: "clamp",
               }),
               [0, 1],
-              [baseColor, emphasisColor],
+              [base, emphasisColor],
             ),
           }}
         >
@@ -691,7 +715,7 @@ export function TextHighlight({
               extrapolateRight: "clamp",
             }),
             [0, 1],
-            [baseColor, emphasisColor],
+            [base, emphasisColor],
           ),
         }}
       >
@@ -709,7 +733,7 @@ export function TextHighlight({
                 extrapolateRight: "clamp",
               }),
               [0, 1],
-              [baseColor, emphasisColor],
+              [base, emphasisColor],
             ),
           }}
         >
@@ -723,7 +747,7 @@ export function TextHighlight({
             right: 0,
             bottom: "-0.06em",
             height: lineThickness,
-            background: accentColor,
+            background: accent,
             borderRadius: lineThickness / 2,
             transformOrigin: "left center",
             transform: `scaleX(${sweep})`,
@@ -768,7 +792,7 @@ export function TextHighlight({
                 [0, 100],
                 { extrapolateLeft: "clamp", extrapolateRight: "clamp" },
               )}%`,
-              background: accentColor,
+              background: accent,
               transform: "translateY(-50%)",
               borderRadius: lineThickness / 2,
             }}
@@ -810,7 +834,7 @@ export function TextHighlight({
             color: "transparent",
             backgroundClip: "text",
             WebkitBackgroundClip: "text",
-            backgroundImage: `linear-gradient(110deg, transparent 30%, ${shineColor} 50%, transparent 70%)`,
+            backgroundImage: `linear-gradient(110deg, transparent 30%, ${shine} 50%, transparent 70%)`,
             backgroundSize: "200% 100%",
             backgroundPosition: `${interpolate(
               frame,

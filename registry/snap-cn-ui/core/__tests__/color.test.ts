@@ -1,5 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { mixOklch, oklchToRgb, parseColor, rgbToOklch, toCss } from "../color";
+import {
+  mixOklch,
+  oklchToRgb,
+  parseColor,
+  rgbToOklch,
+  toCss,
+  withAlpha,
+} from "../color";
 
 function rgbOf(css: string): {
   r: number;
@@ -267,6 +274,24 @@ describe("toCss (culori formatRgb output)", () => {
       toCss({ mode: "rgb", r: 10 / 255, g: 20 / 255, b: 30 / 255, alpha: 0.5 }),
     );
     expect(Math.abs(reparsed.alpha! - 0.5)).toBeLessThanOrEqual(0.01);
+  });
+});
+
+describe("withAlpha", () => {
+  it("keeps the channels and replaces the alpha", () => {
+    const got = rgbOf(withAlpha("#266DF0", 0.4));
+    expectRgbClose(got, { r: 0x26 / 255, g: 0x6d / 255, b: 0xf0 / 255 }, TOL);
+    expect(Math.abs(got.alpha - 0.4)).toBeLessThanOrEqual(0.01);
+  });
+
+  it("overrides an alpha the source colour already carried", () => {
+    expect(rgbOf(withAlpha("rgba(0,0,0,0.9)", 0.2)).alpha).toBeCloseTo(0.2, 2);
+  });
+
+  it("resolves oklch tokens, so theme values work directly", () => {
+    const got = rgbOf(withAlpha("oklch(1 0 0)", 0.5));
+    expectRgbClose(got, { r: 1, g: 1, b: 1 }, TOL);
+    expect(Math.abs(got.alpha - 0.5)).toBeLessThanOrEqual(0.01);
   });
 });
 

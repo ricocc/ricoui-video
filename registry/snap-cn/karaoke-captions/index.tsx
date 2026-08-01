@@ -12,6 +12,7 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
+import { type SnapCnTheme, useSnapCnTheme, withAlpha } from "@/lib/snap-cn-ui";
 
 // The face the look is made of. Inter at 600 is a subtitle; a caption is a heavy
 // geometric grotesque carrying an outline.
@@ -68,7 +69,10 @@ export interface KaraokeCaptionsProps {
   text?: string;
   /** Comma-separated words of `text` to emphasize (case-insensitive). */
   emphasize?: string;
-  theme?: CaptionTheme;
+  /** Design-system token overrides. */
+  theme?: Partial<SnapCnTheme>;
+  /** Light or dark pill chrome. */
+  mode?: CaptionTheme;
   /** Color of emphasized words. */
   accentColor?: string;
   fontSize?: number;
@@ -159,32 +163,28 @@ export const KARAOKE_LOOKS: Record<KaraokePreset, KaraokeLook> = {
 /** Frames the line takes to rise/fade in and to fade out past `endFrame`. */
 export const LINE_FADE_FRAMES = 8;
 
-/** Per-theme sweep + pill palette (snap-cn design system). */
-export const KARAOKE_PALETTES: Record<
-  CaptionTheme,
-  {
-    base: string;
-    fill: string;
-    pillBg: string;
-    pillBorder: string;
-    pillShadow: string;
-  }
-> = {
-  light: {
-    base: "#667085",
-    fill: "#101828",
-    pillBg: "rgba(255,255,255,0.92)",
-    pillBorder: "#E4E7EC",
-    pillShadow: "0 8px 24px rgba(16,24,40,0.10)",
-  },
-  dark: {
-    base: "rgba(255,255,255,0.45)",
-    fill: "#FAFAFA",
-    pillBg: "rgba(20,20,23,0.78)",
-    pillBorder: "#26272B",
-    pillShadow: "0 8px 24px rgba(0,0,0,0.40)",
-  },
-};
+/**
+ * The pill's chrome, taken from the design system.
+ *
+ * A caption pill IS app chrome — a card floating over footage — so it follows
+ * the tokens. The burned-in type it carries does not: its accent, its outline
+ * and its white fill are the caption's look, and stay props.
+ */
+export function karaokePalette(t: SnapCnTheme): {
+  base: string;
+  fill: string;
+  pillBg: string;
+  pillBorder: string;
+  pillShadow: string;
+} {
+  return {
+    base: t.mutedForeground,
+    fill: t.foreground,
+    pillBg: withAlpha(t.card, 0.92),
+    pillBorder: t.border,
+    pillShadow: `0 8px 24px ${withAlpha(t.foreground, 0.1)}`,
+  };
+}
 
 /**
  * Aspect-ratio safe areas for social placements. Shared caption-block
@@ -421,7 +421,8 @@ export function KaraokeCaptions({
   text = "Acme reconciles every transaction automatically",
   emphasize = "automatically",
   preset = "boxed",
-  theme = "dark",
+  theme,
+  mode = "dark",
   accentColor = "#FFE81F",
   fontSize,
   fontWeight,
@@ -440,7 +441,8 @@ export function KaraokeCaptions({
   const { durationInFrames, fps, width, height } = useVideoConfig();
 
   const look = KARAOKE_LOOKS[preset] ?? KARAOKE_LOOKS.karaoke;
-  const palette = KARAOKE_PALETTES[theme] ?? KARAOKE_PALETTES.dark;
+  const t = useSnapCnTheme(theme, mode);
+  const palette = karaokePalette(t);
   const safeArea = CAPTION_SAFE_AREAS[aspect] ?? CAPTION_SAFE_AREAS.landscape;
 
   const shortSide = Math.min(width, height);

@@ -26,54 +26,81 @@ export interface SnapCnTheme {
   radius: number;
 }
 
-// Default tokens follow the snap-cn design system: a clean, dense,
-// professional light-first palette — white surfaces on a near-white page,
-// hairline cool-gray borders, deep slate text, and a single blue accent.
-// All values are concrete oklch (never `var()`) so `mixOklch` can
-// interpolate them under Remotion's headless renderer.
+/**
+ * The shadcn token set, as concrete values.
+ *
+ * ## These are a mirror of `app/globals.css`, and that is the whole point
+ *
+ * A component we ship lands next to somebody's `Button` and `Input`, and those
+ * paint from the CSS custom properties in `globals.css`. A scene that paints
+ * from a *different* set of greys is a scene that clashes with the app it was
+ * installed into — which is exactly what happened here: this file was written
+ * first, `globals.css` was later re-skinned warm, and for a while the site and
+ * the videos it sells were two different products.
+ *
+ * So every value below is the **literal string** from the corresponding
+ * `--token` in `app/globals.css` (`:root` for light, `.dark` for dark). Hex, not
+ * oklch, purely so that drift is a string comparison — if the two files ever
+ * disagree again, `pnpm run check:tokens` says so and prints the pairs.
+ *
+ * ## Why not just read `var(--token)`?
+ *
+ * Because a Remotion bundle has none of the app's CSS, so `var()` resolves to
+ * nothing under the headless renderer and cannot be interpolated by `mixOklch`
+ * at all (see the guard in `color.ts`). Concrete values are not a shortcut here,
+ * they are the only thing that survives a render. Users on a different palette
+ * override via `SnapCnUIProvider` or a component's `theme` prop.
+ *
+ * ## `radius` is the one value that flows the other way
+ *
+ * `globals.css` sets `--radius: 0.28rem` *so that* its `--radius-3xl` step lands
+ * on this 10 — see the note beside it there. It is not drift; do not "fix" it.
+ */
 export const defaultLightTheme: SnapCnTheme = {
-  background: "oklch(0.985 0 0)", // page bg — #FAFAFA
-  foreground: "oklch(0.21 0.034 263)", // text — #101828
-  card: "oklch(1 0 0)", // surface — #FFFFFF
-  cardForeground: "oklch(0.21 0.034 263)",
-  popover: "oklch(1 0 0)",
-  popoverForeground: "oklch(0.21 0.034 263)",
-  primary: "oklch(0.57 0.21 261)", // accent blue — #266DF0
-  primaryForeground: "oklch(1 0 0)",
-  secondary: "oklch(0.966 0.005 258)", // subtle fill — #F2F4F7
-  secondaryForeground: "oklch(0.21 0.034 263)",
-  muted: "oklch(0.966 0.005 258)",
-  mutedForeground: "oklch(0.544 0.035 265)", // muted text — #667085
-  accent: "oklch(0.966 0.005 258)", // hover wash — #F2F4F7
-  accentForeground: "oklch(0.21 0.034 263)",
-  destructive: "oklch(0.577 0.245 27.325)",
-  destructiveForeground: "oklch(1 0 0)",
-  border: "oklch(0.927 0.007 261)", // hairline — #E4E7EC
-  input: "oklch(0.927 0.007 261)",
-  ring: "oklch(0.57 0.21 261)", // accent blue — #266DF0
+  background: "#faf9f6", // page — warm off-white
+  foreground: "#141414", // text
+  card: "#ffffff", // surface on the page
+  cardForeground: "#141414",
+  popover: "#ffffff",
+  popoverForeground: "#141414",
+  primary: "#3577e0", // accent blue
+  primaryForeground: "#ffffff",
+  secondary: "#f2f0eb", // subtle fill
+  secondaryForeground: "#141414",
+  muted: "#f2f0eb",
+  mutedForeground: "#6e6a63", // secondary text, leading icons
+  accent: "#f2f0eb", // hover wash
+  accentForeground: "#141414",
+  destructive: "#d92d20",
+  // `globals.css` defines no --destructive-foreground; white is the only thing
+  // that reads on #d92d20, and shadcn's own default agrees.
+  destructiveForeground: "#ffffff",
+  border: "#d9d9d9", // hairline
+  input: "#d9d9d9",
+  ring: "#3577e0",
   radius: 10,
 };
 
 export const defaultDarkTheme: SnapCnTheme = {
-  background: "oklch(0.145 0.002 286)", // page bg — #0A0A0B
-  foreground: "oklch(0.985 0 0)", // text — #FAFAFA
-  card: "oklch(0.193 0.006 286)", // surface — #141417
-  cardForeground: "oklch(0.985 0 0)",
-  popover: "oklch(0.193 0.006 286)",
-  popoverForeground: "oklch(0.985 0 0)",
-  primary: "oklch(0.57 0.21 261)", // same accent blue — #266DF0
-  primaryForeground: "oklch(1 0 0)",
-  secondary: "oklch(0.273 0.007 275)", // subtle fill — #26272B
-  secondaryForeground: "oklch(0.985 0 0)",
-  muted: "oklch(0.273 0.007 275)",
-  mutedForeground: "oklch(0.712 0.013 286)", // muted text — #A1A1AA
-  accent: "oklch(0.273 0.007 275)", // hover wash — #26272B
-  accentForeground: "oklch(0.985 0 0)",
-  destructive: "oklch(0.704 0.191 22.216)",
-  destructiveForeground: "oklch(0.985 0 0)",
-  border: "oklch(0.273 0.007 275)", // hairline — #26272B
-  input: "oklch(0.273 0.007 275)",
-  ring: "oklch(0.57 0.21 261)", // same accent blue — #266DF0
+  background: "#0a0a0b", // page — near-black
+  foreground: "#fafafa", // text
+  card: "#141417", // surface, a shade above the page
+  cardForeground: "#fafafa",
+  popover: "#141417",
+  popoverForeground: "#fafafa",
+  primary: "#3577e0", // the same accent blue in both modes
+  primaryForeground: "#ffffff",
+  secondary: "#1d1d21", // subtle fill
+  secondaryForeground: "#fafafa",
+  muted: "#1b1b1f",
+  mutedForeground: "#a1a1aa", // secondary text, leading icons
+  accent: "#1d1d21", // hover wash
+  accentForeground: "#fafafa",
+  destructive: "#f97066",
+  destructiveForeground: "#fafafa",
+  border: "#26272b", // hairline — separation is borders, not shadows
+  input: "#26272b",
+  ring: "#3577e0",
   radius: 10,
 };
 

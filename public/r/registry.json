@@ -31,6 +31,9 @@
       "dependencies": [
         "remotion"
       ],
+      "registryDependencies": [
+        "@snap-cn/snap-cn-ui"
+      ],
       "files": [
         {
           "path": "registry/snap-cn/text-reveal/index.tsx",
@@ -46,6 +49,9 @@
       "description": "Animated emphasis on one span inside a static sentence — marker sweep, color shift, underline, strikethrough-replace, or shimmer.",
       "dependencies": [
         "remotion"
+      ],
+      "registryDependencies": [
+        "@snap-cn/snap-cn-ui"
       ],
       "files": [
         {
@@ -63,6 +69,9 @@
       "dependencies": [
         "remotion"
       ],
+      "registryDependencies": [
+        "@snap-cn/snap-cn-ui"
+      ],
       "files": [
         {
           "path": "registry/snap-cn/text-swap/index.tsx",
@@ -78,6 +87,9 @@
       "description": "A title reveal where the lead word floats toward the viewer and hangs there while the sentence assembles around it — each trailing word pushes in and its letters bounce up off the baseline in a wave — before the whole line falls back to size.",
       "dependencies": [
         "remotion"
+      ],
+      "registryDependencies": [
+        "@snap-cn/snap-cn-ui"
       ],
       "files": [
         {
@@ -95,6 +107,9 @@
       "dependencies": [
         "remotion"
       ],
+      "registryDependencies": [
+        "@snap-cn/snap-cn-ui"
+      ],
       "files": [
         {
           "path": "registry/snap-cn/text-build/index.tsx",
@@ -110,6 +125,9 @@
       "description": "A headline types itself out, then one word cycles on a 3D flip — it sinks into an anticipation dip, throws up and away about its baseline under motion blur, and the next word unfurls from below. The slot is reserved from the first keystroke, so nothing in the sentence ever reflows.",
       "dependencies": [
         "remotion"
+      ],
+      "registryDependencies": [
+        "@snap-cn/snap-cn-ui"
       ],
       "files": [
         {
@@ -128,6 +146,9 @@
         "remotion",
         "@remotion/google-fonts"
       ],
+      "registryDependencies": [
+        "@snap-cn/snap-cn-ui"
+      ],
       "files": [
         {
           "path": "registry/snap-cn/word-captions/index.tsx",
@@ -145,6 +166,9 @@
         "remotion",
         "@remotion/google-fonts"
       ],
+      "registryDependencies": [
+        "@snap-cn/snap-cn-ui"
+      ],
       "files": [
         {
           "path": "registry/snap-cn/karaoke-captions/index.tsx",
@@ -160,6 +184,9 @@
       "description": "A single ring of image cards revolves around a centred title, then spins inward and drains to the middle — giving birth to a simple logo that slides left as the brand name reveals to its right.",
       "dependencies": [
         "remotion"
+      ],
+      "registryDependencies": [
+        "@snap-cn/snap-cn-ui"
       ],
       "files": [
         {
@@ -177,6 +204,9 @@
       "dependencies": [
         "remotion"
       ],
+      "registryDependencies": [
+        "@snap-cn/snap-cn-ui"
+      ],
       "files": [
         {
           "path": "registry/snap-cn/logo-flicker/index.tsx",
@@ -192,6 +222,9 @@
       "description": "iPhone-style device frame with a dynamic island and a screen slot — flat or lightly 3D-tilted, with rise, rotate-in, or float entrances and a subtle float loop.",
       "dependencies": [
         "remotion"
+      ],
+      "registryDependencies": [
+        "@snap-cn/snap-cn-ui"
       ],
       "files": [
         {
@@ -209,6 +242,9 @@
       "dependencies": [
         "remotion"
       ],
+      "registryDependencies": [
+        "@snap-cn/snap-cn-ui"
+      ],
       "files": [
         {
           "path": "registry/snap-cn/laptop-frame/index.tsx",
@@ -224,6 +260,9 @@
       "description": "Terminal window with chunked command playback, freeze-frame pauses, step scrolling, and an optional cursor-pinned zoom camera.",
       "dependencies": [
         "remotion"
+      ],
+      "registryDependencies": [
+        "@snap-cn/snap-cn-ui"
       ],
       "files": [
         {
@@ -241,6 +280,9 @@
       "dependencies": [
         "@paper-design/shaders-react"
       ],
+      "registryDependencies": [
+        "@snap-cn/snap-cn-ui"
+      ],
       "files": [
         {
           "path": "registry/snap-cn/pulsing-border/index.tsx",
@@ -257,6 +299,9 @@
       "dependencies": [
         "remotion",
         "@remotion/google-fonts"
+      ],
+      "registryDependencies": [
+        "@snap-cn/snap-cn-ui"
       ],
       "files": [
         {
@@ -295,6 +340,9 @@
       "dependencies": [
         "remotion"
       ],
+      "registryDependencies": [
+        "@snap-cn/snap-cn-ui"
+      ],
       "files": [
         {
           "path": "registry/snap-cn/orbit-gallery/index.tsx",
@@ -310,6 +358,9 @@
       "description": "A kinetic headline with a swapping inline image, then a scattered gallery of photos flies in, the camera pushes through it as the background lifts from near-black to off-white, and it lands on a single hero image.",
       "dependencies": [
         "remotion"
+      ],
+      "registryDependencies": [
+        "@snap-cn/snap-cn-ui"
       ],
       "files": [
         {
@@ -382,6 +433,7 @@
           "target": "lib/snap-cn-ui/index.ts"
         }
       ],
+      "docs": "snap-cn components paint from a shadcn token set in lib/snap-cn-ui/theme.ts. Its defaults are shadcn's, so they will already sit correctly next to your Button and Input. To point them at your own palette instead, wrap your compositions in <SnapCnUIProvider theme={{ primary: '#...', ... }} mode=\"dark\">, or pass the same `theme`/`mode` props to a single component. Use concrete hex/oklch values, not var(--primary) — a Remotion render has none of your app's CSS.",
       "type": "registry:lib"
     },
     {
@@ -409,8 +461,8 @@
         "remotion"
       ],
       "registryDependencies": [
-        "@snap-cn-ui/snap-cn-ui",
-        "@snap-cn-ui/caret"
+        "@snap-cn/snap-cn-ui",
+        "@snap-cn/caret"
       ],
       "files": [
         {

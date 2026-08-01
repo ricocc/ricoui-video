@@ -11,6 +11,12 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
+import {
+  mixOklch,
+  type SnapCnTheme,
+  useSnapCnTheme,
+  withAlpha,
+} from "@/lib/snap-cn-ui";
 
 export type LaptopFrameEntrance = "rise" | "open" | "none";
 export type LaptopFrameFinale = "none" | "zoom-to-screen";
@@ -37,9 +43,16 @@ export interface LaptopFrameProps {
    */
   finale?: LaptopFrameFinale;
   /** Lid shell + deck base color. Space-grey by default. */
+  /** Lid colour. Defaults to a dark neutral from the design system. */
   bezelColor?: string;
   /** Screen fill behind the content. */
+  /** Screen fill behind `children`. Defaults to the theme's `card`. */
   screenColor?: string;
+  /** Design-system token overrides — applied to the screen's contents. */
+  theme?: Partial<SnapCnTheme>;
+  mode?: "light" | "dark";
+  /** Notch status indicator. The macOS system green is the look, not a token. */
+  indicatorColor?: string;
   /** rotateX of the lid at rest, in degrees (positive tips the top back). */
   restTilt?: number;
   /** Lid top-corner radius. The bottom corners stay near-square (the hinge). */
@@ -326,7 +339,7 @@ export function notchState(
  * filling the frame, not sit as a small card on empty canvas. Elements stagger
  * in during the open, then hold. Pass `imageSrc`/`children` to use your own.
  */
-function PlaceholderScreen({ frame }: { frame: number }) {
+function PlaceholderScreen({ frame, t }: { frame: number; t: SnapCnTheme }) {
   const rise = (delay: number) => {
     const r = interpolate(frame, [delay, delay + 14], [0, 1], {
       extrapolateLeft: "clamp",
@@ -341,8 +354,12 @@ function PlaceholderScreen({ frame }: { frame: number }) {
       style={{
         position: "absolute",
         inset: 0,
-        background: "linear-gradient(165deg, #FFFFFF 0%, #EEF1F8 100%)",
-        color: "#101828",
+        background: `linear-gradient(165deg, ${t.card} 0%, ${mixOklch(
+          t.card,
+          t.primary,
+          0.06,
+        )} 100%)`,
+        color: t.foreground,
         display: "flex",
         flexDirection: "column",
       }}
@@ -363,7 +380,11 @@ function PlaceholderScreen({ frame }: { frame: number }) {
               width: 24,
               height: 24,
               borderRadius: 7,
-              background: "linear-gradient(135deg, #266DF0, #1D5BD6)",
+              background: `linear-gradient(135deg, ${t.primary}, ${mixOklch(
+                t.primary,
+                t.foreground,
+                0.18,
+              )})`,
             }}
           />
           <span
@@ -374,7 +395,7 @@ function PlaceholderScreen({ frame }: { frame: number }) {
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
           {["Product", "Pricing", "Docs"].map((l) => (
-            <span key={l} style={{ fontSize: 13.5, color: "#667085" }}>
+            <span key={l} style={{ fontSize: 13.5, color: t.mutedForeground }}>
               {l}
             </span>
           ))}
@@ -382,8 +403,8 @@ function PlaceholderScreen({ frame }: { frame: number }) {
             style={{
               padding: "7px 14px",
               borderRadius: 8,
-              backgroundColor: "#101828",
-              color: "#FFFFFF",
+              backgroundColor: t.foreground,
+              color: t.background,
               fontSize: 13,
               fontWeight: 600,
             }}
@@ -413,11 +434,11 @@ function PlaceholderScreen({ frame }: { frame: number }) {
             gap: 7,
             padding: "5px 12px",
             borderRadius: 999,
-            border: "1px solid #E4E7EC",
-            backgroundColor: "#FFFFFF",
+            border: `1px solid ${t.border}`,
+            backgroundColor: t.card,
             fontSize: 12.5,
             fontWeight: 600,
-            color: "#266DF0",
+            color: t.primary,
             ...rise(12),
           }}
         >
@@ -426,7 +447,7 @@ function PlaceholderScreen({ frame }: { frame: number }) {
               width: 6,
               height: 6,
               borderRadius: 999,
-              backgroundColor: "#266DF0",
+              backgroundColor: t.primary,
             }}
           />
           Now in public beta
@@ -447,7 +468,7 @@ function PlaceholderScreen({ frame }: { frame: number }) {
           style={{
             fontSize: 16.5,
             lineHeight: 1.5,
-            color: "#667085",
+            color: t.mutedForeground,
             maxWidth: 440,
             ...rise(20),
           }}
@@ -460,11 +481,15 @@ function PlaceholderScreen({ frame }: { frame: number }) {
             style={{
               padding: "11px 20px",
               borderRadius: 10,
-              background: "linear-gradient(135deg, #266DF0, #1D5BD6)",
-              color: "#FFFFFF",
+              background: `linear-gradient(135deg, ${t.primary}, ${mixOklch(
+                t.primary,
+                t.foreground,
+                0.18,
+              )})`,
+              color: t.primaryForeground,
               fontSize: 14.5,
               fontWeight: 600,
-              boxShadow: "0 10px 24px rgba(38,109,240,0.32)",
+              boxShadow: `0 10px 24px ${withAlpha(t.primary, 0.32)}`,
             }}
           >
             Get started
@@ -473,8 +498,8 @@ function PlaceholderScreen({ frame }: { frame: number }) {
             style={{
               padding: "11px 20px",
               borderRadius: 10,
-              border: "1px solid #E4E7EC",
-              backgroundColor: "#FFFFFF",
+              border: `1px solid ${t.border}`,
+              backgroundColor: t.card,
               fontSize: 14.5,
               fontWeight: 600,
             }}
@@ -556,10 +581,15 @@ function Notch({
   frame,
   label,
   batteryLevel,
+  t,
+  indicatorColor,
 }: {
   frame: number;
   label: string;
   batteryLevel: number;
+  /** Resolved in dark mode — the notch is a dark pill whatever the app theme. */
+  t: SnapCnTheme;
+  indicatorColor: string;
 }) {
   const state = notchState(frame);
   const layer: CSSProperties = {
@@ -580,15 +610,21 @@ function Notch({
         width: state.width,
         height: NOTCH_HEIGHT,
         borderRadius: 999,
-        backgroundColor: "#0A0A0B",
+        backgroundColor: t.background,
         overflow: "hidden",
         zIndex: 10,
       }}
     >
       {/* idle — camera dot + sensor dot */}
       <div style={{ ...layer, gap: 6, opacity: state.idle }}>
-        <Dot size={9} color="#232327" style={{ border: "1px solid #34343A" }} />
-        <Dot size={5} color="#1A1A1E" />
+        <Dot
+          size={9}
+          color={mixOklch(t.background, t.foreground, 0.12)}
+          style={{
+            border: `1px solid ${mixOklch(t.background, t.foreground, 0.2)}`,
+          }}
+        />
+        <Dot size={5} color={mixOklch(t.background, t.foreground, 0.06)} />
       </div>
 
       {/* loading — three pulsing dots */}
@@ -597,7 +633,7 @@ function Notch({
           <Dot
             key={i}
             size={5}
-            color="#FFFFFF"
+            color={t.foreground}
             style={{
               opacity: 0.4 + 0.6 * (0.5 + 0.5 * Math.sin(frame / 4 - i * 0.9)),
             }}
@@ -612,7 +648,7 @@ function Notch({
             fontSize: 12,
             fontWeight: 500,
             letterSpacing: "-0.01em",
-            color: "#FFFFFF",
+            color: t.foreground,
             whiteSpace: "nowrap",
           }}
         >
@@ -623,7 +659,7 @@ function Notch({
             width: 22,
             height: 11,
             borderRadius: 3,
-            border: "1.5px solid #30D158",
+            border: `1.5px solid ${indicatorColor}`,
             padding: 1.5,
             display: "flex",
             alignItems: "center",
@@ -634,7 +670,7 @@ function Notch({
               width: `${Math.max(0, Math.min(100, batteryLevel))}%`,
               height: "100%",
               borderRadius: 1,
-              backgroundColor: "#30D158",
+              backgroundColor: indicatorColor,
             }}
           />
         </div>
@@ -648,11 +684,14 @@ export function LaptopFrame({
   screenSrc,
   entrance = "rise",
   finale = "none",
-  bezelColor = "#1D1D1F",
-  screenColor = "#FFFFFF",
+  bezelColor,
+  screenColor,
+  theme,
+  mode,
+  indicatorColor = "#30D158",
   restTilt = REST_TILT,
   radius = LID_RADIUS,
-  shadow = "0 40px 80px rgba(10,12,20,0.45)",
+  shadow,
   scale = 0.95,
   showNotch = true,
   notchLabel = "AirPods Connected",
@@ -663,6 +702,14 @@ export function LaptopFrame({
   className,
 }: LaptopFrameProps) {
   const frame = useCurrentFrame() * speed;
+  // The screen shows an app, so it follows the app theme. The lid, the notch
+  // and the drop shadow are a physical object photographed on a desk: they take
+  // the dark end of the system whatever mode the screen is in.
+  const t = useSnapCnTheme(theme, mode);
+  const shell = useSnapCnTheme(theme, "dark");
+  const lid = bezelColor ?? mixOklch(shell.background, shell.foreground, 0.09);
+  const glass = screenColor ?? t.card;
+  const drop = shadow ?? `0 40px 80px ${withAlpha(shell.background, 0.45)}`;
   const { fps, width, height } = useVideoConfig();
   const isRendering = getRemotionEnvironment().isRendering;
 
@@ -688,7 +735,7 @@ export function LaptopFrame({
     (screenSrc ? (
       <ScreenMedia src={screenSrc} frame={frame} />
     ) : (
-      <PlaceholderScreen frame={frame} />
+      <PlaceholderScreen frame={frame} t={t} />
     ));
 
   return (
@@ -737,7 +784,7 @@ export function LaptopFrame({
                 width: LID_WIDTH,
                 height: LID_HEIGHT,
                 borderRadius: `${radius}px ${radius}px 6px 6px`,
-                backgroundColor: bezelColor,
+                backgroundColor: lid,
                 padding: BEZEL_WIDTH,
                 transformOrigin: "center bottom",
                 transform: `rotateX(${tilt}deg)`,
@@ -753,7 +800,7 @@ export function LaptopFrame({
                     4,
                     radius - BEZEL_WIDTH,
                   )}px 4px 4px`,
-                  backgroundColor: screenColor,
+                  backgroundColor: glass,
                   overflow: "hidden",
                 }}
               >
@@ -761,6 +808,8 @@ export function LaptopFrame({
                 {showNotch && notchFade > 0 && (
                   <div style={{ opacity: notchFade }}>
                     <Notch
+                      t={shell}
+                      indicatorColor={indicatorColor}
                       frame={frame}
                       label={notchLabel}
                       batteryLevel={batteryLevel}
@@ -777,8 +826,14 @@ export function LaptopFrame({
                 width: DECK_WIDTH,
                 height: DECK_HEIGHT,
                 borderRadius: "6px 6px 40px 40px",
-                background: `linear-gradient(to bottom, rgba(255,255,255,0.16), rgba(0,0,0,0) 34%, rgba(0,0,0,0.34)), ${bezelColor}`,
-                ...(shadow === "" ? {} : { boxShadow: shadow }),
+                background: `linear-gradient(to bottom, ${withAlpha(
+                  shell.foreground,
+                  0.16,
+                )}, ${withAlpha(shell.background, 0)} 34%, ${withAlpha(
+                  shell.background,
+                  0.34,
+                )}), ${lid}`,
+                ...(shadow === "" ? {} : { boxShadow: drop }),
               }}
             >
               <div
@@ -790,7 +845,7 @@ export function LaptopFrame({
                   width: 132,
                   height: 8,
                   borderRadius: "0 0 6px 6px",
-                  backgroundColor: "rgba(0,0,0,0.28)",
+                  backgroundColor: withAlpha(shell.background, 0.28),
                 }}
               />
             </div>

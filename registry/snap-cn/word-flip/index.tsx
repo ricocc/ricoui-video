@@ -11,6 +11,7 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
+import { mixOklch, type SnapCnTheme, useSnapCnTheme } from "@/lib/snap-cn-ui";
 
 /**
  * Pure animation math for WordFlip. Everything above the component is
@@ -185,7 +186,11 @@ export interface WordFlipProps {
   words?: string[];
   /** Text after the flipping word. */
   suffix?: string;
-  /** Gradient painted on the flipping word, left to right. */
+  /**
+   * Gradient painted on the flipping word, left to right. Defaults to the
+   * design system's accent walked toward `destructive` — a two-stop ramp that
+   * follows a user's theme instead of a fixed blue-to-pink.
+   */
   gradient?: string[];
   /** Typing speed, characters per second. */
   cps?: number;
@@ -219,10 +224,14 @@ export interface WordFlipProps {
    */
   fontFamily?: string;
   fontSize?: number;
+  /** Overrides the design system's `foreground`. */
   color?: string;
   fontWeight?: number;
   speed?: number;
   className?: string;
+  /** Design-system token overrides. */
+  theme?: Partial<SnapCnTheme>;
+  mode?: "light" | "dark";
 }
 
 const FONT_FAMILY =
@@ -232,7 +241,7 @@ export function WordFlip({
   prefix = "Looking For A",
   words = ["Modern", "Stunning", "Minimal"],
   suffix = "Portfolio",
-  gradient = ["#2A8BF5", "#D382B0"],
+  gradient,
   cps = 9,
   typeStart = 4,
   charFade = 6,
@@ -248,13 +257,21 @@ export function WordFlip({
   perspective = 6.5,
   fontFamily = FONT_FAMILY,
   fontSize = 72,
-  color = "#101828",
+  color,
   fontWeight = 600,
   speed = 1,
   className,
+  theme,
+  mode,
 }: WordFlipProps) {
   const frame = useCurrentFrame() * speed;
   const { fps } = useVideoConfig();
+  const t = useSnapCnTheme(theme, mode);
+  const fill = color ?? t.foreground;
+  const stops = gradient ?? [
+    t.primary,
+    mixOklch(t.primary, t.destructive, 0.45),
+  ];
 
   const m = { ...DEFAULT_MOTION, ...motion };
 
@@ -360,7 +377,7 @@ export function WordFlip({
   const lineStyle: React.CSSProperties = {
     fontSize,
     fontWeight,
-    color,
+    color: fill,
     letterSpacing: "-0.02em",
     fontFamily,
     lineHeight: 1.25,
@@ -372,7 +389,7 @@ export function WordFlip({
   };
 
   const wordPaint: React.CSSProperties = {
-    backgroundImage: `linear-gradient(90deg, ${gradient.join(", ")})`,
+    backgroundImage: `linear-gradient(90deg, ${stops.join(", ")})`,
     WebkitBackgroundClip: "text",
     backgroundClip: "text",
     color: "transparent",
@@ -423,7 +440,7 @@ export function WordFlip({
           bottom: 0,
           width: Math.max(2, 0.055 * em),
           height: 0.78 * em,
-          background: color,
+          background: fill,
           opacity: blink,
           borderRadius: 1,
         }}

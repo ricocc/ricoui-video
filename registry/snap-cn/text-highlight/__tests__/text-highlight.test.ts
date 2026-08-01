@@ -1,33 +1,12 @@
 import { describe, expect, it } from "vitest";
 import {
   defaultThickness,
-  hexToRgba,
   inkReach,
   perspectiveScale,
   strikethroughPhases,
   swingGain,
   swingWorldX,
 } from "../index";
-
-describe("hexToRgba", () => {
-  it("converts 6-digit hex to rgba with the given alpha", () => {
-    expect(hexToRgba("#266DF0", 0.16)).toBe("rgba(38, 109, 240, 0.16)");
-  });
-
-  it("converts 3-digit hex to rgba", () => {
-    expect(hexToRgba("#fff", 0.5)).toBe("rgba(255, 255, 255, 0.5)");
-  });
-
-  it("handles hex without a leading hash", () => {
-    expect(hexToRgba("101828", 1)).toBe("rgba(16, 24, 40, 1)");
-  });
-
-  it("passes non-hex colors through unchanged", () => {
-    expect(hexToRgba("rebeccapurple", 0.16)).toBe("rebeccapurple");
-    expect(hexToRgba("rgb(1, 2, 3)", 0.16)).toBe("rgb(1, 2, 3)");
-    expect(hexToRgba("#12345", 0.16)).toBe("#12345");
-  });
-});
 
 describe("defaultThickness", () => {
   it("derives thickness as round(fontSize * 0.08)", () => {
@@ -64,7 +43,8 @@ describe("swingWorldX", () => {
     let prev = projected(0.001) - projected(0);
     for (let i = 2; i <= 400; i++) {
       const step = projected(i / 400) - projected((i - 1) / 400);
-      if (step !== 0 && prev !== 0 && Math.sign(step) !== Math.sign(prev)) turns++;
+      if (step !== 0 && prev !== 0 && Math.sign(step) !== Math.sign(prev))
+        turns++;
       if (step !== 0) prev = step;
     }
     expect(turns).toBe(1);

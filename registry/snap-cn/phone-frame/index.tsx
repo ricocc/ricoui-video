@@ -11,6 +11,7 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
+import { type SnapCnTheme, useSnapCnTheme, withAlpha } from "@/lib/snap-cn-ui";
 
 export type PhoneFrameVariant = "flat" | "tilt" | "showcase";
 export type PhoneFrameEntrance = "rise" | "rotate-in" | "float";
@@ -33,10 +34,13 @@ export interface PhoneFrameProps {
   variant?: PhoneFrameVariant;
   /** How the device enters the frame. */
   entrance?: PhoneFrameEntrance;
-  /** Device shell color. Use #26272B on dark scenes. */
+  /** Device shell color. Defaults to the theme's `foreground`. */
   bezelColor?: string;
-  /** Screen fill behind the children. */
+  /** Screen fill behind the children. Defaults to the theme's `card`. */
   screenColor?: string;
+  /** Design-system token overrides. */
+  theme?: Partial<SnapCnTheme>;
+  mode?: "light" | "dark";
   /** Outer body corner radius. Defaults to real-device curvature. */
   radius?: number;
   /** Screen corner radius. Defaults to `radius - bezel` (concentric corners). */
@@ -933,11 +937,13 @@ export function PhoneFrame({
   screenSrc,
   variant = "flat",
   entrance = "rise",
-  bezelColor = "#101828",
-  screenColor = "#FFFFFF",
+  bezelColor,
+  screenColor,
+  theme,
+  mode,
   radius,
   screenRadius,
-  shadow = "0 24px 60px rgba(16,24,40,0.18)",
+  shadow,
   scale = 1,
   showDynamicIsland = true,
   floatLoop = true,
@@ -948,6 +954,14 @@ export function PhoneFrame({
 }: PhoneFrameProps) {
   const frame = useCurrentFrame() * speed;
   const { fps, durationInFrames } = useVideoConfig();
+  // The screen carries the app, so it follows the app theme. The body and the
+  // Dynamic Island are a physical object: they take the dark end of the system
+  // whatever mode the screen is in.
+  const t = useSnapCnTheme(theme, mode);
+  const island = useSnapCnTheme(theme, "dark");
+  const body = bezelColor ?? t.foreground;
+  const glass = screenColor ?? t.card;
+  const drop = shadow ?? `0 24px 60px ${withAlpha(t.foreground, 0.18)}`;
 
   const bodyRadius = radius ?? deviceRadius(DEVICE_WIDTH);
   const innerRadius = screenRadius ?? screenRadiusFor(bodyRadius);
@@ -1007,9 +1021,9 @@ export function PhoneFrame({
                 width: DEVICE_WIDTH,
                 height: DEVICE_HEIGHT,
                 borderRadius: bodyRadius,
-                backgroundColor: bezelColor,
+                backgroundColor: body,
                 padding: BEZEL_WIDTH,
-                ...(shadow === "" ? {} : { boxShadow: shadow }),
+                ...(shadow === "" ? {} : { boxShadow: drop }),
               }}
             >
               {/* Side buttons */}
@@ -1023,7 +1037,7 @@ export function PhoneFrame({
                     width: 3,
                     height: button.length,
                     borderRadius: 2,
-                    backgroundColor: bezelColor,
+                    backgroundColor: body,
                   }}
                 />
               ))}
@@ -1035,7 +1049,7 @@ export function PhoneFrame({
                   width: "100%",
                   height: "100%",
                   borderRadius: innerRadius,
-                  backgroundColor: screenColor,
+                  backgroundColor: glass,
                   overflow: "hidden",
                 }}
               >
@@ -1057,7 +1071,7 @@ export function PhoneFrame({
                       width: 90,
                       height: 26,
                       borderRadius: 999,
-                      backgroundColor: "#0A0A0B",
+                      backgroundColor: island.background,
                       zIndex: 10,
                       display: "flex",
                       alignItems: "center",
@@ -1071,8 +1085,8 @@ export function PhoneFrame({
                         width: 9,
                         height: 9,
                         borderRadius: 999,
-                        backgroundColor: "#1C1C1F",
-                        border: "1px solid #26272B",
+                        backgroundColor: island.card,
+                        border: `1px solid ${island.border}`,
                       }}
                     />
                   </div>

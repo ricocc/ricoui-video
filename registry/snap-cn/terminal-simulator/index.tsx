@@ -7,6 +7,12 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
+import {
+  mixOklch,
+  type SnapCnTheme,
+  useSnapCnTheme,
+  withAlpha,
+} from "@/lib/snap-cn-ui";
 
 export type TerminalLineType = "command" | "log" | "success" | "error";
 
@@ -53,9 +59,15 @@ export interface TerminalSimulatorProps {
    */
   command?: CommandSpec | null;
   /** Command-panel surface color. */
+  /** Overrides the design system's `card`. */
   background?: string;
   /** Hairline border color for the command-panel ring and divider. */
+  /** Overrides the design system's `border`. */
   borderColor?: string;
+  /** Design-system token overrides. */
+  theme?: Partial<SnapCnTheme>;
+  /** Defaults to `"dark"` — a terminal is lit for dark. */
+  mode?: "light" | "dark";
   fontSize?: number;
   /**
    * Reveal speed. The reveal is CHUNKED — every `1 / charsPerFrame` frames
@@ -79,8 +91,9 @@ export interface TerminalSimulatorProps {
 // edge — the camera pans/zooms between three fixed stations on a single black
 // canvas, exactly like a camera-type-flythrough.
 
-/** One constant background across the whole flythrough. */
-const STAGE_BG = "#050507";
+// The stage, the panel and the tab row are app chrome and come from the design
+// system. The syntax palette below is the terminal's own colour scheme — the
+// look, not chrome — and stays literal, exposed through props.
 
 /** Station anchors in world px (world is sized for a 1280x720 viewport). */
 const INTRO_POS = { x: 640, y: 360 };
@@ -115,14 +128,11 @@ const LEAD_IN_FRAMES = 10;
 
 /** Accent gradient for `*emphasized*` intro words. */
 const ACCENT_GRADIENT = "linear-gradient(90deg, #7C96FF 0%, #A78BFA 100%)";
-const INTRO_PLAIN_COLOR = "#E8EAEE";
 
 /** Command-row syntax palette: dim manager/subcommand, highlighted args. */
 const CMD_MANAGER_COLOR = "#A0673F";
 const CMD_SUBCOMMAND_COLOR = "#64789B";
 const CMD_ARG_COLOR = "#D7E4F8";
-const CMD_TAB_ACTIVE = "#F5F6F7";
-const CMD_TAB_INACTIVE = "#6E7480";
 
 /** Focus-terminal palette. */
 const TERM_ACCENT = "#2EA043";
@@ -294,15 +304,6 @@ export function commandSpans(
   return out;
 }
 
-/** Overlay an alpha on a `#RRGGBB` colour → `rgba(...)`. */
-export function hexAlpha(hex: string, alpha: number): string {
-  const h = hex.replace("#", "");
-  const r = Number.parseInt(h.slice(0, 2), 16);
-  const g = Number.parseInt(h.slice(2, 4), 16);
-  const b = Number.parseInt(h.slice(4, 6), 16);
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-}
-
 // ─── Camera ──────────────────────────────────────────────────────────────────
 
 export interface CameraStop {
@@ -439,8 +440,10 @@ export function TerminalSimulator({
   lines = DEFAULT_LINES,
   intro = DEFAULT_INTRO,
   command = DEFAULT_COMMAND,
-  background = "#141417",
-  borderColor = "#26272B",
+  background,
+  borderColor,
+  theme,
+  mode,
   fontSize = 18,
   charsPerFrame = 2,
   chunkSize = 3,
@@ -451,6 +454,12 @@ export function TerminalSimulator({
   const frame = useCurrentFrame() * speed;
   const { fps, width, height } = useVideoConfig();
   const { isRendering } = getRemotionEnvironment();
+  const t = useSnapCnTheme(theme, mode ?? "dark");
+  const panel = background ?? t.card;
+  const hairline = borderColor ?? t.border;
+  // One constant stage across the whole flythrough — the page, a shade under
+  // the panel that floats on it.
+  const stage = mixOklch(t.background, "#000", 0.35);
 
   const hasIntro = intro != null && intro.trim().length > 0;
   const hasCommand = command != null && command.text.trim().length > 0;
@@ -473,8 +482,10 @@ export function TerminalSimulator({
       intro={hasIntro ? intro : null}
       command={hasCommand ? command : null}
       lines={lines}
-      background={background}
-      borderColor={borderColor}
+      background={panel}
+      borderColor={hairline}
+      ink={t.foreground}
+      inkMuted={t.mutedForeground}
       fontSize={fontSize}
       charsPerFrame={charsPerFrame}
       chunkSize={chunkSize}
@@ -489,7 +500,7 @@ export function TerminalSimulator({
         position: "absolute",
         inset: 0,
         overflow: "hidden",
-        background: STAGE_BG,
+        background: stage,
         textRendering: "geometricPrecision",
       }}
     >
@@ -542,6 +553,8 @@ function WorldContent({
   lines,
   background,
   borderColor,
+  ink,
+  inkMuted,
   fontSize,
   charsPerFrame,
   chunkSize,
@@ -554,6 +567,8 @@ function WorldContent({
   lines: TerminalLine[];
   background: string;
   borderColor: string;
+  ink: string;
+  inkMuted: string;
   fontSize: number;
   charsPerFrame: number;
   chunkSize: number;
@@ -564,7 +579,7 @@ function WorldContent({
   return (
     <div style={{ position: "absolute", left: 0, top: 0 }}>
       {intro !== null && (
-        <IntroStation frame={frame} text={intro} fontScale={s} />
+        <IntroStation frame={frame} text={intro} fontScale={s} ink={ink} />
       )}
       {command !== null && (
         <CommandStation
@@ -572,6 +587,8 @@ function WorldContent({
           command={command}
           background={background}
           borderColor={borderColor}
+          ink={ink}
+          inkMuted={inkMuted}
           fontScale={s}
           charsPerFrame={charsPerFrame}
           chunkSize={chunkSize}
@@ -599,10 +616,12 @@ function IntroStation({
   frame,
   text,
   fontScale,
+  ink,
 }: {
   frame: number;
   text: string;
   fontScale: number;
+  ink: string;
 }) {
   const tokens = parseIntro(text);
   return (
@@ -632,7 +651,7 @@ function IntroStation({
               backgroundClip: "text" as const,
               color: "transparent",
             }
-          : { color: INTRO_PLAIN_COLOR };
+          : { color: ink };
         return (
           <span
             // biome-ignore lint/suspicious/noArrayIndexKey: positional tokens
@@ -653,6 +672,8 @@ function CommandStation({
   command,
   background,
   borderColor,
+  ink,
+  inkMuted,
   fontScale,
   charsPerFrame,
   chunkSize,
@@ -663,6 +684,8 @@ function CommandStation({
   command: CommandSpec;
   background: string;
   borderColor: string;
+  ink: string;
+  inkMuted: string;
   fontScale: number;
   charsPerFrame: number;
   chunkSize: number;
@@ -694,7 +717,10 @@ function CommandStation({
         background,
         borderRadius: 14,
         overflow: "hidden",
-        boxShadow: `0 0 0 1px ${borderColor}, 0 30px 60px rgba(0,0,0,0.55)`,
+        boxShadow: `0 0 0 1px ${borderColor}, 0 30px 60px ${withAlpha(
+          mixOklch(background, "#000", 0.8),
+          0.55,
+        )}`,
         fontFamily: MONO_FAMILY,
       }}
     >
@@ -717,8 +743,8 @@ function CommandStation({
               fontWeight: i === 0 ? 600 : 500,
               padding: "7px 14px",
               borderRadius: 8,
-              color: i === 0 ? CMD_TAB_ACTIVE : CMD_TAB_INACTIVE,
-              background: i === 0 ? "rgba(255,255,255,0.1)" : "transparent",
+              color: i === 0 ? ink : inkMuted,
+              background: i === 0 ? withAlpha(ink, 0.1) : "transparent",
             }}
           >
             {m}
@@ -804,7 +830,7 @@ function TerminalStation({
           width: 5,
           height: 1040,
           background: TERM_ACCENT,
-          boxShadow: `0 0 22px ${hexAlpha(TERM_ACCENT, 0.75)}`,
+          boxShadow: `0 0 22px ${withAlpha(TERM_ACCENT, 0.75)}`,
         }}
       />
       {/* Output column */}

@@ -18,17 +18,30 @@ from the design system, or they come from a primitive that already solved it.
 
 ## Rule 1 — the tokens are the source of truth
 
-`registry/snap-cn-ui/core/theme.ts` is a stock shadcn token set (`SnapCnTheme`):
+`registry/snap-cn-ui/core/theme.ts` is a shadcn token set (`SnapCnTheme`), and it
+is a **mirror of `app/globals.css`** — the same values the site's
+`components/ui/*` paint from. That is not a coincidence to be maintained by hand:
+`pnpm run check:tokens` fails the moment the two disagree. It exists because they
+*did* disagree, for long enough that the site was warm and the videos it sells
+were cool.
 
 | token | light | what it is |
 | --- | --- | --- |
-| `background` | `#FAFAFA` | the page |
-| `card` | `#FFFFFF` | a surface **on** the page |
-| `foreground` | `#101828` | text (deep slate — **not** `#000`) |
-| `mutedForeground` | `#667085` | secondary text, leading icons |
-| `border` / `input` | `#E4E7EC` | hairline |
-| `ring` / `primary` | `#266DF0` | focus, accent |
+| `background` | `#faf9f6` | the page (warm off-white — **not** `#fff`) |
+| `card` | `#ffffff` | a surface **on** the page |
+| `foreground` | `#141414` | text (**not** `#000`) |
+| `mutedForeground` | `#6e6a63` | secondary text, leading icons |
+| `border` / `input` | `#d9d9d9` | hairline |
+| `ring` / `primary` | `#3577e0` | focus, accent |
 | `radius` | `10` | controls |
+
+Dark is the `.dark` block of the same file (`#0a0a0b` page, `#141417` card,
+`#26272b` hairline, the same `#3577e0`).
+
+**Never edit this table or `theme.ts` on its own.** A token changes in
+`globals.css` first, because that is what the shadcn components obey; `theme.ts`
+follows, and `check:tokens` proves it did. The one exception runs the other way:
+`--radius: 0.28rem` is set so its `--radius-3xl` step lands on this `10`.
 
 Resolve them with the hook, never by importing the object:
 
@@ -82,8 +95,8 @@ under a field that size is a grey smear on a light page, full stop.
 border, and the border does the whole job:
 
 ```tsx
-background: t.card,                          // #FFFFFF
-border: `1px solid ${ui.idleBorder}`,        // #E4E7EC
+background: t.card,                          // #ffffff
+border: `1px solid ${ui.idleBorder}`,        // #d9d9d9
 boxShadow: "none",
 ```
 
@@ -100,7 +113,7 @@ a property of the component. If you want the lit surface, ship it as an opt-in
 Having killed the shadow, the border was next: *"border is very light."* It was —
 and the token was not wrong, the **scale** was.
 
-`#E4E7EC` at `1px` is a hairline on a **40px** control: 2.5% of its height. Put the
+`#d9d9d9` at `1px` is a hairline on a **40px** control: 2.5% of its height. Put the
 identical border on a 190px hero field and it is 0.5% of its height, and it all but
 vanishes. A token carries a weight *relative to the thing it edges*.
 

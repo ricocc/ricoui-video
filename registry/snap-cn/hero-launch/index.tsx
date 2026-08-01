@@ -14,6 +14,12 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
+import {
+  mixOklch,
+  type SnapCnTheme,
+  useSnapCnTheme,
+  withAlpha,
+} from "@/lib/snap-cn-ui";
 
 const { fontFamily: SANS } = loadInter("normal", {
   weights: ["500", "600", "700"],
@@ -31,15 +37,24 @@ export interface HeroLaunchProps {
   image1?: string;
   /** Right card media (same rules as `image1`). */
   image2?: string;
+  /** Design-system token overrides. */
+  theme?: Partial<SnapCnTheme>;
+  /** Defaults to `"dark"` — the scene is a cinematic stage, lit for dark. */
+  mode?: "light" | "dark";
 }
 
-const BG = "#050505";
 const PERSP = 1000;
 // Pure rotateY about each card's INNER edge — no rotateX, so the inner edges
 // stay vertical and the centre gap is a clean, even channel top-to-bottom.
 const TILT = 17;
 const GAP = 92;
-const PLACEHOLDER = "linear-gradient(135deg,#2a2a2e,#0b0b0d)";
+/** Stand-in for missing media — the page lifted a shade, not a fixed grey. */
+const placeholder = (t: SnapCnTheme) =>
+  `linear-gradient(135deg,${mixOklch(t.background, t.card, 0.55)},${mixOklch(
+    t.background,
+    t.card,
+    0.2,
+  )})`;
 
 // Sample product-reveal clips (Next serves public/ at /). Each card plays a
 // video via <OffthreadVideo>; the viewer swaps these for their own media.
@@ -95,7 +110,7 @@ function HeroImage({ src, style }: { src: string; style: CSSProperties }) {
 }
 
 /** Fills a card edge-to-edge with an image, a video, or a gradient. */
-function CardMedia({ src }: { src: string }) {
+function CardMedia({ src, t }: { src: string; t: SnapCnTheme }) {
   const media: CSSProperties = {
     position: "absolute",
     inset: 0,
@@ -103,7 +118,7 @@ function CardMedia({ src }: { src: string }) {
     height: "100%",
     objectFit: "cover",
   };
-  const effective = src || PLACEHOLDER;
+  const effective = src || placeholder(t);
   if (isGradient(effective)) {
     return <div style={{ ...media, background: effective }} />;
   }
@@ -133,9 +148,12 @@ export function HeroLaunch({
   heading = "npx shadcn add @snap-cn",
   image1 = SHOWCASE[0],
   image2 = SHOWCASE[1],
+  theme,
+  mode,
 }: HeroLaunchProps) {
   const frame = useCurrentFrame();
   const { width, height } = useVideoConfig();
+  const t = useSnapCnTheme(theme, mode ?? "dark");
   const s = height / 720;
 
   const cardW = 1000 * s;
@@ -220,20 +238,20 @@ export function HeroLaunch({
   });
 
   return (
-    <AbsoluteFill style={{ backgroundColor: BG, fontFamily: SANS }}>
+    <AbsoluteFill style={{ backgroundColor: t.background, fontFamily: SANS }}>
       <AbsoluteFill style={{ transform: `translateY(${groupY}px)` }}>
         <div style={cardBox(leftX, leftOpacity)}>
           <div style={zoom(leftScale)}>
             {/* inner edge = right edge → pivot at 100% 50% */}
             <div style={tilt(leftDeg, "100% 50%")}>
-              <ImageCard s={s} src={image1} />
+              <ImageCard s={s} src={image1} t={t} />
             </div>
           </div>
         </div>
         <div style={cardBox(rightX, rightOpacity)}>
           {/* inner edge = left edge → pivot at 0% 50% */}
           <div style={tilt(TILT, "0% 50%")}>
-            <ImageCard s={s} src={image2} />
+            <ImageCard s={s} src={image2} t={t} />
           </div>
         </div>
       </AbsoluteFill>
@@ -241,13 +259,19 @@ export function HeroLaunch({
       {/* Wide, clean edge dissolve — fades in after the full-screen opening. */}
       <AbsoluteFill style={{ opacity: vignette, pointerEvents: "none" }}>
         <div
-          style={fade(`linear-gradient(to left, ${BG} 0%, transparent 30%)`)}
+          style={fade(
+            `linear-gradient(to left, ${t.background} 0%, transparent 30%)`,
+          )}
         />
         <div
-          style={fade(`linear-gradient(to right, ${BG} 0%, transparent 22%)`)}
+          style={fade(
+            `linear-gradient(to right, ${t.background} 0%, transparent 22%)`,
+          )}
         />
         <div
-          style={fade(`linear-gradient(to top, ${BG} 0%, transparent 30%)`)}
+          style={fade(
+            `linear-gradient(to top, ${t.background} 0%, transparent 30%)`,
+          )}
         />
       </AbsoluteFill>
 
@@ -259,7 +283,7 @@ export function HeroLaunch({
           top: 0.22 * height,
           padding: `0 ${40 * s}px`,
           textAlign: "center",
-          color: "#fff",
+          color: t.foreground,
           fontWeight: 600,
           letterSpacing: "-0.02em",
           fontSize: 42 * s,
@@ -275,7 +299,7 @@ export function HeroLaunch({
 }
 
 /** A single card: one image (or video/gradient) filling it edge-to-edge. */
-function ImageCard({ s, src }: { s: number; src: string }) {
+function ImageCard({ s, src, t }: { s: number; src: string; t: SnapCnTheme }) {
   return (
     <div
       style={{
@@ -284,20 +308,25 @@ function ImageCard({ s, src }: { s: number; src: string }) {
         height: "100%",
         overflow: "hidden",
         borderRadius: 30 * s,
-        background: "#0b0b0d",
+        background: mixOklch(t.background, t.card, 0.35),
         // Drop shadow + a subtle inset hairline ring so the edge reads on both
         // dark and bright media without dominating.
-        boxShadow: `0 ${20 * s}px ${52 * s}px -${28 * s}px rgba(0,0,0,0.9), inset 0 0 0 1px rgba(255,255,255,0.22)`,
+        boxShadow: `0 ${20 * s}px ${52 * s}px -${28 * s}px ${withAlpha(
+          mixOklch(t.background, "#000", 0.75),
+          0.9,
+        )}, inset 0 0 0 1px ${withAlpha(t.foreground, 0.22)}`,
       }}
     >
-      <CardMedia src={src} />
+      <CardMedia src={src} t={t} />
       {/* subtle depth: darken the lower edge + a hairline top sheen */}
       <div
         style={{
           position: "absolute",
           inset: 0,
-          background:
-            "linear-gradient(to top, rgba(0,0,0,0.28) 0%, transparent 32%)",
+          background: `linear-gradient(to top, ${withAlpha(
+            mixOklch(t.background, "#000", 0.75),
+            0.28,
+          )} 0%, transparent 32%)`,
         }}
       />
       <div
@@ -307,8 +336,10 @@ function ImageCard({ s, src }: { s: number; src: string }) {
           right: 26 * s,
           top: 0,
           height: 1,
-          background:
-            "linear-gradient(90deg,transparent,rgba(255,255,255,0.5),transparent)",
+          background: `linear-gradient(90deg,transparent,${withAlpha(
+            t.foreground,
+            0.5,
+          )},transparent)`,
         }}
       />
     </div>

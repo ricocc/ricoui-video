@@ -9,6 +9,7 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
+import { type SnapCnTheme, useSnapCnTheme } from "@/lib/snap-cn-ui";
 
 /**
  * A Marvel-Studios-style flicker reveal: images flip full-screen at a constant
@@ -25,10 +26,17 @@ export interface LogoFlickerProps {
   images?: string[];
   /** Frames each image holds — the (constant) flip speed. */
   flipInterval?: number;
-  /** Backdrop color. */
+  /** Backdrop color. Overrides the design system's `background`. */
   background?: string;
   speed?: number;
   className?: string;
+  /** Design-system token overrides. */
+  theme?: Partial<SnapCnTheme>;
+  /**
+   * Defaults to `"dark"`: the shipped `logoSrc` is a white mark, so the stage
+   * has to be dark for it to read. Pass `"light"` with a dark logo asset.
+   */
+  mode?: "light" | "dark";
 }
 
 const FONT_FAMILY =
@@ -104,12 +112,16 @@ export function LogoFlicker({
   brandName = "snap-cn",
   images = DEFAULT_IMAGES,
   flipInterval = FLIP_INTERVAL,
-  background = "#050505",
+  background,
   speed = 1,
   className,
+  theme,
+  mode,
 }: LogoFlickerProps) {
   const frame = useCurrentFrame() * speed;
   const { width, height } = useVideoConfig();
+  const t = useSnapCnTheme(theme, mode ?? "dark");
+  const stage = background ?? t.background;
   const short = Math.min(width, height);
   const isRendering = getRemotionEnvironment().isRendering;
 
@@ -128,7 +140,7 @@ export function LogoFlicker({
         position: "absolute",
         inset: 0,
         overflow: "hidden",
-        backgroundColor: background,
+        backgroundColor: stage,
         fontFamily: FONT_FAMILY,
         textRendering: "geometricPrecision",
       }}
@@ -177,7 +189,7 @@ export function LogoFlicker({
           />
           <div
             style={{
-              color: "#FFFFFF",
+              color: t.foreground,
               fontSize: nameSize,
               fontWeight: 600,
               letterSpacing: "-0.02em",

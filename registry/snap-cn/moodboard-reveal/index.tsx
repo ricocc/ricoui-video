@@ -11,6 +11,7 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
+import { type SnapCnTheme, useSnapCnTheme, withAlpha } from "@/lib/snap-cn-ui";
 
 /**
  * A "moodboard reveal": a kinetic headline with a swapping inline image, then a
@@ -31,10 +32,15 @@ export interface MoodboardRevealProps {
   images?: string[];
   /** The image the montage lands on. Defaults to `images[3]`. */
   heroImage?: string;
-  /** Near-black start background. */
+  /** Near-black start background. Defaults to the dark theme's `background`. */
   darkColor?: string;
-  /** Off-white end background. */
+  /** Off-white end background. Defaults to the light theme's `background`. */
   lightColor?: string;
+  /**
+   * Design-system token overrides. Applied to both ends of the crossfade —
+   * this scene spans light and dark, so it takes no `mode`.
+   */
+  theme?: Partial<SnapCnTheme>;
   speed?: number;
   className?: string;
 }
@@ -306,20 +312,34 @@ export function MoodboardReveal({
   tailIn = "out AI.",
   images = DEFAULT_IMAGES,
   heroImage,
-  darkColor = "#0A0A0A",
-  lightColor = "#E7E7E7",
+  darkColor,
+  lightColor,
+  theme,
   speed = 1,
   className,
 }: MoodboardRevealProps) {
   const frame = useCurrentFrame() * speed;
   const { width, height } = useVideoConfig();
+  // The scene crossfades a dark page into a light one, so it needs both ends of
+  // the system at once rather than one resolved mode. Both still take a user's
+  // `theme` override.
+  const dark = useSnapCnTheme(theme, "dark");
+  const light = useSnapCnTheme(theme, "light");
   const cx = width / 2;
   const cy = height / 2;
 
   const bg = bgProgress(frame);
-  const bgColor = interpolateColors(bg, [0, 1], [darkColor, lightColor]);
+  const bgColor = interpolateColors(
+    bg,
+    [0, 1],
+    [darkColor ?? dark.background, lightColor ?? light.background],
+  );
+  // The marker is always the opposite page: light ink on the dark half, dark on
+  // the light one.
   const markerColor =
-    bg < 0.5 ? "rgba(240,240,240,0.55)" : "rgba(20,20,20,0.5)";
+    bg < 0.5
+      ? withAlpha(light.background, 0.55)
+      : withAlpha(dark.background, 0.5);
   const hero = heroImage ?? images[3] ?? images[0];
 
   // ── Intro sentence ──────────────────────────────────────────────────────────
@@ -355,8 +375,10 @@ export function MoodboardReveal({
           position: "absolute",
           inset: 0,
           opacity: 1 - bg,
-          backgroundImage:
-            "radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1.5px)",
+          backgroundImage: `radial-gradient(circle, ${withAlpha(
+            light.background,
+            0.07,
+          )} 1px, transparent 1.5px)`,
           backgroundSize: "20px 20px",
         }}
       />
@@ -372,7 +394,7 @@ export function MoodboardReveal({
             justifyContent: "center",
             gap: 18,
             opacity: sentenceOp,
-            color: "#FFFFFF",
+            color: dark.foreground,
             fontSize: 28,
             fontWeight: 400,
             letterSpacing: "-0.01em",
@@ -451,7 +473,7 @@ export function MoodboardReveal({
                 boxShadow:
                   merge > 0.98
                     ? "none"
-                    : `0 18px 40px rgba(0,0,0,${0.28 * (1 - merge)})`,
+                    : `0 18px 40px ${withAlpha(dark.background, 0.28 * (1 - merge))}`,
               }}
             >
               <Card src={src} style={{}} />
