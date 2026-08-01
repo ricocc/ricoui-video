@@ -29,31 +29,13 @@ const saans = localFont({
 });
 
 /**
- * Chillax (Fontshare, free for commercial use), self-hosted like the others so
- * paragraphs do not wait on a third-party CDN. Identified off a specimen by its
- * signatures: a tiny rounded counter in the A, a shallow rounded vertex on the
- * M, and fillets where strokes meet — Rubik and Poppins both miss all three.
- */
-const chillax = localFont({
-  variable: "--font-body",
-  display: "swap",
-  src: [
-    { path: "./fonts/Chillax-400.woff2", weight: "400", style: "normal" },
-    { path: "./fonts/Chillax-500.woff2", weight: "500", style: "normal" },
-    { path: "./fonts/Chillax-600.woff2", weight: "600", style: "normal" },
-    { path: "./fonts/Chillax-700.woff2", weight: "700", style: "normal" },
-  ],
-});
-
-/**
  * `preload: false` on everything below is deliberate and measured.
  *
  * next/font emits a blocking `<link rel="preload">` per weight on *every* page
  * that mounts this layout — 430KB of woff2 on the landing page, more than all of
  * its JS. None of these four faces paint a single glyph there. Without preload
  * they still load, on the pages that actually use them, at the moment a rule
- * asks for one. Saans and Chillax keep theirs: they are the h1 and the body copy
- * of the first screen.
+ * asks for one. Saans keeps its preload: it is the whole first screen.
  */
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -143,7 +125,6 @@ export default function RootLayout({
         caveat.variable,
         "font-sans",
         saans.variable,
-        chillax.variable,
       )}
     >
       <body className="min-h-full flex flex-col">

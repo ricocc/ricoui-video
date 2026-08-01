@@ -21,7 +21,6 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
-  --font-body: var(--font-body);
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -204,11 +203,15 @@
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
-  /* Chillax on paragraphs. Headings and UI stay on Saans — this is the body
-     voice, not a second display face. */
-  p {
-    @apply font-body;
-  }
+  /* One face. There is no second "body voice" — Saans sets everything, from the
+     h1 down to a "No matches." empty state, and `html` below is the only place
+     that has to say so.
+
+     There used to be a rounded display face (Chillax) on a bare `p` selector,
+     which cannot tell prose from chrome: it caught the docs sidebar's promo
+     block, the video editor's panel hints, the showcase empty states and every
+     numbered step in the MDX. Scoping it to real prose was not the fix either —
+     the answer was that the app does not want two faces. */
   html {
     @apply font-sans;
     scroll-behavior: smooth;

@@ -31,7 +31,7 @@ export function Hero() {
           </FadeUp>
 
           {/* `text-body-lg` at 70% of the foreground rather than a separate
-              grey. The face comes from the base `p` rule — Chillax. */}
+              grey. The face is Saans, inherited from `html` like everything. */}
           <FadeUp delay={0.12}>
             <p className="mt-6 max-w-xl text-pretty text-body-lg text-current/70">
               Production-ready Remotion animations, transitions and backgrounds.
