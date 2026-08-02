@@ -2,9 +2,11 @@
 
 import { ArrowUpRight, ChevronsLeft } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { SearchButton } from "@/components/search-button";
 import { SnapCnLogo } from "@/components/snapcn-logo";
 import { GITHUB_URL } from "@/config/site";
+import { DOCS_NAV } from "@/lib/docs-nav";
 import { GALLERY_COUNT } from "@/lib/gallery-data";
 import { cn } from "@/lib/utils";
 import { DOCS_SECTIONS, useSectionActive } from "./section-nav";
@@ -18,6 +20,11 @@ import { DOCS_SECTIONS, useSectionActive } from "./section-nav";
  * reclaims the width); a floating » button in the frame reopens it. The section
  * links (and which one is active) come from {@link DOCS_SECTIONS} so the rail
  * and the mobile nav stay in sync.
+ *
+ * Inside the written docs it also opens the page tree ({@link DOCS_NAV}) —
+ * Getting Started and every category. Without it the rail listed the six product
+ * sections and nothing else, so `/docs/text` showed one category, no route to
+ * the other six, and no route back to Installation.
  */
 
 export function GallerySidebar({
@@ -29,6 +36,12 @@ export function GallerySidebar({
 }) {
   const year = new Date().getFullYear();
   const isActive = useSectionActive();
+  const pathname = usePathname();
+  // The written docs are one of the six sections, so their page tree only opens
+  // while you are in them — the Components gallery and the Showcase keep the
+  // short rail they had. `DOCS_SECTIONS[0]` is the Docs entry, and its
+  // `fallback` matching is exactly "a /docs route no other section claims".
+  const inDocs = isActive(DOCS_SECTIONS[0]);
 
   return (
     <aside
@@ -94,6 +107,46 @@ export function GallerySidebar({
           );
         })}
       </nav>
+
+      {inDocs ? (
+        <div className="mt-7 flex flex-col gap-6">
+          {DOCS_NAV.map((group) => (
+            <div key={group.title}>
+              <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
+                {group.title}
+              </p>
+              <div className="mt-1.5 flex flex-col">
+                {group.links.map((link) => {
+                  // Exact match: a component's own path redirects into the
+                  // gallery overlay, so nothing deeper than these ever renders
+                  // here — except the Getting Started pages, which are the leaf.
+                  const current = pathname === link.href;
+                  return (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      aria-current={current ? "page" : undefined}
+                      className={
+                        current
+                          ? "flex items-center gap-1.5 text-[13px] leading-[1.8] text-foreground"
+                          : "flex items-center gap-1.5 text-[13px] leading-[1.8] text-foreground/65 transition-colors hover:text-foreground"
+                      }
+                    >
+                      {link.label}
+                      {current ? (
+                        <span
+                          className="size-1.5 rounded-full bg-foreground"
+                          aria-hidden="true"
+                        />
+                      ) : null}
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : null}
 
       <div className="mt-auto flex flex-col gap-3 pt-10">
         <div className="flex size-10 items-center justify-center rounded-full bg-gallery-card">

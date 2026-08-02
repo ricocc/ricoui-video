@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { DOCS_NAV } from "@/lib/docs-nav";
 import { cn } from "@/lib/utils";
 
 /**
@@ -26,7 +27,11 @@ export const DOCS_SECTIONS = [
   // anyone remembering to come back here.
   {
     label: "Docs",
-    href: "/docs/getting-started/introduction",
+    // `/docs` itself, not the Introduction page. The docs root used to 404 —
+    // every link into it (including the breadcrumb JSON-LD every docs page
+    // emits) pointed at a page that was never written — so the section jumped
+    // you three levels in and the docs had no front door.
+    href: "/docs",
     match: "/docs",
     fallback: true,
   },
@@ -78,30 +83,69 @@ export function useSectionActive() {
  * rendered only below `lg` (where the fixed sidebar is hidden). Used at the top
  * of both the Components gallery and the prose docs so no `/docs/*` route is
  * left without navigation on small screens.
+ *
+ * Inside the written docs it also carries the page tree the rail shows there
+ * ({@link DOCS_NAV}) — without it, a phone reader on `/docs/text` could reach
+ * the six product sections and not one of the other docs pages.
  */
 export function DocsSectionNav({ className }: { className?: string }) {
   const isActive = useSectionActive();
+  const pathname = usePathname();
+  const inDocs = isActive(DOCS_SECTIONS[0]);
 
   return (
-    <nav className={cn("flex flex-wrap gap-x-5 gap-y-1 lg:hidden", className)}>
-      {DOCS_SECTIONS.map((item) => {
-        const active = isActive(item);
-        return (
-          <Link
-            key={item.href}
-            href={item.href}
-            aria-current={active ? "page" : undefined}
-            className={cn(
-              "flex items-center gap-1.5 text-sm transition-colors",
-              active
-                ? "font-medium text-foreground"
-                : "text-foreground/70 hover:text-foreground",
-            )}
-          >
-            {item.label}
-          </Link>
-        );
-      })}
+    <nav className={cn("lg:hidden", className)}>
+      <div className="flex flex-wrap gap-x-5 gap-y-1">
+        {DOCS_SECTIONS.map((item) => {
+          const active = isActive(item);
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              aria-current={active ? "page" : undefined}
+              className={cn(
+                "flex items-center gap-1.5 text-sm transition-colors",
+                active
+                  ? "font-medium text-foreground"
+                  : "text-foreground/70 hover:text-foreground",
+              )}
+            >
+              {item.label}
+            </Link>
+          );
+        })}
+      </div>
+
+      {inDocs
+        ? DOCS_NAV.map((group) => (
+            <div
+              key={group.title}
+              className="mt-2.5 flex flex-wrap items-center gap-x-4 gap-y-1"
+            >
+              <span className="text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
+                {group.title}
+              </span>
+              {group.links.map((link) => {
+                const current = pathname === link.href;
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    aria-current={current ? "page" : undefined}
+                    className={cn(
+                      "text-[13px] transition-colors",
+                      current
+                        ? "font-medium text-foreground"
+                        : "text-foreground/65 hover:text-foreground",
+                    )}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
+            </div>
+          ))
+        : null}
     </nav>
   );
 }

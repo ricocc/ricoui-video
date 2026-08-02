@@ -43,9 +43,13 @@ export type NavLink = {
 };
 
 // Single source of truth for the landing page's top navigation.
+//
+// "Components" points at the gallery, not at `/docs/text`. It used to open the
+// Text & Titles category index, so the header's Components link answered with
+// one of seven categories and no sign of the rest.
 export const NAV_LINKS: NavLink[] = [
-  { href: "/docs/text", label: "Components" },
-  { href: "/docs/getting-started/introduction", label: "Docs" },
+  { href: "/docs/components", label: "Components" },
+  { href: "/docs", label: "Docs" },
 ];
 
 /**
@@ -82,9 +86,12 @@ export const FOOTER_COLUMNS: FooterColumn[] = [
   {
     title: "Browse",
     links: [
+      // No Video editor: it is a coming-soon page now, and this column's rule
+      // (above) is that nothing unshipped goes in it. The rail still lists it —
+      // a rail is a roadmap, a footer is an index.
+      { href: "/docs", label: "Documentation" },
       { href: "/docs/components", label: "All components" },
       { href: "/docs/showcase", label: "Showcase" },
-      { href: "/docs/video-editor", label: "Video editor" },
     ],
   },
   {
