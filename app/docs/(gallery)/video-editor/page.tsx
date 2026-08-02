@@ -1,8 +1,5 @@
 import type { Metadata } from "next";
-import { ThemeToggle } from "@/app/(home)/components/theme-toggle";
-import { GalleryFrame } from "@/components/docs/gallery/gallery-frame";
-import { DocsSectionNav } from "@/components/docs/gallery/section-nav";
-import { VideoEditor } from "@/components/video-editor/video-editor";
+import { ComingSoonPage } from "@/components/docs/gallery/coming-soon-page";
 
 const TITLE = "Video Editor";
 const DESCRIPTION =
@@ -21,14 +18,10 @@ export const metadata: Metadata = {
   },
 };
 
+// Not shipped yet, so the route says so in the same chrome as Templates and
+// Marketplace rather than serving a half-built editor. `components/video-editor`
+// is left in the tree — it is the work in progress, not dead code; render it
+// here again when it is ready.
 export default function VideoEditorPage() {
-  return (
-    <GalleryFrame>
-      <div className="flex items-center justify-between gap-4 pt-6">
-        <DocsSectionNav />
-        <ThemeToggle />
-      </div>
-      <VideoEditor />
-    </GalleryFrame>
-  );
+  return <ComingSoonPage title={TITLE} description={DESCRIPTION} />;
 }
