@@ -1,6 +1,7 @@
 import defaultMdxComponents from "fumadocs-ui/mdx";
 import type { MDXComponents } from "mdx/types";
 import { Note, Warning } from "@/components/docs/callout";
+import { CategoryDoc } from "@/components/docs/category-doc";
 import { CategoryGrid } from "@/components/docs/category-grid";
 import { ComponentCardGrid } from "@/components/docs/component-card-grid";
 import { ComponentExample } from "@/components/docs/component-example";
@@ -47,6 +48,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     Dependencies,
     ComponentCardGrid,
     CategoryGrid,
+    CategoryDoc,
     DocsIndex,
 
     ...components,
