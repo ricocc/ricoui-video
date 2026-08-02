@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
-import { ThemeToggle } from "@/app/(home)/components/theme-toggle";
+import { DocsTopBar } from "@/components/docs/gallery/docs-top-bar";
 import { GalleryFrame } from "@/components/docs/gallery/gallery-frame";
-import { DocsSectionNav } from "@/components/docs/gallery/section-nav";
 
 /**
  * Every prose docs route (Getting Started, UI, …) renders inside the exact same
@@ -12,19 +11,14 @@ import { DocsSectionNav } from "@/components/docs/gallery/section-nav";
  * navigating between Getting Started, Components, and UI keeps one unchanging
  * layout.
  *
- * The top row mirrors the Components page's header: the theme toggle sits at the
- * right edge of the content column on every route (so it never appears and
- * disappears between pages), and `DocsSectionNav` — the small-screen
- * counterpart to the desktop-only rail — puts the section links on its left on
- * mobile so these pages are never left without navigation.
+ * The top row is the shared `DocsTopBar` — the same component the Components
+ * page uses, so the theme toggle is at one point of the content column on every
+ * route and the small-screen section links sit above it everywhere.
  */
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <GalleryFrame>
-      <div className="flex items-center justify-between gap-4 pt-6">
-        <DocsSectionNav />
-        <ThemeToggle />
-      </div>
+      <DocsTopBar />
       {children}
     </GalleryFrame>
   );

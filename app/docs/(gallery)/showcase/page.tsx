@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import { ThemeToggle } from "@/app/(home)/components/theme-toggle";
 import { auth, getConfiguredProviders } from "@/auth";
+import { DocsTopBar } from "@/components/docs/gallery/docs-top-bar";
 import { GalleryFrame } from "@/components/docs/gallery/gallery-frame";
-import { DocsSectionNav } from "@/components/docs/gallery/section-nav";
 import { ShowcaseGallery } from "@/components/showcase/showcase-gallery";
 import { ShowcaseHeader } from "@/components/showcase/showcase-header";
 import { isDbConfigured } from "@/lib/server/db";
@@ -36,10 +35,7 @@ export default async function ShowcasePage() {
 
   return (
     <GalleryFrame>
-      <div className="flex items-center justify-between gap-4 pt-6">
-        <DocsSectionNav />
-        <ThemeToggle />
-      </div>
+      <DocsTopBar />
       <ShowcaseHeader user={session?.user ?? null} providers={providers} />
       <div className="pb-24">
         <ShowcaseGallery items={items} notConfigured={!isDbConfigured} />

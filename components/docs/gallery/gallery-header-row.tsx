@@ -1,19 +1,19 @@
-import { ThemeToggle } from "@/app/(home)/components/theme-toggle";
-import { DocsSectionNav } from "./section-nav";
+import { DocsTopBar } from "./docs-top-bar";
 
 /**
- * The gallery's title/tagline row plus the "updated" meta and theme toggle.
- * It sits at the top of the content column and scrolls away — the filter pills
- * below it stick to the top on scroll. On small screens (sidebar hidden) the
- * shared section links appear here instead (see {@link DocsSectionNav}).
+ * The gallery's title/tagline row plus the "updated" meta, in the shared
+ * {@link DocsTopBar} so the theme toggle and the small-screen section links sit
+ * exactly where they do on every other `/docs` route. It scrolls away — the
+ * filter pills below it stick to the top on scroll.
+ *
+ * `flex-1` on the title block, not `ml-auto` on the meta: two auto margins in
+ * one row would split the free space between them and strand the meta mid-row.
  */
 export function GalleryHeaderRow({ meta }: { meta: string }) {
   return (
-    <div className="pt-6 pb-2">
-      <DocsSectionNav className="mb-4" />
-
-      <div className="flex items-center justify-between gap-4">
-        <div className="flex min-w-0 items-baseline gap-2">
+    <div className="pb-2">
+      <DocsTopBar>
+        <div className="flex min-w-0 flex-1 items-baseline gap-2">
           <h1 className="shrink-0 text-[15px] font-semibold text-foreground">
             Components
           </h1>
@@ -21,13 +21,10 @@ export function GalleryHeaderRow({ meta }: { meta: string }) {
             Every component in snap-cn, ready to install.
           </span>
         </div>
-        <div className="flex shrink-0 items-center gap-1">
-          <span className="hidden text-sm text-muted-foreground md:block">
-            {meta}
-          </span>
-          <ThemeToggle />
-        </div>
-      </div>
+        <span className="hidden shrink-0 text-sm text-muted-foreground md:block">
+          {meta}
+        </span>
+      </DocsTopBar>
     </div>
   );
 }

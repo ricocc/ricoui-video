@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ThemeToggle } from "@/app/(home)/components/theme-toggle";
 import { auth, isAdmin } from "@/auth";
+import { DocsTopBar } from "@/components/docs/gallery/docs-top-bar";
 import { GalleryFrame } from "@/components/docs/gallery/gallery-frame";
-import { DocsSectionNav } from "@/components/docs/gallery/section-nav";
 import { AdminList } from "@/components/showcase/admin-list";
 import { getPendingSubmissions } from "@/lib/server/showcase";
 
@@ -23,10 +22,7 @@ export default async function ShowcaseAdminPage() {
 
   return (
     <GalleryFrame>
-      <div className="flex items-center justify-between gap-4 pt-6">
-        <DocsSectionNav />
-        <ThemeToggle />
-      </div>
+      <DocsTopBar />
       <div className="pt-4">
         <h1
           style={{ fontFamily: "var(--font-display)" }}

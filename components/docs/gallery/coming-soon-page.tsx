@@ -1,6 +1,5 @@
-import { ThemeToggle } from "@/app/(home)/components/theme-toggle";
 import { GalleryFrame } from "@/components/docs/gallery/gallery-frame";
-import { DocsSectionNav } from "@/components/docs/gallery/section-nav";
+import { DocsTopBar } from "./docs-top-bar";
 
 /**
  * The page a linked-but-unbuilt `/docs/*` section shows.
@@ -22,10 +21,7 @@ export function ComingSoonPage({
 }) {
   return (
     <GalleryFrame>
-      <div className="flex items-center justify-between gap-4 pt-6">
-        <DocsSectionNav />
-        <ThemeToggle />
-      </div>
+      <DocsTopBar />
 
       <div className="flex min-h-[55vh] flex-col items-start justify-center">
         <p className="font-mono text-[0.6875rem] font-medium uppercase tracking-[0.14em] text-muted-foreground">
