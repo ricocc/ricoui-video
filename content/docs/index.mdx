@@ -1,0 +1,35 @@
+---
+title: Documentation
+description: snap-cn is a shadcn registry of Remotion components — install an animation into your own project and own the file.
+---
+
+You have shipped the product and now you need the video. snap-cn is a
+[shadcn](https://ui.shadcn.com) registry of Remotion components — titles,
+captions, device frames, logo stings, whole scenes — that you install into your
+own project with the CLI you already use. The component lands in your repo as a
+file you own, written against the plain Remotion API, and you edit it like any
+other component you wrote yourself.
+
+## How it works
+
+1. **Have a Remotion project.** snap-cn does not bootstrap one —
+   `npx create-video@latest` does. See [Installation](/docs/getting-started/installation).
+2. **Add a component.** `npx shadcn@latest add @snap-cn/text-reveal` copies the
+   source into `components/snap-cn/`. No dependency on snap-cn is added.
+3. **Put it in a composition.** Every prop has a working default, so it renders
+   the moment it is mounted. Change the copy, the colours, the timing — it is
+   your file now.
+4. **Render.** `npx remotion render`. The same component that played in the
+   browser preview is the one that goes into the mp4.
+
+## What is in here
+
+[Components](/docs/components) is the gallery: every component in snap-cn in one
+filterable grid, each card playing its own scene. The category pages below are
+the same components grouped by the job they do, with the installation and usage
+notes for that group.
+
+<DocsIndex />
+
+Every component is MIT licensed, and the code is
+[on GitHub](https://github.com/snapcndev/snapcn.dev).
