@@ -7,9 +7,22 @@ snap-cn is built for solo builders and small teams who need to ship product demo
 
 ## Why snap-cn
 
-- **Production-ready Remotion code:** every component uses `useCurrentFrame()`, `interpolate()`, and `spring()` correctly. No `Math.random()` traps that break rendering.
-- **Own your code:** components are copied into your project, not installed as a dependency. Tweak them however you like.
-- **Live previews:** each component page mounts a real `@remotion/player` you can scrub frame-by-frame.
+- **The type is measured, not eyeballed.** Scaled text judders because the glyph
+  rasteriser has no vertical sub-pixel positioning, so a moving baseline climbs
+  the pixel grid in whole-pixel jumps. Every text component here pivots its scale
+  on the measured baseline and renders with `text-rendering: geometricPrecision`,
+  which stops the stems re-hinting mid-animation. Both were found on rendered
+  frames rather than in a browser preview, because you cannot see a sub-pixel bug.
+- **What the preview shows is what the file renders.** Where a live `@remotion/player`
+  misrepresents a scene, because frame pacing on a 120Hz display makes smooth
+  motion look stuck, the gallery plays the actual rendered mp4 instead.
+- **One design system, and it is shadcn's.** Components take `theme` and `mode`
+  props resolved from the same token set as the site's `Button` and `Input`, so a
+  scene dropped into your app does not arrive with its own palette. `pnpm check:tokens`
+  fails the build if the two ever drift.
+- **The file is yours the moment it lands.** Nothing is added to your `package.json`.
+  No runtime, no version to pin, and no upstream release that can change your video
+  the week you ship it.
 
 ## Prerequisites
 
