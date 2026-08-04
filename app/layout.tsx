@@ -66,9 +66,15 @@ const caveat = Caveat({
 });
 
 const SITE_URL = "https://snapcn.dev";
-const SITE_TITLE = "snap-cn — Cinematic video components for React";
+/**
+ * The title is the one line that has to carry the query. "Cinematic video
+ * components for React" was accurate and unsearchable — it omitted both terms
+ * anyone actually types, *Remotion* and *shadcn*. This is 61 characters, so it
+ * survives a SERP intact.
+ */
+const SITE_TITLE = "snap-cn — Remotion components, installed with shadcn";
 const SITE_DESCRIPTION =
-  "Production-ready Remotion animations, transitions and backgrounds. Install with the shadcn CLI and own the code.";
+  "A shadcn registry of Remotion components for React video: text animations, captions, device mockups and full scenes. Install with the CLI, own the code. MIT.";
 
 export const metadata: Metadata = {
   // Resolves the relative `/bg.jpg` below into an absolute URL for crawlers.
