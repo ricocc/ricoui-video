@@ -52,20 +52,20 @@ export function WallOfLove() {
     <section id="wall-of-love" className="relative pb-20 sm:pb-28">
       <div className="section">
         <FadeUp>
-          {/* Left-aligned, at the same size the changelog and the hero use.
-              Centred-and-smaller is what made this section read as belonging to
-              a different page from the two above it. */}
-          <h2 className="max-w-[14ch] text-pretty font-sans text-[clamp(2.25rem,4.6vw,3.5rem)] font-normal leading-[1.06] tracking-[-0.03em] text-foreground">
+          {/* At the same size the changelog and the hero use — the size is what
+              keeps this section on the same page as the two above it, and now
+              the alignment matches them too. */}
+          <h2 className="mx-auto max-w-[14ch] text-pretty text-center font-sans text-[clamp(2.25rem,4.6vw,3.5rem)] font-normal leading-[1.06] tracking-[-0.03em] text-foreground">
             Show us what you made
           </h2>
-          <p className="mt-5 max-w-xl text-pretty text-body-lg text-current/70">
+          <p className="mx-auto mt-5 max-w-xl text-pretty text-center text-body-lg text-current/70">
             Nothing here yet — this is where the posts will go. Put something on
             X and yours is the first one on the wall.
           </p>
         </FadeUp>
 
         <FadeUp delay={0.08}>
-          <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
+          <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             {POSTS.map(({ label, text, primary }) => (
               <a
                 key={label}
@@ -88,7 +88,7 @@ export function WallOfLove() {
         </FadeUp>
 
         <FadeUp delay={0.14}>
-          <p className="mt-5 text-sm text-current/50">
+          <p className="mt-5 text-center text-sm text-current/50">
             Opens X with the post already written. Edit anything before you send
             it.
           </p>
