@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { INSTALL_COMMAND } from "@/config/site";
 import type { CategoryId } from "@/lib/gallery-data";
 import {
   CATEGORY_ICONS,
@@ -65,7 +66,7 @@ export function WhatYouGet() {
               snap-cn is a registry of {GALLERY_COUNT} Remotion components for
               React video. You run{" "}
               <code className="font-mono text-[0.9em] text-foreground">
-                npx shadcn@latest add @snap-cn/text-reveal
+                {INSTALL_COMMAND}
               </code>
               , the source file lands in{" "}
               <code className="font-mono text-[0.9em] text-foreground">

@@ -1,4 +1,5 @@
 import { ChevronDown } from "lucide-react";
+import { INSTALL_COMMAND } from "@/config/site";
 import { GALLERY_COUNT } from "@/lib/gallery-data";
 import { FadeUp } from "../fade-up";
 
@@ -33,7 +34,7 @@ export const FAQ_ITEMS: { q: string; a: string }[] = [
   },
   {
     q: "How do I install a snap-cn component?",
-    a: "Run npx shadcn@latest add @snap-cn/text-reveal. The component is written to components/snap-cn/ (or wherever your components.json points), with every prop defaulted, so it renders the moment you mount it in a composition.",
+    a: `Run ${INSTALL_COMMAND}. The component is written to components/snap-cn/ (or wherever your components.json points), along with anything it depends on, and every prop is defaulted so it renders the moment you mount it in a composition.`,
   },
   {
     q: "Is snap-cn free?",

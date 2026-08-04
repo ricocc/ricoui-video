@@ -15,6 +15,7 @@ import {
   useMemo,
   useState,
 } from "react";
+import { installCommand as buildInstallCommand } from "@/config/site";
 import {
   GALLERY_CATEGORIES,
   type GalleryItem,
@@ -29,11 +30,9 @@ const CATEGORY_LABEL = new Map(GALLERY_CATEGORIES.map((c) => [c.id, c.label]));
 const ROUND_BTN =
   "flex size-9 shrink-0 items-center justify-center rounded-full border border-border bg-background text-foreground transition-colors hover:bg-muted";
 
-function installName(href: string, slug: string) {
-  return href.startsWith("/docs/ui/")
-    ? `@snap-cn-ui/${slug}`
-    : `@snap-cn/${slug}`;
-}
+// Both tiers publish to the same flat `/r/<name>.json`, so the tier no longer
+// picks a path. See `installCommand` in config/site.ts for why this is a URL and
+// not `@snap-cn/<slug>`.
 
 function typeLabel(href: string) {
   if (href.startsWith("/docs/ui/blocks/")) return "Block";
@@ -150,7 +149,7 @@ function OverlayBody({
   // separately, so the row showed a bare `@snap-cn/text-reveal` — which is not a
   // command and does nothing if you type it — while the copy button quietly
   // handed over the real thing. What it says is now what you get.
-  const installCommand = `npx shadcn@latest add ${installName(item.href, slug)}`;
+  const installCommand = buildInstallCommand(slug);
   const [copied, setCopied] = useState(false);
   const hasDocs = Boolean(docBody);
 
