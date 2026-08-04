@@ -13,8 +13,8 @@
         "@remotion/google-fonts"
       ],
       "registryDependencies": [
-        "@snap-cn/snap-cn-ui",
-        "@snap-cn/input"
+        "https://snapcn.dev/r/snap-cn-ui.json",
+        "https://snapcn.dev/r/input.json"
       ],
       "files": [
         {
@@ -33,7 +33,7 @@
         "remotion"
       ],
       "registryDependencies": [
-        "@snap-cn/snap-cn-ui"
+        "https://snapcn.dev/r/snap-cn-ui.json"
       ],
       "files": [
         {
@@ -52,7 +52,7 @@
         "remotion"
       ],
       "registryDependencies": [
-        "@snap-cn/snap-cn-ui"
+        "https://snapcn.dev/r/snap-cn-ui.json"
       ],
       "files": [
         {
@@ -71,7 +71,7 @@
         "remotion"
       ],
       "registryDependencies": [
-        "@snap-cn/snap-cn-ui"
+        "https://snapcn.dev/r/snap-cn-ui.json"
       ],
       "files": [
         {
@@ -90,7 +90,7 @@
         "remotion"
       ],
       "registryDependencies": [
-        "@snap-cn/snap-cn-ui"
+        "https://snapcn.dev/r/snap-cn-ui.json"
       ],
       "files": [
         {
@@ -109,7 +109,7 @@
         "remotion"
       ],
       "registryDependencies": [
-        "@snap-cn/snap-cn-ui"
+        "https://snapcn.dev/r/snap-cn-ui.json"
       ],
       "files": [
         {
@@ -128,7 +128,7 @@
         "remotion"
       ],
       "registryDependencies": [
-        "@snap-cn/snap-cn-ui"
+        "https://snapcn.dev/r/snap-cn-ui.json"
       ],
       "files": [
         {
@@ -148,7 +148,7 @@
         "@remotion/google-fonts"
       ],
       "registryDependencies": [
-        "@snap-cn/snap-cn-ui"
+        "https://snapcn.dev/r/snap-cn-ui.json"
       ],
       "files": [
         {
@@ -168,7 +168,7 @@
         "@remotion/google-fonts"
       ],
       "registryDependencies": [
-        "@snap-cn/snap-cn-ui"
+        "https://snapcn.dev/r/snap-cn-ui.json"
       ],
       "files": [
         {
@@ -187,7 +187,7 @@
         "remotion"
       ],
       "registryDependencies": [
-        "@snap-cn/snap-cn-ui"
+        "https://snapcn.dev/r/snap-cn-ui.json"
       ],
       "files": [
         {
@@ -206,7 +206,7 @@
         "remotion"
       ],
       "registryDependencies": [
-        "@snap-cn/snap-cn-ui"
+        "https://snapcn.dev/r/snap-cn-ui.json"
       ],
       "files": [
         {
@@ -225,7 +225,7 @@
         "remotion"
       ],
       "registryDependencies": [
-        "@snap-cn/snap-cn-ui"
+        "https://snapcn.dev/r/snap-cn-ui.json"
       ],
       "files": [
         {
@@ -244,7 +244,7 @@
         "remotion"
       ],
       "registryDependencies": [
-        "@snap-cn/snap-cn-ui"
+        "https://snapcn.dev/r/snap-cn-ui.json"
       ],
       "files": [
         {
@@ -263,7 +263,7 @@
         "remotion"
       ],
       "registryDependencies": [
-        "@snap-cn/snap-cn-ui"
+        "https://snapcn.dev/r/snap-cn-ui.json"
       ],
       "files": [
         {
@@ -282,7 +282,7 @@
         "@paper-design/shaders-react"
       ],
       "registryDependencies": [
-        "@snap-cn/snap-cn-ui"
+        "https://snapcn.dev/r/snap-cn-ui.json"
       ],
       "files": [
         {
@@ -302,7 +302,7 @@
         "@remotion/google-fonts"
       ],
       "registryDependencies": [
-        "@snap-cn/snap-cn-ui"
+        "https://snapcn.dev/r/snap-cn-ui.json"
       ],
       "files": [
         {
@@ -322,8 +322,8 @@
         "@remotion/google-fonts"
       ],
       "registryDependencies": [
-        "@snap-cn/snap-cn-ui",
-        "@snap-cn/input"
+        "https://snapcn.dev/r/snap-cn-ui.json",
+        "https://snapcn.dev/r/input.json"
       ],
       "files": [
         {
@@ -342,7 +342,7 @@
         "remotion"
       ],
       "registryDependencies": [
-        "@snap-cn/snap-cn-ui"
+        "https://snapcn.dev/r/snap-cn-ui.json"
       ],
       "files": [
         {
@@ -361,7 +361,7 @@
         "remotion"
       ],
       "registryDependencies": [
-        "@snap-cn/snap-cn-ui"
+        "https://snapcn.dev/r/snap-cn-ui.json"
       ],
       "files": [
         {
@@ -381,9 +381,9 @@
         "@remotion/google-fonts"
       ],
       "registryDependencies": [
-        "@snap-cn/snap-cn-ui",
-        "@snap-cn/caret",
-        "@snap-cn/input"
+        "https://snapcn.dev/r/snap-cn-ui.json",
+        "https://snapcn.dev/r/caret.json",
+        "https://snapcn.dev/r/input.json"
       ],
       "files": [
         {

@@ -7,7 +7,7 @@
     "remotion"
   ],
   "registryDependencies": [
-    "@snap-cn/snap-cn-ui"
+    "https://snapcn.dev/r/snap-cn-ui.json"
   ],
   "files": [
     {

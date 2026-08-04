@@ -8,8 +8,8 @@
     "@remotion/google-fonts"
   ],
   "registryDependencies": [
-    "@snap-cn/snap-cn-ui",
-    "@snap-cn/input"
+    "https://snapcn.dev/r/snap-cn-ui.json",
+    "https://snapcn.dev/r/input.json"
   ],
   "files": [
     {
