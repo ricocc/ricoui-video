@@ -75,14 +75,25 @@
 
 :root {
   /* snap-cn design system — light (first-class). Neutral surfaces, hairline
-     borders, one blue accent, shadows kept to a whisper. */
+     borders, one blue accent, shadows kept to a whisper.
+
+     The accent was #3577e0 and is now #3072db. White on #3577e0 measures
+     **4.32:1**, and WCAG AA wants 4.5 for normal text — so the primary button,
+     which is white on the accent, failed. Lighthouse flagged it on the hero.
+
+     #3072db is that same colour walked down in OKLCH with hue and chroma held:
+     the minimum darkening that clears AA (4.61:1), not a new blue picked by eye.
+     It is applied to every #3577e0 in this file — ring, chart-1, sidebar — on
+     purpose. Fixing only the two tokens that carry white text would have split
+     one accent into two blues, which is the drift `check:tokens` exists to stop.
+     --primary-hover (#2b63c4, 5.70:1) still sits below it, so hover still reads. */
   --background: #faf9f6;
   --foreground: #141414;
   --card: #ffffff;
   --card-foreground: #141414;
   --popover: #ffffff;
   --popover-foreground: #141414;
-  --primary: #3577e0;
+  --primary: #3072db;
   --primary-hover: #2b63c4;
   --primary-foreground: #ffffff;
   --secondary: #f2f0eb;
@@ -94,8 +105,8 @@
   --destructive: #d92d20;
   --border: #d9d9d9;
   --input: #d9d9d9;
-  --ring: #3577e0;
-  --chart-1: #3577e0;
+  --ring: #3072db;
+  --chart-1: #3072db;
   --chart-2: #667085;
   --chart-3: #98a2b3;
   --chart-4: #475467;
@@ -117,12 +128,12 @@
   --shadow-card: 0 1px 2px rgb(16 24 40 / 0.05);
   --sidebar: #faf9f6;
   --sidebar-foreground: #141414;
-  --sidebar-primary: #3577e0;
+  --sidebar-primary: #3072db;
   --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: #f2f0eb;
   --sidebar-accent-foreground: #141414;
   --sidebar-border: #d9d9d9;
-  --sidebar-ring: #3577e0;
+  --sidebar-ring: #3072db;
 
   /* "NEW" sidebar badge — editable accent knob. A soft tint of the system
      blue; recolor the badge by changing these two values per theme. */
@@ -161,7 +172,7 @@
   --card-foreground: #fafafa;
   --popover: #141417;
   --popover-foreground: #fafafa;
-  --primary: #3577e0;
+  --primary: #3072db;
   --primary-hover: #2b63c4;
   --primary-foreground: #ffffff;
   --secondary: #1d1d21;
@@ -173,8 +184,8 @@
   --destructive: #f97066;
   --border: #26272b;
   --input: #26272b;
-  --ring: #3577e0;
-  --chart-1: #3577e0;
+  --ring: #3072db;
+  --chart-1: #3072db;
   --chart-2: #a1a1aa;
   --chart-3: #7a7a83;
   --chart-4: #55555c;
@@ -182,12 +193,12 @@
   --shadow-card: none;
   --sidebar: #0a0a0b;
   --sidebar-foreground: #fafafa;
-  --sidebar-primary: #3577e0;
+  --sidebar-primary: #3072db;
   --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: #1d1d21;
   --sidebar-accent-foreground: #fafafa;
   --sidebar-border: #26272b;
-  --sidebar-ring: #3577e0;
+  --sidebar-ring: #3072db;
 
   /* Badge shifts to a deep blue tint so it reads on dark surfaces. */
   --badge-new-bg: #1c3054;
@@ -272,6 +283,47 @@
 
 .bg-control {
   @apply bg-muted border border-border;
+}
+
+/**
+ * The showcase wall's stage gets its height measured and assigned in JS
+ * (`showcase-carousel.tsx`, `layout()`), because its track is absolutely
+ * positioned and collapses without one. Nothing reserved it before that ran, so
+ * the server-rendered page painted the stage at zero height and hydration shoved
+ * the whole section below it — `#what-you-get` — down the page. Measured on a
+ * production build: **CLS 0.402**, reproducible across runs, and by far the
+ * worst thing in the landing page's Lighthouse score.
+ *
+ * This reserves the same height up front, so the first paint is already right.
+ * The inline style JS sets afterwards still wins and is still exact; this only
+ * has to be close enough that nothing visibly moves.
+ *
+ * The numbers are `WALL`'s, from `showcase-wall.ts` — keep them in step:
+ *   width  = min(max(cardFraction·vw, minCardPx), maxCardFraction·vw)
+ *   height = width · 9/16 · (1 + headroom)
+ * `vw` stands in for stage width because the wall is deliberately full-bleed.
+ * The breakpoint is where a stage first has room to fold, below which `headroom`
+ * is `flatHeadroom` instead: stageWidth >= (1 + flatCards)·(1 + gap)·minCardPx.
+ */
+.wall {
+  --wall-card-w: min(max(20vw, 230px), 68vw);
+  --wall-headroom: 0.4;
+  height: calc(var(--wall-card-w) * 0.5625 * (1 + var(--wall-headroom)));
+}
+
+@media (min-width: 708px) {
+  .wall {
+    --wall-headroom: 0.95;
+  }
+}
+
+/* `layout()` sets each card's width and top too, so reserving only the stage
+   left the cards themselves jumping into place — the shift moved from the
+   section to the row (CLS 0.402 → 0.199 → 0). Custom properties inherit, so
+   these are the same two numbers as above, not a second copy of them. */
+.wall-track > article {
+  width: var(--wall-card-w);
+  top: calc(var(--wall-card-w) * 0.5625 * var(--wall-headroom) / 2);
 }
 
 .bg-grid-fade {
