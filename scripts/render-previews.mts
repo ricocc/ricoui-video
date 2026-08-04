@@ -181,6 +181,26 @@ function retimeTo60(file: string, tag: string) {
       "libx264",
       "-crf",
       "16",
+      // CRF alone is a *quality* target, not a size one, and it prices detail
+      // honestly: flat type costs nothing, photographs cost whatever they cost.
+      // Across these demos that spread is 60kbps (word-captions) to 6,900kbps
+      // (logo-flicker) — a 100× range from one setting. orbit-gallery landed at
+      // 4.6MB and was, on its own, 75% of the landing page's 6MB payload and its
+      // 8.4s LCP.
+      //
+      // So: keep CRF 16 as the target and cap the outliers. Fourteen of the
+      // twenty demos are already under 1.2Mbps and this line does not touch a
+      // byte of them; the six above it — the ones carrying photographs, device
+      // screens and a flickering logo — get held at roughly 1.5MB per ten
+      // seconds. Measured on orbit-gallery: 4.6MB → 1.5MB at SSIM 0.989.
+      //
+      // The cap is per-second, so it scales with length instead of punishing it.
+      // If a demo ever legitimately needs more, raise it here rather than
+      // dropping CRF, which would degrade the flat-type demos that are fine.
+      "-maxrate",
+      "1200k",
+      "-bufsize",
+      "2400k",
       "-preset",
       "slow",
       "-pix_fmt",
