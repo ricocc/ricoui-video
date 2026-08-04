@@ -28,7 +28,12 @@ export const SYNTAX_DARK: SyntaxPalette = {
   string: "#c3e88d",
   number: "#89ddff",
   boolean: "#f78c6c",
-  punctuation: "#676e95",
+  // Comments and punctuation, lightened from Material's #676e95. That value is
+  // lit for Material's own #292d3e surface; on this panel's #0f0e17 it measures
+  // 3.87:1 and fails AA. Same hue and chroma, walked up in OKLCH to 4.66:1 —
+  // and a code comment nobody can read is a code comment that may as well not
+  // be in the snippet.
+  punctuation: "#747ba3",
   plain: "#bcc2e0",
 };
 
@@ -41,7 +46,9 @@ export const SYNTAX_LIGHT: SyntaxPalette = {
   string: "#0a3069",
   number: "#0550ae",
   boolean: "#0550ae",
-  punctuation: "#6e7781",
+  // GitHub's own comment grey is #6e7781, which clears AA on GitHub's white but
+  // only reaches 4.27:1 on this panel's #f6f8fa. Darkened in OKLCH to 4.66:1.
+  punctuation: "#68717b",
   plain: "#1f2328",
 };
 
