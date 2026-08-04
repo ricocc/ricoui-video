@@ -45,13 +45,16 @@ function frontmatterField(fm: string, key: string): string {
 function toPlainMarkdown(body: string, url: string): string {
   return (
     body
+      // Registry-item URLs, matching what the site's own InstallBlock prints.
+      // An agent reading this and emitting `@snap-cn/<name>` would hand the user
+      // a command that fails until shadcn-ui/ui#11386 merges.
       .replace(
-        /<InstallBlock\s+registry="([\w-]+)"\s+name="([\w-]+)"\s*\/>/g,
-        "```bash\nnpx shadcn@latest add @$1/$2\n```",
+        /<InstallBlock\s+registry="[\w-]+"\s+name="([\w-]+)"\s*\/>/g,
+        `\`\`\`bash\nnpx shadcn@latest add ${SITE_URL}/r/$1.json\n\`\`\``,
       )
       .replace(
         /<InstallBlock\s+name="([\w-]+)"\s*\/>/g,
-        "```bash\nnpx shadcn@latest add @snap-cn/$1\n```",
+        `\`\`\`bash\nnpx shadcn@latest add ${SITE_URL}/r/$1.json\n\`\`\``,
       )
       .replace(
         /<(ComponentPreview|UiComponentPreview|BlockPreview)[\s\S]*?\/>/g,
@@ -135,7 +138,7 @@ export function collectDocsPages(): LlmsPage[] {
 
 export const LLMS_HEADER = `# snap-cn
 
-> snap-cn is a shadcn-style registry of production-ready video components for Remotion (React). Developers install components with \`npx shadcn@latest add @snap-cn/<component>\` (scene tier) or \`@snap-cn-ui/<component>\` (timeline-driven UI primitives); the source is copied into their project and they own the code. Typical use: building product demo videos, launch videos and social clips in React.
+> snap-cn is a shadcn-style registry of production-ready video components for Remotion (React). Developers install components with \`npx shadcn@latest add ${SITE_URL}/r/<component>.json\`; the source and everything it depends on is copied into their project and they own the code. Typical use: building product demo videos, launch videos and social clips in React.
 
 Prerequisites: an existing Remotion project (\`npx create-video@latest\`) and the shadcn CLI. License: MIT. Author: Sri Nath (https://x.com/SriNath693). Site: ${SITE_URL}
 `;
