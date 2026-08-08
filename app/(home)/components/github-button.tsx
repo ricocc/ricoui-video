@@ -1,20 +1,11 @@
 import { Star } from "lucide-react";
-import Link from "next/link";
-import { GITHUB_URL } from "@/config/site";
 import { formatStars, getGitHubStars } from "@/lib/github";
+import { GithubButtonLink } from "./github-button-link";
 
 export async function GithubButton() {
   const stars = await getGitHubStars();
   return (
-    <Link
-      href={GITHUB_URL}
-      target="_blank"
-      rel="noreferrer"
-      data-track="cta_clicked"
-      data-cta="github_header"
-      data-destination={GITHUB_URL}
-      className="inline-flex h-9 items-center gap-2 rounded-4xl border border-border px-3 text-sm font-medium text-muted-foreground transition-colors duration-150 ease-out hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
-    >
+    <GithubButtonLink className="inline-flex h-9 items-center gap-2 rounded-4xl border border-border px-3 text-sm font-medium text-muted-foreground transition-colors duration-150 ease-out hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40">
       <GitHubIcon className="size-4" />
       <span className="hidden sm:inline">Star</span>
       {/* `> 0`, not `!== null`: the count used to be dead code, because the repo
@@ -27,7 +18,7 @@ export async function GithubButton() {
           {formatStars(stars)}
         </span>
       )}
-    </Link>
+    </GithubButtonLink>
   );
 }
 

@@ -1,9 +1,10 @@
 "use client";
 
 import { Download, Loader2 } from "lucide-react";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/sonner";
+import { useTrackEvent } from "@/lib/analytics";
 import { getDefaults } from "@/lib/customizer-config";
 import {
   type Clip,
@@ -28,22 +29,39 @@ export function VideoEditor() {
   const [clips, setClips] = useState<Clip[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const { exporting, progress, download } = useEditorExport();
+  const trackEvent = useTrackEvent();
 
-  const addClip = useCallback((slug: string) => {
-    const entry = registry[slug];
-    if (!entry) return;
-    setClips((prev) => {
-      if (prev.length >= MAX_CLIPS) return prev;
+  // Opened vs. exported is the editor's only funnel — how many people reach it
+  // and then build nothing tells us whether the empty state is the problem.
+  useEffect(() => {
+    trackEvent("editor_opened");
+  }, [trackEvent]);
+
+  // The guard reads `clips` from the closure rather than the updater's `prev`,
+  // because the tracking call has to live OUTSIDE the state updater: React
+  // double-invokes updaters under StrictMode, and a side effect in there fires
+  // twice. `addClip` is only ever called from a click, so the closure is current.
+  const addClip = useCallback(
+    (slug: string) => {
+      const entry = registry[slug];
+      if (!entry || clips.length >= MAX_CLIPS) return;
       const clip: Clip = {
         id: nextClipId(),
         slug,
         props: getDefaults(entry.config.controls),
         durationInFrames: entry.config.durationInFrames,
       };
+      setClips((prev) => [...prev, clip]);
       setSelectedId(clip.id);
-      return [...prev, clip];
-    });
-  }, []);
+      // Which components people reach for when composing a real video — a
+      // different ranking from which docs pages get read.
+      trackEvent("editor_clip_added", {
+        component: slug,
+        clip_count: clips.length + 1,
+      });
+    },
+    [clips.length, trackEvent],
+  );
 
   const updateProp = useCallback(
     (key: string, value: unknown) => {

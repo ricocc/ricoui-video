@@ -23,6 +23,23 @@ A single flat Next.js app (no monorepo):
 - `scripts/` — Remotion bundling and demo-rendering scripts
 - `config/`, `lib/`, `hooks/` — site configuration, analytics, utilities
 
+## Analytics
+
+PostHog, and **only** PostHog — do not add a second tracker. Two places:
+
+- `lib/analytics.ts` — the typed client event map + `useTrackEvent()`. Every
+  browser-side event is declared there with the question it answers. Read the
+  header comment before adding one; if you can't name the question, don't.
+- `lib/analytics-server.ts` + `middleware.ts` — the events that happen outside a
+  browser. `/r/<component>.json` is the actual install (what `shadcn add`
+  fetches) and is the conversion metric this whole site feeds; `/llms.txt`
+  measures the AI-agent channel; `/api/search` records zero-result queries,
+  which are component requests in disguise.
+
+Autocapture, pageviews, pageleave, web vitals, exceptions and session replay are
+all SDK config in `app/posthog-provider.tsx` — don't hand-roll any of them.
+Events are not sent from `pnpm dev`; verify with `pnpm build && pnpm start`.
+
 ## Two component tiers
 
 - **Primitives** — individual animations, transitions, backgrounds

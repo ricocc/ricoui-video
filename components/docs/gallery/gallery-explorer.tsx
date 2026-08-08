@@ -15,6 +15,7 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useTrackEvent } from "@/lib/analytics";
 import {
   type CategoryId,
   GALLERY_CATEGORIES,
@@ -71,6 +72,20 @@ export function GalleryExplorer({
     parseAsString.withOptions({ history: "push", shallow: true }),
   );
 
+  const trackEvent = useTrackEvent();
+  // Which shelf people shop. A category nobody ever filters to is either badly
+  // named or badly stocked, and this is the only way to tell which.
+  const setFilter = useCallback(
+    (next: { category?: CategoryId | null; sort?: SortMode }) => {
+      void setState(next);
+      trackEvent("gallery_filtered", {
+        category: next.category !== undefined ? next.category : category,
+        sort: next.sort ?? sort,
+      });
+    },
+    [setState, trackEvent, category, sort],
+  );
+
   // Legacy deep links used a `#<category>` hash (the old scroll-anchor pills).
   // Convert those into the equivalent filter on mount so shared/bookmarked URLs
   // keep working, then strip the hash.
@@ -122,7 +137,7 @@ export function GalleryExplorer({
             <button
               type="button"
               aria-pressed={category === null}
-              onClick={() => void setState({ category: null })}
+              onClick={() => setFilter({ category: null })}
               className={pillClassName(category === null)}
             >
               All
@@ -132,7 +147,7 @@ export function GalleryExplorer({
                 key={c.id}
                 type="button"
                 aria-pressed={category === c.id}
-                onClick={() => void setState({ category: c.id })}
+                onClick={() => setFilter({ category: c.id })}
                 className={pillClassName(category === c.id)}
               >
                 {c.label}
@@ -149,7 +164,7 @@ export function GalleryExplorer({
               <DropdownMenuRadioGroup
                 value={sort}
                 onValueChange={(value) =>
-                  void setState({ sort: value as SortMode })
+                  setFilter({ sort: value as SortMode })
                 }
               >
                 {SORT_ORDER.map((mode) => (
