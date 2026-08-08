@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
+import { useTrackEvent } from "@/lib/analytics";
 import type { Clip } from "@/lib/video-editor/types";
 
 /**
@@ -24,6 +25,7 @@ export function useEditorExport() {
   const [progress, setProgress] = useState(0);
   const pollRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const cancelledRef = useRef(false);
+  const trackEvent = useTrackEvent();
 
   const stop = useCallback(() => {
     if (pollRef.current) {
@@ -43,6 +45,12 @@ export function useEditorExport() {
       cancelledRef.current = false;
       setExporting(true);
       setProgress(0);
+
+      // Click → downloaded file, measured here rather than on the server,
+      // because the queue wait and the poll interval are part of what the user
+      // actually sits through.
+      const startedAt = Date.now();
+      trackEvent("editor_export_started", { clip_count: clips.length });
 
       try {
         const res = await fetch("/api/render", {
@@ -64,6 +72,10 @@ export function useEditorExport() {
               setProgress(job.progress ?? 0);
               if (job.status === "done" && job.downloadUrl) {
                 triggerDownload(job.downloadUrl);
+                trackEvent("editor_export_succeeded", {
+                  clip_count: clips.length,
+                  duration_ms: Date.now() - startedAt,
+                });
                 return resolve();
               }
               if (job.status === "error") {
@@ -79,6 +91,12 @@ export function useEditorExport() {
       } catch (err) {
         if (!cancelledRef.current) {
           console.error("[video-editor] export failed:", err);
+          // A failed export is a bug report we would otherwise never get — the
+          // user reads the toast and closes the tab.
+          trackEvent("editor_export_failed", {
+            clip_count: clips.length,
+            reason: err instanceof Error ? err.message : String(err),
+          });
           toast.error("Export failed", {
             description: err instanceof Error ? err.message : String(err),
           });
@@ -88,7 +106,7 @@ export function useEditorExport() {
         setExporting(false);
       }
     },
-    [stop],
+    [stop, trackEvent],
   );
 
   return { exporting, progress, download };

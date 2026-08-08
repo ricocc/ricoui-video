@@ -3,8 +3,28 @@ import type { NextConfig } from "next";
 
 const withMDX = createMDX();
 
+/**
+ * PostHog ingestion, proxied through this origin (see app/posthog-provider.tsx
+ * for why: our audience is frontend developers, and a third-party analytics
+ * hostname is blocked for a large share of them).
+ *
+ * `NEXT_PUBLIC_POSTHOG_HOST` is the dashboard host and decides the region —
+ * `https://us.posthog.com` or `https://eu.posthog.com`. The ingestion and static
+ * hosts are derived from it, so switching region is one env var, not three.
+ */
+const POSTHOG_REGION = (process.env.NEXT_PUBLIC_POSTHOG_HOST ?? "").includes(
+  "eu.",
+)
+  ? "eu"
+  : "us";
+const POSTHOG_INGEST = `https://${POSTHOG_REGION}.i.posthog.com`;
+const POSTHOG_ASSETS = `https://${POSTHOG_REGION}-assets.i.posthog.com`;
+
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  // PostHog's endpoints are sensitive to a trailing-slash redirect in front of
+  // them; Next would otherwise rewrite `/ingest/e/` and then 308 it.
+  skipTrailingSlashRedirect: true,
   // Remotion's server packages are Node-only and ship native binaries (esbuild +
   // the platform-specific @remotion/compositor-*). They must NOT be bundled by
   // Turbopack/webpack — keep them external so they're require()'d at runtime in
@@ -17,6 +37,16 @@ const nextConfig: NextConfig = {
   ],
   turbopack: {
     root: __dirname,
+  },
+  async rewrites() {
+    return [
+      // The SDK bundle + recorder script. Separate host from ingestion.
+      {
+        source: "/ingest/static/:path*",
+        destination: `${POSTHOG_ASSETS}/static/:path*`,
+      },
+      { source: "/ingest/:path*", destination: `${POSTHOG_INGEST}/:path*` },
+    ];
   },
   // Rendered demos always ship to the SAME path (`/demos/<slug>.mp4`), so a
   // browser that has one will happily keep replaying it after the file underneath

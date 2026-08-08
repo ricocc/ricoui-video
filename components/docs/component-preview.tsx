@@ -109,7 +109,16 @@ function Preview({
 
   return (
     <div className="not-prose mb-6 flex w-full flex-col gap-4">
-      <Tabs defaultValue="preview" className="gap-3">
+      <Tabs
+        defaultValue="preview"
+        className="gap-3"
+        // Reading the source before installing is the shadcn-user tell that
+        // separates browsing from evaluating.
+        onValueChange={(value) => {
+          if (value === "code")
+            trackEvent("component_code_viewed", { component: name });
+        }}
+      >
         <TabsList>
           <TabsTrigger value="preview">Preview</TabsTrigger>
           <TabsTrigger value="code">Code</TabsTrigger>

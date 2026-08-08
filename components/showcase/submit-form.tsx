@@ -6,10 +6,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { useTrackEvent } from "@/lib/analytics";
 
 /** Post a new showcase submission. Lands as `pending` for admin review. */
 export function SubmitForm({ onDone }: { onDone?: () => void }) {
   const [submitting, setSubmitting] = useState(false);
+  const trackEvent = useTrackEvent();
   const [title, setTitle] = useState("");
   const [postUrl, setPostUrl] = useState("");
   const [description, setDescription] = useState("");
@@ -28,6 +30,7 @@ export function SubmitForm({ onDone }: { onDone?: () => void }) {
         toast.error(data.error ?? "Couldn't submit — please try again.");
         return;
       }
+      trackEvent("showcase_submitted");
       toast.success("Submitted! We'll review it shortly.");
       setTitle("");
       setPostUrl("");

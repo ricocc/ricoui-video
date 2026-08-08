@@ -4,8 +4,8 @@ import { Caveat, Geist, Geist_Mono, Outfit } from "next/font/google";
 import localFont from "next/font/local";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import "./globals.css";
-import { OpenPanelComponent } from "@openpanel/nextjs";
 import { cn } from "@/lib/utils";
+import { PostHogProvider } from "./posthog-provider";
 import { SnapCnThemeBridge } from "./snap-cn-theme-bridge";
 import { ThemeShortcut } from "./theme-shortcut";
 
@@ -134,24 +134,19 @@ export default function RootLayout({
       )}
     >
       <body className="min-h-full flex flex-col">
-        <NuqsAdapter>
-          <RootProvider
-            theme={{
-              defaultTheme: "system",
-              enableSystem: true,
-            }}
-          >
-            <ThemeShortcut />
-            <SnapCnThemeBridge>{children}</SnapCnThemeBridge>
-          </RootProvider>
-        </NuqsAdapter>
-        <OpenPanelComponent
-          clientId={process.env.NEXT_PUBLIC_OPENPANEL_CLIENT_ID as string}
-          apiUrl={process.env.NEXT_PUBLIC_OPENPANEL_API_URL}
-          trackScreenViews
-          trackAttributes
-          trackOutgoingLinks
-        />
+        <PostHogProvider>
+          <NuqsAdapter>
+            <RootProvider
+              theme={{
+                defaultTheme: "system",
+                enableSystem: true,
+              }}
+            >
+              <ThemeShortcut />
+              <SnapCnThemeBridge>{children}</SnapCnThemeBridge>
+            </RootProvider>
+          </NuqsAdapter>
+        </PostHogProvider>
       </body>
     </html>
   );

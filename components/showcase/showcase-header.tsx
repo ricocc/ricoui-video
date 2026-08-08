@@ -2,7 +2,7 @@
 
 import { LogOut } from "lucide-react";
 import { signOut } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -13,6 +13,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Toaster } from "@/components/ui/sonner";
+import { identifyUser, resetUser, useTrackEvent } from "@/lib/analytics";
 import type { AuthProviderId } from "@/lib/auth-providers";
 import { SignInButtons } from "./sign-in-buttons";
 import { SubmitForm } from "./submit-form";
@@ -40,6 +41,21 @@ export function ShowcaseHeader({
 }) {
   const [open, setOpen] = useState(false);
   const signedIn = Boolean(user?.id);
+  const trackEvent = useTrackEvent();
+
+  // This is the only client component on the site that is handed a session, so
+  // it is where an anonymous PostHog person gets promoted to a known one — the
+  // stitch that turns "browsed the docs" and "submitted a video" from two
+  // strangers into one funnel. `identifyUser` is idempotent and returns true
+  // only on the transition, so the effect can run on every visit.
+  useEffect(() => {
+    if (!user?.id) return;
+    const promoted = identifyUser(user.id, {
+      email: user.email ?? undefined,
+      name: user.name ?? undefined,
+    });
+    if (promoted) trackEvent("signed_in");
+  }, [user?.id, user?.email, user?.name, trackEvent]);
 
   return (
     <div className="pt-4">
@@ -71,7 +87,12 @@ export function ShowcaseHeader({
                 variant="ghost"
                 size="icon-sm"
                 aria-label="Sign out"
-                onClick={() => signOut()}
+                onClick={() => {
+                  // Before the redirect: a shared machine must not merge the
+                  // next person's browsing into this account.
+                  resetUser();
+                  signOut();
+                }}
               >
                 <LogOut className="size-4" />
               </Button>
