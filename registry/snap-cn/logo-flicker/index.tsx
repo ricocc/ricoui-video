@@ -42,15 +42,18 @@ export interface LogoFlickerProps {
 const FONT_FAMILY =
   'Inter, var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
 
+/** Sample images. Absolute, because a root-relative default becomes
+ *  `staticFile()` in a render and 404s in the project this file was just
+ *  copied into. Pass your own — root-relative or remote, both resolve. */
 const DEFAULT_IMAGES = [
-  "/showcase-assets/438b9e6b50654a44d404fbf358c26e9f.webp",
-  "/showcase-assets/5e5305b05bd405a0d89570725434099e.webp",
-  "/showcase-assets/767d99bb371a54d0d36751e8cecae43c.jpg",
-  "/showcase-assets/821d815affa6496c39cbdeeec7a84603.jpg",
-  "/showcase-assets/937438c560ada1c83317f2c11b3454b0.jpg",
-  "/showcase-assets/98f89cb9994f5c382ab964062c4039db.jpg",
-  "/showcase-assets/b25b82db2892efff9be3204e860d30ee.jpg",
-  "/showcase-assets/c9ebc6337aa2268ac4b357f9cb1ac547.jpg",
+  "https://snapcn.dev/showcase-assets/438b9e6b50654a44d404fbf358c26e9f.webp",
+  "https://snapcn.dev/showcase-assets/5e5305b05bd405a0d89570725434099e.webp",
+  "https://snapcn.dev/showcase-assets/767d99bb371a54d0d36751e8cecae43c.jpg",
+  "https://snapcn.dev/showcase-assets/821d815affa6496c39cbdeeec7a84603.jpg",
+  "https://snapcn.dev/showcase-assets/937438c560ada1c83317f2c11b3454b0.jpg",
+  "https://snapcn.dev/showcase-assets/98f89cb9994f5c382ab964062c4039db.jpg",
+  "https://snapcn.dev/showcase-assets/b25b82db2892efff9be3204e860d30ee.jpg",
+  "https://snapcn.dev/showcase-assets/c9ebc6337aa2268ac4b357f9cb1ac547.jpg",
 ];
 
 // ─── Timeline (frames @ 30fps; ~3.5s) ──────────────────────────────────────────
@@ -108,7 +111,7 @@ function resolveSrc(src: string): string {
 }
 
 export function LogoFlicker({
-  logoSrc = "/logo/snapcn-white.png",
+  logoSrc = "https://snapcn.dev/logo/snapcn-white.png",
   brandName = "snap-cn",
   images = DEFAULT_IMAGES,
   flipInterval = FLIP_INTERVAL,

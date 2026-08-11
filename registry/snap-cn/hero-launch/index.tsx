@@ -56,11 +56,14 @@ const placeholder = (t: SnapCnTheme) =>
     0.2,
   )})`;
 
-// Sample product-reveal clips (Next serves public/ at /). Each card plays a
-// video via <OffthreadVideo>; the viewer swaps these for their own media.
+// Sample product-reveal clips. Absolute, because these ship as *defaults* into a
+// project that does not have them in its own `public/` — a root-relative default
+// becomes `staticFile()` in a render and 404s the first time anyone renders the
+// component they just installed. Swap them for your own media, root-relative or
+// not; `resolveSrc` handles both.
 const SHOWCASE = [
-  "/showcase-videos/iphone-17-reveal.mp4",
-  "/showcase-videos/airpods-pro.mp4",
+  "https://snapcn.dev/showcase-videos/iphone-17-reveal.mp4",
+  "https://snapcn.dev/showcase-videos/airpods-pro.mp4",
 ];
 
 const isVideo = (src: string) => /\.(mp4|webm|mov|m4v)(\?|$)/i.test(src);
