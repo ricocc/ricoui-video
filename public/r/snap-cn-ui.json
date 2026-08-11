@@ -7,6 +7,9 @@
     "remotion",
     "culori"
   ],
+  "devDependencies": [
+    "@types/culori"
+  ],
   "files": [
     {
       "path": "registry/snap-cn-ui/core/timeline.ts",
