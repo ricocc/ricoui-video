@@ -58,7 +58,7 @@ export const FAQ_ITEMS: { q: string; a: string }[] = [
   },
   {
     q: "Does it work with Claude Code and other AI agents?",
-    a: "snapcn ships an agent skill — the component catalog with props and durations, the motion-design rules, and the anti-patterns — installable with npx skills add snapcndev/snapcn.dev. Your agent then picks the right component and budgets the timeline without you pasting context every time.",
+    a: "snapcn ships an agent skill — the component catalog with props and durations, the motion-design rules, and the anti-patterns — installable with npx skills add snapcndev/snapcn. Your agent then picks the right component and budgets the timeline without you pasting context every time.",
   },
 ];
 
