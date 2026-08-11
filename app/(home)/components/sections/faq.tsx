@@ -34,7 +34,7 @@ export const FAQ_ITEMS: { q: string; a: string }[] = [
   },
   {
     q: "How do I install a snap-cn component?",
-    a: `Run ${INSTALL_COMMAND}. The component is written to components/snap-cn/ (or wherever your components.json points), along with anything it depends on, and every prop is defaulted so it renders the moment you mount it in a composition.`,
+    a: `Run ${INSTALL_COMMAND}. The component is written to components/snap-cn/ (or wherever your components.json points), along with anything it depends on, and every prop but the words you are animating is defaulted, so it renders the moment you mount it in a composition.`,
   },
   {
     q: "Is snap-cn free?",

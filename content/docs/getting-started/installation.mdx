@@ -5,23 +5,68 @@ description: Add snap-cn to an existing Remotion project
 
 snap-cn assumes you already have Remotion installed. If you don't, run `npx create-video@latest` first.
 
-## 1. Initialize shadcn
+## 1. Teach your project the `@/` alias
 
-If your project doesn't already have a `components.json`, run:
+Components are copied in importing `@/components/snap-cn/…` and `@/lib/snap-cn-ui`. A `create-video` project has no `@` alias, and Remotion's bundler does not read `tsconfig` paths — so set it in both places, or the import resolves in your editor and fails at render.
 
-```bash
-npx shadcn@latest init
+```json title="tsconfig.json"
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": { "@/*": ["./src/*"] }
+  }
+}
 ```
 
-Pick the defaults: snap-cn components are framework-agnostic and only need the path aliases.
+```ts title="remotion.config.ts"
+import path from "node:path";
+import { Config } from "@remotion/cli/config";
+import { enableTailwind } from "@remotion/tailwind-v4";
 
-## 2. Add a component
+Config.overrideBundlerConfig((config) => {
+  const c = enableTailwind(config);
+  return {
+    ...c,
+    resolve: {
+      ...c.resolve,
+      alias: { ...c.resolve?.alias, "@": path.join(process.cwd(), "src") },
+    },
+  };
+});
+```
 
-One command, on a clean project, with nothing to configure first:
+## 2. Add a `components.json`
+
+The shadcn CLI reads this to know where files go. `npx shadcn@latest init` writes one for you — but only in a framework it recognises, and Remotion is not one of them, so write it yourself:
+
+```json title="components.json"
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "new-york",
+  "rsc": false,
+  "tsx": true,
+  "tailwind": {
+    "config": "",
+    "css": "src/index.css",
+    "baseColor": "neutral",
+    "cssVariables": true
+  },
+  "aliases": {
+    "components": "@/components",
+    "utils": "@/lib/utils",
+    "ui": "@/components/ui",
+    "lib": "@/lib",
+    "hooks": "@/hooks"
+  },
+  "iconLibrary": "lucide"
+}
+```
+
+## 3. Add a component
 
 <InstallBlock name="text-reveal" />
 
-That copies `text-reveal.tsx` into `components/snap-cn/` (or wherever your `components.json` points), plus the small `lib/snap-cn-ui/` core it paints from. Anything a component depends on comes with it — you never install a second thing by hand.
+`@snap-cn` is in the shadcn registry directory, so the CLI resolves the name with nothing else to configure. That copies `text-reveal.tsx` into `src/components/snap-cn/` (or wherever your `components.json` points), plus the small `lib/snap-cn-ui/` core it paints from. Anything a component depends on comes with it — you never install a second thing by hand.
 
 ## Component code
 
@@ -29,25 +74,13 @@ The exact file `shadcn add` copies into your project.
 
 <ComponentSource name="text-reveal" />
 
-## Shorter commands, if you want them
-
-Installing more than one or two? Register the namespace once and you can use `@snap-cn/<name>` instead of the full URL:
-
-```bash
-npx shadcn@latest registry add '@snap-cn=https://snapcn.dev/r/{name}.json'
-```
-
-Keep the quotes. `{name}` is a literal placeholder the CLI fills in per component, and an unquoted brace is something your shell may decide it owns. After this, `npx shadcn@latest add @snap-cn/text-reveal` works, and so does the bulk command below.
-
-This is optional. It is here because the URLs get repetitive, not because anything needs it.
-
 ## Install everything
 
-Want the whole library at once? This one uses the short form, so run the `registry add` above first.
+Want the whole library at once?
 
 <InstallAll />
 
-## 3. Use it in a Remotion composition
+## 4. Use it in a Remotion composition
 
 ```tsx
 import { Composition } from "remotion";
@@ -61,9 +94,11 @@ export const RemotionRoot = () => (
     fps={30}
     width={1280}
     height={720}
-    defaultProps={{ text: "Hello, world" }}
+    defaultProps={{ text: "Hello, world", mode: "dark" }}
   />
 );
 ```
+
+Components take shadcn's light palette by default, and a Remotion render with no background of its own is black — so pass `mode="dark"` (or your own `theme`) when you render onto a dark frame, or near-black text lands on a near-black background.
 
 That's it. Render with `npx remotion render HelloWorld out.mp4`.
