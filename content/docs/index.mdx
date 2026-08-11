@@ -14,12 +14,12 @@ other component you wrote yourself.
 
 1. **Have a Remotion project.** snap-cn does not bootstrap one —
    `npx create-video@latest` does. See [Installation](/docs/getting-started/installation).
-2. **Add a component.** `npx shadcn@latest add https://snapcn.dev/r/text-reveal.json`
+2. **Add a component.** `npx shadcn@latest add @snap-cn/text-reveal`
    copies the source into `components/snap-cn/`, with anything it depends on. No
    dependency on snap-cn is added to your `package.json`.
-3. **Put it in a composition.** Every prop has a working default, so it renders
-   the moment it is mounted. Change the copy, the colours, the timing — it is
-   your file now.
+3. **Put it in a composition.** Pass the words you are animating; every other
+   prop has a working default, so it renders the moment it is mounted. Change
+   the copy, the colours, the timing — it is your file now.
 4. **Render.** `npx remotion render`. The same component that played in the
    browser preview is the one that goes into the mp4.
 

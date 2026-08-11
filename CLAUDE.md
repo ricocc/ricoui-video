@@ -47,7 +47,7 @@ Events are not sent from `pnpm dev`; verify with `pnpm build && pnpm start`.
 
 ## Key decisions
 
-- Install namespace: `@snap-cn/<component>`, e.g. `@snap-cn/soft-blur-in`; UI primitives live under `@snap-cn-ui/<component>`
+- Install namespace: `@snap-cn/<component>`, e.g. `@snap-cn/text-reveal`. Registered in the shadcn registry directory (shadcn-ui/ui#11386), so the CLI resolves it with no setup. Both tiers publish to the same flat `/r/<name>.json` — there is no `@snap-cn-ui` namespace; UI primitives are `@snap-cn/input`, `@snap-cn/caret`
 - Remotion is a prerequisite — we don't bootstrap it for users
 - Own your code (shadcn philosophy) — files are copied into the user's project
 - All components are written from scratch on the Remotion API (`useCurrentFrame()`, `interpolate()`, `spring()`)

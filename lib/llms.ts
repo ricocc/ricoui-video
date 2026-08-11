@@ -45,16 +45,16 @@ function frontmatterField(fm: string, key: string): string {
 function toPlainMarkdown(body: string, url: string): string {
   return (
     body
-      // Registry-item URLs, matching what the site's own InstallBlock prints.
-      // An agent reading this and emitting `@snap-cn/<name>` would hand the user
-      // a command that fails until shadcn-ui/ui#11386 merges.
+      // The `@snap-cn/<name>` short form, matching what the site's own
+      // InstallBlock prints — the CLI resolves the namespace from the shadcn
+      // registry directory, so an agent can paste this as-is.
       .replace(
         /<InstallBlock\s+registry="[\w-]+"\s+name="([\w-]+)"\s*\/>/g,
-        `\`\`\`bash\nnpx shadcn@latest add ${SITE_URL}/r/$1.json\n\`\`\``,
+        "```bash\nnpx shadcn@latest add @snap-cn/$1\n```",
       )
       .replace(
         /<InstallBlock\s+name="([\w-]+)"\s*\/>/g,
-        `\`\`\`bash\nnpx shadcn@latest add ${SITE_URL}/r/$1.json\n\`\`\``,
+        "```bash\nnpx shadcn@latest add @snap-cn/$1\n```",
       )
       .replace(
         /<(ComponentPreview|UiComponentPreview|BlockPreview)[\s\S]*?\/>/g,

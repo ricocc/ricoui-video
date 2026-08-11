@@ -11,26 +11,16 @@ export const MINT = "#A1EEBD";
 export const GITHUB_URL = "https://github.com/snapcndev/snapcn.dev";
 
 /**
- * The one place the install command is spelled, so there is one place to change
- * it back.
+ * The one place the install command is spelled.
  *
- * ## Why a URL and not `@snap-cn/<name>`
- *
- * The short form is a *namespace*, and the CLI resolves a namespace before it
- * ever contacts this site: from the shadcn registry index, or from a
- * `registries` entry the reader has to add to their own `components.json`.
- * snap-cn is not in that index yet (shadcn-ui/ui#11386 is open), so printing the
- * short form means printing a command that fails on a clean project, every time,
- * for everyone. A registry-item URL resolves with no setup at all.
- *
- * **When #11386 merges, change `installCommand` back to the short form.** That
- * is the whole revert; every call site reads it from here.
+ * `@snap-cn` is in the shadcn registry directory (shadcn-ui/ui#11386, merged
+ * 2026-08-11), so the CLI resolves the namespace on its own: no `registries`
+ * entry in the reader's `components.json`, no registry-item URL. Every item —
+ * both `registry/*` tiers — publishes to the same flat `/r/<name>.json`, so
+ * `@snap-cn/<name>` addresses all of them. There is no `@snap-cn-ui` namespace.
  */
-export const registryUrl = (name: string) =>
-  `https://snapcn.dev/r/${name}.json`;
-
 export const installCommand = (name: string) =>
-  `npx shadcn@latest add ${registryUrl(name)}`;
+  `npx shadcn@latest add @snap-cn/${name}`;
 
 /** Canonical example install command shown on the landing page. */
 export const INSTALL_COMMAND = installCommand("text-reveal");
@@ -41,7 +31,7 @@ export const INSTALL_ALL_NAMES: string[] = [
 ].map((item) => item.name);
 
 export const INSTALL_ALL_COMMAND = `npx shadcn@latest add ${INSTALL_ALL_NAMES.map(
-  registryUrl,
+  (name) => `@snap-cn/${name}`,
 ).join(" ")}`;
 
 // snap-cn design system motion: fast, subtle ease-out tweens — no bounce or
