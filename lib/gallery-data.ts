@@ -15,8 +15,9 @@ import {
  * This module replaces the hand-authored card literals that used to live in
  * `content/docs/components.mdx`. The gallery route, the top-bar count, the
  * filter pills, and the llms.txt components index all derive from here — so the
- * "104 components" figure is computed (`GALLERY_ITEMS.length`), never a
- * hardcoded number that can silently drift from reality.
+ * component count on the page is computed (`GALLERY_ITEMS.length`), never a
+ * hardcoded number that can silently drift from reality. (Naming the current
+ * total in this comment would recreate exactly that drift, so it doesn't.)
  */
 
 export type CategoryId =

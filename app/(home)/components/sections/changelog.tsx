@@ -47,7 +47,7 @@ const ANIMATE_CODE = `import {
   useVideoConfig,
 } from "remotion";
 
-export function SoftBlurIn({ children }) {
+export function FadeIn({ children }) {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
@@ -73,7 +73,7 @@ const ENTRIES = [
   {
     id: "animate",
     title: "Animate",
-    file: "soft-blur-in.tsx",
+    file: "fade-in.tsx",
     blurb:
       "No keyframe graphs and no timeline UI to learn. Every component is written straight onto the Remotion API — useCurrentFrame, interpolate, spring — so you can open one and change any number in it.",
     code: ANIMATE_CODE,

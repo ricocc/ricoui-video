@@ -28,7 +28,7 @@ const jsonLd = {
       name: "snap-cn",
       url: SITE_URL,
       description:
-        "A shadcn registry of Remotion components for React video: text animations, captions, device mockups, logo stings and full scenes.",
+        "Remotion components for product demo videos: streaming AI answers, terminal sessions, device frames, captions, logo stings and full scenes.",
     },
     {
       "@type": "SoftwareApplication",
@@ -37,7 +37,10 @@ const jsonLd = {
       url: SITE_URL,
       applicationCategory: "DeveloperApplication",
       operatingSystem: "Any",
-      description: `A shadcn-style registry of ${GALLERY_COUNT} Remotion components — text reveals, captions, lower thirds, screen mockups, logo stings, transitions and full scenes — installed with the shadcn CLI and copied into your project as code you own.`,
+      // The category list must match `GALLERY_CATEGORIES`. It previously named
+      // lower thirds and transitions, both of which were removed from the
+      // registry — structured data claiming components that cannot be installed.
+      description: `A shadcn-style registry of ${GALLERY_COUNT} Remotion components for product demo videos — text reveals, captions, AI chat input, device frames, terminal sessions, logo stings and full scenes — installed with the shadcn CLI and copied into your project as code you own.`,
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
       license: "https://opensource.org/license/mit",
       isAccessibleForFree: true,
