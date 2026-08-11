@@ -278,6 +278,7 @@
       "type": "registry:component",
       "title": "Pulsing Border",
       "description": "Glowing 'AI is working' frame — a soft pulsing border overlay that breathes around the scene edges while a response streams.",
+      "docs": "pulsing-border draws with WebGL, and Remotion's headless Chromium has no GL context by default — render it with `npx remotion render --gl=angle` (or set `Config.setChromiumOpenGlRenderer(\"angle\")`), or the render fails with 'WebGL is not supported in this browser'.",
       "dependencies": [
         "@paper-design/shaders-react"
       ],
@@ -349,6 +350,26 @@
           "path": "orbit-gallery/index.tsx",
           "type": "registry:component",
           "target": "components/snap-cn/orbit-gallery.tsx"
+        }
+      ]
+    },
+    {
+      "name": "hero-launch",
+      "type": "registry:component",
+      "title": "Product Hero",
+      "description": "Cinematic product-launch hero — two cards slide into formation as the headline reveals above.",
+      "dependencies": [
+        "remotion",
+        "@remotion/google-fonts"
+      ],
+      "registryDependencies": [
+        "https://snapcn.dev/r/snap-cn-ui.json"
+      ],
+      "files": [
+        {
+          "path": "hero-launch/index.tsx",
+          "type": "registry:component",
+          "target": "components/snap-cn/hero-launch.tsx"
         }
       ]
     },

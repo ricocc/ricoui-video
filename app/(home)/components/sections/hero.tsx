@@ -25,31 +25,44 @@ export function Hero() {
               tracking -0.03em. The size is fluid rather than stepped at a
               breakpoint, which is how that site scales all of its headings. */}
           <FadeUp delay={0.06}>
-            {/* Two words of keyword, and that is the whole budget.
+            {/* This line used to read "Copy-paste Remotion components", chosen
+                to compete head-on for the phrase our nearest competitor ranks
+                for. That was the wrong fight, for a reason that only shows up
+                when you look the competitor up: remocn predates us by ~4 months
+                and has >1k stars. You do not out-rank an older, better-linked
+                registry on its own phrase with a new domain — and to the part of
+                the audience that has already seen it, an identical headline
+                reads as a clone rather than an alternative. We lost the ranking
+                and the credibility in one line.
 
-                "Copy-paste" is a live search modifier — whole libraries compete
-                on the phrase, and the write-up of our nearest competitor is
-                titled "Copy-Paste UI Components for Remotion". "Remotion" is the
-                primary noun. Both stay.
+                So the keywords move down rather than out. That is the same trade
+                this file already made when "installed with the shadcn CLI" came
+                off the h1: an h1 is a weak ranking signal next to the title tag
+                and the body copy, and the sentence below carries "copy-paste",
+                "Remotion" and "shadcn CLI" intact — every term the old headline
+                held. What the h1 buys instead is the thing remocn cannot say:
+                they are a general motion library, and we are the shots a
+                *software* demo is made of.
 
-                "installed with the shadcn CLI" was here too, and it pushed the
-                line to three rows of 5.5rem type — a headline you read rather
-                than take in. An h1 is a weak ranking signal next to the title
-                tag and the body copy, and both of those already carry shadcn;
-                the sentence below carries it again. Nothing was lost by moving
-                it off the largest type on the page. */}
+                Keep this under ~32 characters. Past that it wraps to three rows
+                of 5.5rem type, which is a headline you read rather than take in. */}
             <h1 className="mx-auto max-w-[16ch] text-pretty font-sans text-[clamp(2.75rem,6.5vw,5.5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground">
-              Copy-paste Remotion components
+              Product demo videos, in React.
             </h1>
           </FadeUp>
 
           {/* `text-body-lg` at 70% of the foreground rather than a separate
               grey. The face is Saans, inherited from `html` like everything. */}
           <FadeUp delay={0.12}>
+            {/* Carries the search terms the h1 gave up — "copy-paste",
+                "Remotion", "shadcn CLI" — and spends the rest of the sentence on
+                the shot list, which is the part no other Remotion registry can
+                claim. Naming the shots also does the demo's job for it: a reader
+                who needs a terminal in a video recognises themselves here. */}
             <p className="mx-auto mt-6 max-w-xl text-pretty text-body-lg text-current/70">
-              Production-ready animations, captions, device mockups and scenes
-              for Remotion. Install them with the shadcn CLI and own every line
-              of code.
+              Copy-paste Remotion components for the shots a software demo is
+              made of — streaming AI answers, terminals, device frames,
+              captions. Install with the shadcn CLI; the code is yours.
             </p>
           </FadeUp>
 

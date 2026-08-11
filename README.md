@@ -1,38 +1,125 @@
-# snap-cn
+<div align="center">
 
-snap-cn is a copy-paste component library for building videos in [Remotion](https://www.remotion.dev). Instead of writing every fade, wipe, and kinetic title from scratch, you `npx shadcn add` a polished primitive into your project and own the code — the shadcn philosophy applied to video. Built for solo builders and small teams who need a product demo video shipped today, not next week.
+<h1>snap-cn</h1>
 
-Browse the full catalog with interactive previews at [snapcn.dev](https://snapcn.dev).
+<h3>Product demo videos, built in React.</h3>
 
-## Installation
+<p>
+The shots a software demo actually needs — AI chat streams, terminal sessions,
+device frames, captions — as components you install with the shadcn CLI and own outright.
+</p>
 
-Remotion is a prerequisite — set up a Remotion project first if you don't have one (`npx create-video@latest`). Then add any component from the registry:
+<p>
+<a href="https://snapcn.dev"><strong>Browse the catalog&nbsp;→</strong></a> &nbsp;·&nbsp;
+<a href="https://snapcn.dev/docs">Docs</a> &nbsp;·&nbsp;
+<a href="https://snapcn.dev/docs/components">Components</a>
+</p>
+
+<p>
+<img alt="MIT License" src="https://img.shields.io/github/license/snapcndev/snapcn.dev?style=flat-square&color=blue">
+<img alt="Stars" src="https://img.shields.io/github/stars/snapcndev/snapcn.dev?style=flat-square&color=blue">
+<img alt="Remotion 4" src="https://img.shields.io/badge/Remotion-4.0-blue?style=flat-square">
+</p>
+
+<img src="./public/hero.gif" alt="snap-cn components animating" width="100%">
+
+</div>
+
+## Quickstart
+
+You need a Remotion project. Don't have one? `npx create-video@latest` takes about a minute.
 
 ```bash
-npx shadcn@latest add @snap-cn/soft-blur-in
+npx shadcn@latest add @snap-cn/text-reveal
 ```
 
-The component's source is copied into your project. Edit it freely — there is no runtime dependency on snap-cn.
+`@snap-cn` is in the [shadcn registry directory](https://github.com/shadcn-ui/ui/pull/11386), so the
+CLI resolves it with no `registries` entry to add first. The source lands in your repo along with
+anything it depends on, and there's no runtime package to keep on your dependency list.
+
+A `create-video` project needs two things before its first `add`: a `components.json`, and the `@/`
+alias in both `tsconfig.json` and `remotion.config.ts` — Remotion's bundler does not read `tsconfig`
+paths. [Installation](https://snapcn.dev/docs/getting-started/installation) has both files to paste.
+
+```tsx
+import { Composition } from "remotion";
+import { TextReveal } from "@/components/snap-cn/text-reveal";
+
+export const RemotionRoot = () => (
+  <Composition
+    id="Intro"
+    component={TextReveal}
+    durationInFrames={60}
+    fps={30}
+    width={1920}
+    height={1080}
+    defaultProps={{ text: "Ship it." }}
+  />
+);
+```
+
+## Components
+
+21 components, each with a scrubable preview at [snapcn.dev](https://snapcn.dev).
+
+| Group | Components |
+| --- | --- |
+| **AI chat input** | `answer-stream` `search-typing` `prompt-zoom` |
+| **Screens & devices** | `phone-frame` `laptop-frame` `terminal-simulator` |
+| **Text & titles** | `text-reveal` `text-build` `text-swap` `text-swell` `text-highlight` `word-flip` |
+| **Captions** | `karaoke-captions` `word-captions` |
+| **Scenes** | `hero-launch` `orbit-gallery` `moodboard-reveal` |
+| **Logos** | `logo-assemble` `logo-flicker` |
+| **Social proof** | `follower-rush` |
+| **Effects** | `pulsing-border` |
+
+Alongside them, `snap-cn-ui` — timeline-driven versions of shadcn atoms (`input`, `caret`) that the
+scene components paint from, so a text field in your video is drawn from the same tokens as the one
+in your app.
 
 ## Why snap-cn
 
-- **Remotion has no batteries-included component library.** You either build every animation from scratch or copy snippets from blog posts. snap-cn gives you a curated registry of primitives and full scenes that just work.
-- **Polished motion is hard.** Easing curves, spring physics, transition timing — snap-cn ships components that already feel right, so you can focus on storytelling instead of tuning `interpolate()` calls.
-- **You own the code.** Components are copied into your repo (shadcn philosophy). No runtime dependency, no version lock-in, no black box — tweak anything you want.
-- **Solo builders need demo videos fast.** Compose a launch trailer, changelog clip, or feature walkthrough from prebuilt blocks in an afternoon.
+**It's built for showing software.** Streaming AI answers, a cursor typing into a search field, a
+terminal running a build, a phone tilting into frame. These are the shots a product demo is made of,
+and they're fiddly enough that most people give up and screen-record instead.
 
-## What's inside
+**Your video inherits your design system.** Components take `theme` and `mode` props and resolve
+through `SnapCnTheme`, reusing the same surface tokens shadcn's own primitives paint with — so the
+UI in the video doesn't drift from the UI in the product.
 
-110+ components, split between scene-ready animations and timeline-driven UI primitives:
+**The motion is measured, not eyeballed.** Scaled text pivots on its baseline instead of its centre,
+and renders with `geometricPrecision`, because glyph rasterisers have no vertical sub-pixel
+positioning and hinting re-snaps stems every frame. Both fixes were verified on rendered frames
+(judder 0.284px → 0.014px). The details are in [`motion-quality`](./.claude/skills/motion-quality/SKILL.md).
 
-- **Typography** — Soft Blur In, Per Character Rise, Tracking In, Shimmer Sweep, Marker Highlight, Slot Machine Roll, Matrix Decode, Number Wheel, Rolling Number, and 30+ more text effects
-- **Transitions & wipes** — Zoom Through, Device Mockup Zoom, Image Expand to Fullscreen, Directional Wipe, Spatial Push, Frosted Glass Wipe, Grid Pixelate Wipe, Chromatic Aberration Wipe
-- **Environment & effects** — Mesh Gradient Background, Dynamic Grid, Spotlight Card, Confetti, Backdrop
-- **UI blocks** — Glass Code Block, Terminal Simulator, Code Accordion, Code Diff Wipe, Tool Menu Slide In, Animated Line & Bar Charts, Drag and Drop Flow
-- **AI scenes** — Claude Chat, ChatGPT, v0, Claude Code, OpenCode
-- **Social** — GitHub Stars, X Follow Card, X Followers Overview
-- **Compositions** — Hero Device Assemble, Ecosystem Constellation, Infinite Bento Pan, Browser Flow, AI Generation Canvas, Live Code Compilation, Terminal to Browser Deploy, Dashboard Populate, Pricing Tier Focus
-- **UI primitives** (`snap-cn-ui`) — timeline-driven, shadcn-style atoms: Button, Accordion, Dialog, Drawer, Sheet, Select, Dropdown Menu, Command Menu, Tabs, Tooltip, Toast, Popover, Slider, Stepper, Resizable, and full flows (Signup, Checkout, Settings Toggle)
+**You own it.** shadcn philosophy: files are copied into your project. Edit anything, upgrade
+nothing, no black box.
+
+## Use it with an AI agent
+
+snap-cn ships a skill that teaches coding agents the catalog, prop shapes, durations and the motion
+rules above — so your agent picks the right component and budgets the timeline instead of inventing
+`interpolate()` calls:
+
+```bash
+npx skills add snapcndev/snapcn.dev --skill snap-cn --yes
+```
+
+Agents that read context files instead can pull [`llms.txt`](https://snapcn.dev/llms.txt) or the
+full corpus at [`llms-full.txt`](https://snapcn.dev/llms-full.txt).
+
+## Docs
+
+- [Introduction](https://snapcn.dev/docs/getting-started/introduction)
+- [Installation](https://snapcn.dev/docs/getting-started/installation)
+- [Agent skill](https://snapcn.dev/docs/getting-started/agent-skill)
+- [All components](https://snapcn.dev/docs/components)
+
+## Contributing
+
+Issues and PRs welcome — see [CONTRIBUTING.md](./CONTRIBUTING.md). Missing a component you need?
+[Open an issue](https://github.com/snapcndev/snapcn.dev/issues) — the roadmap is mostly whatever
+people ask for.
 
 ## Author
 

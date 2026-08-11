@@ -290,6 +290,7 @@
           "target": "components/snap-cn/pulsing-border.tsx"
         }
       ],
+      "docs": "pulsing-border draws with WebGL, and Remotion's headless Chromium has no GL context by default — render it with `npx remotion render --gl=angle` (or set `Config.setChromiumOpenGlRenderer(\"angle\")`), or the render fails with 'WebGL is not supported in this browser'.",
       "type": "registry:component"
     },
     {
@@ -353,6 +354,26 @@
       "type": "registry:component"
     },
     {
+      "name": "hero-launch",
+      "title": "Product Hero",
+      "description": "Cinematic product-launch hero — two cards slide into formation as the headline reveals above.",
+      "dependencies": [
+        "remotion",
+        "@remotion/google-fonts"
+      ],
+      "registryDependencies": [
+        "https://snapcn.dev/r/snap-cn-ui.json"
+      ],
+      "files": [
+        {
+          "path": "registry/snap-cn/hero-launch/index.tsx",
+          "type": "registry:component",
+          "target": "components/snap-cn/hero-launch.tsx"
+        }
+      ],
+      "type": "registry:component"
+    },
+    {
       "name": "moodboard-reveal",
       "title": "Moodboard Reveal",
       "description": "A kinetic headline with a swapping inline image, then a scattered gallery of photos flies in, the camera pushes through it as the background lifts from near-black to off-white, and it lands on a single hero image.",
@@ -400,6 +421,9 @@
       "dependencies": [
         "remotion",
         "culori"
+      ],
+      "devDependencies": [
+        "@types/culori"
       ],
       "files": [
         {
@@ -458,11 +482,13 @@
       "title": "UI Input",
       "description": "A text input whose idle/hover/active/typing/invalid state is a pure function of the timeline; the focus ring, border, caret, and value reveal are keyframed presets.",
       "dependencies": [
-        "remotion"
+        "remotion",
+        "class-variance-authority"
       ],
       "registryDependencies": [
         "https://snapcn.dev/r/snap-cn-ui.json",
-        "https://snapcn.dev/r/caret.json"
+        "https://snapcn.dev/r/caret.json",
+        "utils"
       ],
       "files": [
         {

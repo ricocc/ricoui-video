@@ -1,11 +1,11 @@
-import { LAVENDER, MINT, PEACH } from "@/config/site";
+import { INSTALL_COMMAND, LAVENDER, MINT, PEACH } from "@/config/site";
 
 // ---------------------------------------------------------------------------
 // Hero code block
 // ---------------------------------------------------------------------------
 
 /** Shown inside the hero's code player — the real snap-cn flow. */
-export const HERO_CODE = `// npx shadcn@latest add snap-cn/text-reveal
+export const HERO_CODE = `// ${INSTALL_COMMAND}
 import { AbsoluteFill } from "remotion";
 import { TextReveal } from "@/components/snap-cn/text-reveal";
 
@@ -54,7 +54,7 @@ export const ADD: Step = {
   title: "Add a component",
   description:
     "Pull any primitive or composition straight into your project with the shadcn CLI — the code lands in your repo, yours to tweak.",
-  command: "npx shadcn@latest add snap-cn/text-reveal",
+  command: INSTALL_COMMAND,
   component: "text-reveal",
   accent: LAVENDER,
 };

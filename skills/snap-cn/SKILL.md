@@ -27,8 +27,9 @@ shadcn add @snap-cn/blur-out-up
 # Component lands at components/snap-cn/blur-out-up.tsx
 ```
 
-`@snap-cn/<name>` is the canonical namespaced form (configured under `registries` in
-`components.json`). The plain registry URL `https://snapcn.dev/r/<name>.json` also works.
+`@snap-cn/<name>` is the canonical namespaced form. It needs no `registries` entry — the
+namespace is in the shadcn registry directory. The plain registry URL
+`https://snapcn.dev/r/<name>.json` also works.
 
 ### Dependencies install automatically
 

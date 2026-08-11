@@ -27,9 +27,11 @@ const KNOWN_COMPONENTS = new Set(INSTALL_ALL_NAMES);
  * snap-cn's product is not the website. The website is a brochure; the product
  * ships when someone runs
  *
- *     npx shadcn@latest add https://snapcn.dev/r/orbit-gallery.json
+ *     npx shadcn@latest add @snap-cn/orbit-gallery
  *
- * which is a plain GET to `/r/orbit-gallery.json` from a terminal. No JS, no
+ * which the CLI resolves through the shadcn registry directory into a plain GET
+ * to `/r/orbit-gallery.json` from a terminal — so the namespace form is counted
+ * exactly like the URL form it replaced. No JS, no
  * cookie, no pageview. Before this file, the closest thing we had to a
  * conversion metric was `install_command_copied` — "someone put a string on
  * their clipboard" — and the gap between that and an actual install was
