@@ -1,6 +1,6 @@
 # shader-neuro-noise
 
-**Tier:** `snap-cn` (animation) · **Vibe:** tech · **Natural length:** 150f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** tech · **Natural length:** 150f @ 30fps
 
 Organic neural-web noise field that slowly morphs. Frame-driven (`speed={0}` + `frame` from `useCurrentFrame()`) for deterministic renders.
 

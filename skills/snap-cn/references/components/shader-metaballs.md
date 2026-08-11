@@ -1,6 +1,6 @@
 # shader-metaballs
 
-**Tier:** `snap-cn` (animation) · **Vibe:** playful · **Natural length:** 150f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** playful · **Natural length:** 150f @ 30fps
 
 Organic blobs merging and splitting like lava. Frame-driven (`speed={0}` + `frame` from `useCurrentFrame()`) for deterministic renders.
 

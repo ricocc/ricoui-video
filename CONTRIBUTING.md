@@ -1,6 +1,6 @@
 # Contributing
 
-snap-cn is a shadcn registry of ready-made animations, transitions and
+snapcn is a shadcn registry of ready-made animations, transitions and
 backgrounds for Remotion. Components are **copied into the user's project**, so
 every file we ship is a file someone will read, edit and own. Write it that way.
 

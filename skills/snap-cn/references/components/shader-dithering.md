@@ -1,6 +1,6 @@
 # shader-dithering
 
-**Tier:** `snap-cn` (animation) · **Vibe:** tech · **Natural length:** 150f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** tech · **Natural length:** 150f @ 30fps
 
 Ordered-dither shading over an animated gradient field. Frame-driven (`speed={0}` + `frame` from `useCurrentFrame()`) for deterministic renders. Defaults to `shape="wave"` so it fills the frame instead of rendering a centered sphere.
 

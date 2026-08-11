@@ -1,6 +1,6 @@
 # x-followers-overview
 
-**Tier:** `snap-cn` (animation) · **Vibe:** data · **Natural length:** 360f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** data · **Natural length:** 360f @ 30fps
 
 X follow notifications cycle through as 3D flipping text — '<name> followed you · 7h' — then the total follower count pops in with a confetti burst. Ships a hardcoded sample list (X API ready). Light/dark, horizontal or vertical.
 
@@ -18,7 +18,7 @@ Lands at `components/snap-cn/x-followers-overview.tsx`. Pulls `@snap-cn/confetti
 |---|---|---|
 | `notifications` | `FollowerNotification[]` | `SAMPLE_FOLLOWERS` |
 | `totalFollowers` | `number` | `1709` |
-| `handle` | `string` | `"snap-cn"` |
+| `handle` | `string` | `"snapcn"` |
 | `avatarUrl` | `string` | `"/logo.svg"` |
 | `accentColor` | `string` | `"#1d9bf0"` |
 | `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` |
@@ -27,7 +27,7 @@ Lands at `components/snap-cn/x-followers-overview.tsx`. Pulls `@snap-cn/confetti
 ## Example
 
 ```tsx
-<XFollowersOverview notifications={SAMPLE_FOLLOWERS} totalFollowers={1709} handle="snap-cn" />
+<XFollowersOverview notifications={SAMPLE_FOLLOWERS} totalFollowers={1709} handle="snapcn" />
 ```
 
 ## Use when

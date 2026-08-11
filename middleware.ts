@@ -24,7 +24,7 @@ const KNOWN_COMPONENTS = new Set(INSTALL_ALL_NAMES);
  *
  * ## Why this file exists
  *
- * snap-cn's product is not the website. The website is a brochure; the product
+ * snapcn's product is not the website. The website is a brochure; the product
  * ships when someone runs
  *
  *     npx shadcn@latest add @snap-cn/orbit-gallery

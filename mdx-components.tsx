@@ -14,7 +14,7 @@ import { InstallBlock } from "@/components/docs/install-block";
 import { PropsTable } from "@/components/docs/props-table";
 
 /**
- * MDX prose mapping for snap-cn docs.
+ * MDX prose mapping for snapcn docs.
  *
  * Fumadocs' `defaultMdxComponents` is spread as the base — its machinery must
  * stay intact: heading anchors + scroll IDs (`Heading`), the Shiki
@@ -22,7 +22,7 @@ import { PropsTable } from "@/components/docs/props-table";
  * internal-aware `Link`, and the overflow-wrapped `Table`. Reimplementing any
  * of these would break code highlighting, copy buttons, and heading deep-links.
  *
- * The snap-cn *visual* restyle that de-templates the default Fumadocs prose is
+ * The snapcn *visual* restyle that de-templates the default Fumadocs prose is
  * delivered through the token-driven `.prose` rules in `app/globals.css`
  * (headings → display H1 + sans h2–h4, links → `foreground`/`accent` with a
  * focus-visible ring, code/Shiki → `muted` token surface, tables → token

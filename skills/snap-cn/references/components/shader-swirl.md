@@ -1,6 +1,6 @@
 # shader-swirl
 
-**Tier:** `snap-cn` (animation) · **Vibe:** premium · **Natural length:** 150f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** premium · **Natural length:** 150f @ 30fps
 
 Concentric bands swirling around a center point. Frame-driven (`speed={0}` + `frame` from `useCurrentFrame()`) for deterministic renders.
 

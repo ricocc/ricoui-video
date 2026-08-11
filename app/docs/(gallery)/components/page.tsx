@@ -11,7 +11,7 @@ import { formatUpdatedAt, getGitHubUpdatedAt } from "@/lib/github";
 
 const SITE_URL = "https://snapcn.dev";
 const TITLE = "Components";
-const DESCRIPTION = "Every component in snap-cn, grouped by category";
+const DESCRIPTION = "Every component in snapcn, grouped by category";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     url: "/docs/components",
     title: TITLE,
     description: DESCRIPTION,
-    siteName: "snap-cn",
+    siteName: "snapcn",
     images: [{ url: "/og/components", width: 1200, height: 630, alt: TITLE }],
   },
   twitter: {
@@ -50,7 +50,7 @@ const jsonLd = {
         name: "Sri Nath",
         url: "https://x.com/SriNath693",
       },
-      publisher: { "@type": "Organization", name: "snap-cn", url: SITE_URL },
+      publisher: { "@type": "Organization", name: "snapcn", url: SITE_URL },
     },
     {
       "@type": "BreadcrumbList",

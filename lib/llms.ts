@@ -88,7 +88,7 @@ function componentsGalleryPage(): LlmsPage {
   return {
     url: "/docs/components",
     title: "Components",
-    description: "Every component in snap-cn, grouped by category",
+    description: "Every component in snapcn, grouped by category",
     body,
     category: "components",
   };
@@ -136,9 +136,9 @@ export function collectDocsPages(): LlmsPage[] {
   });
 }
 
-export const LLMS_HEADER = `# snap-cn
+export const LLMS_HEADER = `# snapcn
 
-> snap-cn is a shadcn-style registry of production-ready video components for Remotion (React). Developers install components with \`npx shadcn@latest add ${SITE_URL}/r/<component>.json\`; the source and everything it depends on is copied into their project and they own the code. Typical use: building product demo videos, launch videos and social clips in React.
+> snapcn is a shadcn-style registry of production-ready video components for Remotion (React). Developers install components with \`npx shadcn@latest add ${SITE_URL}/r/<component>.json\`; the source and everything it depends on is copied into their project and they own the code. Typical use: building product demo videos, launch videos and social clips in React.
 
 Prerequisites: an existing Remotion project (\`npx create-video@latest\`) and the shadcn CLI. License: MIT. Author: Sri Nath (https://x.com/SriNath693). Site: ${SITE_URL}
 `;

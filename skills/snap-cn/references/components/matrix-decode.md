@@ -1,6 +1,6 @@
 # matrix-decode
 
-**Tier:** `snap-cn` (animation) · **Vibe:** tech · **Natural length:** 90f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** tech · **Natural length:** 90f @ 30fps
 
 Random scramble characters resolve left-to-right into the target text, cycling through a configurable charset before each position locks. Default color is terminal green.
 

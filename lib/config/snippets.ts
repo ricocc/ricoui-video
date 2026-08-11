@@ -4,7 +4,7 @@ import { INSTALL_COMMAND, LAVENDER, MINT, PEACH } from "@/config/site";
 // Hero code block
 // ---------------------------------------------------------------------------
 
-/** Shown inside the hero's code player — the real snap-cn flow. */
+/** Shown inside the hero's code player — the real snapcn flow. */
 export const HERO_CODE = `// ${INSTALL_COMMAND}
 import { AbsoluteFill } from "remotion";
 import { TextReveal } from "@/components/snap-cn/text-reveal";

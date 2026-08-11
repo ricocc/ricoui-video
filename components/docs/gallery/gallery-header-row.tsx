@@ -18,7 +18,7 @@ export function GalleryHeaderRow({ meta }: { meta: string }) {
             Components
           </h1>
           <span className="truncate text-[15px] text-muted-foreground">
-            Every component in snap-cn, ready to install.
+            Every component in snapcn, ready to install.
           </span>
         </div>
         <span className="hidden shrink-0 text-sm text-muted-foreground md:block">

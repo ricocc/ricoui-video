@@ -1,6 +1,6 @@
 # directional-wipe
 
-**Tier:** `snap-cn` (animation) · **Vibe:** premium · **Natural length:** 90f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** premium · **Natural length:** 90f @ 30fps
 
 Slides one scene in from an edge while pushing the outgoing scene off in the same direction. A clean, physically grounded swap — the two scenes move together as if on a continuous surface.
 

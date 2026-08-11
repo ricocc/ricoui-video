@@ -1,6 +1,6 @@
 # shader-spiral
 
-**Tier:** `snap-cn` (animation) · **Vibe:** premium · **Natural length:** 150f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** premium · **Natural length:** 150f @ 30fps
 
 Rotating spiral arms radiating from the center. Frame-driven (`speed={0}` + `frame` from `useCurrentFrame()`) for deterministic renders.
 

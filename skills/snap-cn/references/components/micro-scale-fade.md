@@ -1,6 +1,6 @@
 # micro-scale-fade
 
-**Tier:** `snap-cn` (animation) · **Vibe:** clean · **Natural length:** 60f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** clean · **Natural length:** 60f @ 30fps
 
 A calm, tiny scale pop — text fades in while scaling up from `scaleFrom` to 1.0. The movement is almost imperceptible at the default value, providing premium polish without visible animation drama.
 

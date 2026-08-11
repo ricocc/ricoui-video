@@ -74,7 +74,7 @@
 }
 
 :root {
-  /* snap-cn design system — light (first-class). Neutral surfaces, hairline
+  /* snapcn design system — light (first-class). Neutral surfaces, hairline
      borders, one blue accent, shadows kept to a whisper.
 
      The accent was #3577e0 and is now #3072db. White on #3577e0 measures
@@ -164,7 +164,7 @@
 }
 
 .dark {
-  /* snap-cn design system — dark. Near-black page, slightly raised surfaces,
+  /* snapcn design system — dark. Near-black page, slightly raised surfaces,
      the same blue accent; separation comes from 1px borders, not shadows. */
   --background: #0a0a0b;
   --foreground: #fafafa;

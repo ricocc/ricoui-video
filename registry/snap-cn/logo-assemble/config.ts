@@ -6,7 +6,7 @@ export const logoAssembleConfig: ComponentConfig = {
   controls: {
     brandName: {
       type: "text",
-      default: "snap-cn",
+      default: "snapcn",
       label: "Brand name",
     },
     middleText: {

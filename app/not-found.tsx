@@ -5,7 +5,7 @@ import { SnapCnLogo } from "@/components/snapcn-logo";
 import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
-  title: "Page not found — snap-cn",
+  title: "Page not found — snapcn",
   // A 404 has nothing to index and no canonical of its own.
   robots: { index: false, follow: true },
 };
@@ -26,7 +26,7 @@ const WAYS_OUT = [
 export default function NotFound() {
   return (
     <main className="section flex min-h-[70vh] flex-col items-start justify-center py-24">
-      <Link href="/" aria-label="snap-cn home" className="mb-10 inline-flex">
+      <Link href="/" aria-label="snapcn home" className="mb-10 inline-flex">
         <SnapCnLogo />
       </Link>
 

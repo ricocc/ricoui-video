@@ -55,7 +55,7 @@ export function GallerySidebar({
       )}
     >
       <div className="flex items-center justify-between gap-2">
-        <Link href="/" aria-label="snap-cn home" className="shrink-0">
+        <Link href="/" aria-label="snapcn home" className="shrink-0">
           <SnapCnLogo />
         </Link>
         <div className="flex items-center gap-2">
@@ -154,7 +154,7 @@ export function GallerySidebar({
         </div>
         <div>
           <p className="text-[13px] font-medium text-foreground">
-            Star snap-cn
+            Star snapcn
           </p>
           <p className="text-[13px] text-muted-foreground">
             Free, open-source components.
@@ -182,7 +182,7 @@ export function GallerySidebar({
         <p className="text-[13px] text-muted-foreground">
           MIT licensed · own your code.
         </p>
-        <p className="text-[13px] text-muted-foreground">© {year} snap-cn</p>
+        <p className="text-[13px] text-muted-foreground">© {year} snapcn</p>
       </div>
     </aside>
   );

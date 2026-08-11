@@ -14,7 +14,7 @@ description: >
 # ux-ui-maxpro
 
 A playbook for reproducing a reference UI exactly, on this repo's design system, without
-drifting into approximation or fabricated content. Optimized for the snap-cn stack
+drifting into approximation or fabricated content. Optimized for the snapcn stack
 (Next.js App Router + Tailwind v4 + token-driven `app/globals.css`, DESIGN.md rules), but the
 method is stack-agnostic.
 

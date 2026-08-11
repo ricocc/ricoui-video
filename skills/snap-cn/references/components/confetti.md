@@ -1,6 +1,6 @@
 # confetti
 
-**Tier:** `snap-cn` (animation) · **Vibe:** playful · **Natural length:** 90f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** playful · **Natural length:** 90f @ 30fps
 
 Deterministic confetti burst overlay for Remotion — seeded particles with gravity, spin, and flutter so every render is frame-identical. Layer it over any scene as a celebratory one-shot effect.
 

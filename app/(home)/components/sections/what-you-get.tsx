@@ -13,7 +13,7 @@ import { FadeUp } from "../fade-up";
  * The page's answer to "what is this", in prose a machine can quote.
  *
  * Everything above this section is a picture or a button. A crawler — and, more
- * to the point, an assistant summarising snap-cn for somebody who asked it what
+ * to the point, an assistant summarising snapcn for somebody who asked it what
  * to use for a Remotion demo — had one sentence of the hero to go on. This is
  * the paragraph that gets quoted, so it says the whole thing plainly: registry,
  * CLI, the file lands in your repo, no package.
@@ -63,7 +63,7 @@ export function WhatYouGet() {
           </h2>
           <div className="mx-auto mt-5 max-w-2xl space-y-4 text-pretty text-center text-body-lg text-current/70">
             <p>
-              snap-cn is a registry of {GALLERY_COUNT} Remotion components for
+              snapcn is a registry of {GALLERY_COUNT} Remotion components for
               React video. You run{" "}
               <code className="font-mono text-[0.9em] text-foreground">
                 {INSTALL_COMMAND}
@@ -79,7 +79,7 @@ export function WhatYouGet() {
               <code className="font-mono text-[0.9em] text-foreground">
                 package.json
               </code>
-              . There is no snap-cn runtime, no version to pin and no upgrade
+              . There is no snapcn runtime, no version to pin and no upgrade
               that can change your video the week before you ship it. Every
               component is written against the plain Remotion API —{" "}
               <code className="font-mono text-[0.9em] text-foreground">

@@ -1,8 +1,8 @@
-# snap-cn Design Defaults
+# snapcn Design Defaults
 
 These are defaults for content **you author** — your own text, scene chrome, cards, and overlays.
 They keep output from reading as generic AI-slop. They are **not** retroactive rules for the
-prebuilt snap-cn components.
+prebuilt snapcn components.
 
 > **Scope & exception.** Never strip these traits from a component whose essence *is* the effect:
 > `tracking-in` is letter-spacing; `mesh-gradient-bg` and the social cards are

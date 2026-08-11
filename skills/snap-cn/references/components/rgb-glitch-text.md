@@ -1,6 +1,6 @@
 # rgb-glitch-text
 
-**Tier:** `snap-cn` (animation) · **Vibe:** tech · **Natural length:** 90f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** tech · **Natural length:** 90f @ 30fps
 
 Three RGB-offset copies of the text jitter and separate for a brief glitch window before snapping back into register. The displacement is deterministic via a `seed` string so the same glitch plays identically every render.
 

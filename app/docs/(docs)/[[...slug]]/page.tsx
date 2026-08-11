@@ -58,7 +58,7 @@ export default async function Page(props: {
           name: "Sri Nath",
           url: "https://x.com/SriNath693",
         },
-        publisher: { "@type": "Organization", name: "snap-cn", url: SITE_URL },
+        publisher: { "@type": "Organization", name: "snapcn", url: SITE_URL },
       },
       {
         "@type": "BreadcrumbList",
@@ -132,7 +132,7 @@ export async function generateMetadata(props: {
       url: page.url,
       title: data.title,
       description: data.description,
-      siteName: "snap-cn",
+      siteName: "snapcn",
       images: [{ url: ogImage, width: 1200, height: 630, alt: data.title }],
     },
     twitter: {

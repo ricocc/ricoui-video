@@ -4,8 +4,8 @@ import type { MetadataRoute } from "next";
 // favicon.io site.webmanifest; the PWA icons live in public/.
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "snap-cn — Cinematic video components for React",
-    short_name: "snap-cn",
+    name: "snapcn — Cinematic video components for React",
+    short_name: "snapcn",
     icons: [
       {
         src: "/android-chrome-192x192.png",

@@ -1,6 +1,6 @@
 # github-stars
 
-**Tier:** `snap-cn` (animation) · **Vibe:** data · **Natural length:** 120f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** data · **Natural length:** 120f @ 30fps
 
 Inertial fly-through of a repo's stargazers with a synced count-up odometer that locks on the total. Horizontal 16:9 or vertical 9:16.
 

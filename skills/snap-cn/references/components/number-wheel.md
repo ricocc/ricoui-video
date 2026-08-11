@@ -1,6 +1,6 @@
 # number-wheel
 
-**Tier:** `snap-cn` (animation) · **Vibe:** data · **Natural length:** 112f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** data · **Natural length:** 112f @ 30fps
 
 A mechanical odometer that rolls an integer up or down to its target value. Direction is inferred automatically from `from` and `to` — no configuration needed.
 

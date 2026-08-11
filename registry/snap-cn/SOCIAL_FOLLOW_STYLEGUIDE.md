@@ -116,7 +116,7 @@ const THEMES: Record<"light" | "dark", Theme> = {
 
 ## 5. Cursor + Custom Button Interaction
 
-The follow card is the first snap-cn composition using an interactive cursor and custom button state.
+The follow card is the first snapcn composition using an interactive cursor and custom button state.
 
 ### Cursor placement & coordinate space
 - Mount the `<Cursor>` component **inside the scaled card ref-stage** (same parent as the `Card`, both children of a centered transform container)
@@ -171,7 +171,7 @@ This ensures:
 
 ## 8. Registry Dependencies & Import Constraints
 
-The follow-card imports two snap-cn primitives:
+The follow-card imports two snapcn primitives:
 
 ```typescript
 import { Cursor } from "@/components/snap-cn/cursor";

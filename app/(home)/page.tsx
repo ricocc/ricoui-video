@@ -25,7 +25,7 @@ const jsonLd = {
     {
       "@type": "WebSite",
       "@id": `${SITE_URL}#website`,
-      name: "snap-cn",
+      name: "snapcn",
       url: SITE_URL,
       description:
         "Remotion components for product demo videos: streaming AI answers, terminal sessions, device frames, captions, logo stings and full scenes.",
@@ -33,7 +33,7 @@ const jsonLd = {
     {
       "@type": "SoftwareApplication",
       "@id": `${SITE_URL}#software`,
-      name: "snap-cn",
+      name: "snapcn",
       url: SITE_URL,
       applicationCategory: "DeveloperApplication",
       operatingSystem: "Any",
@@ -63,7 +63,7 @@ const jsonLd = {
     {
       "@type": "ItemList",
       "@id": `${SITE_URL}#categories`,
-      name: "snap-cn component categories",
+      name: "snapcn component categories",
       itemListElement: GALLERY_CATEGORIES.map(({ id, label }, index) => ({
         "@type": "ListItem",
         position: index + 1,

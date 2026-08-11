@@ -21,7 +21,7 @@ export function HeaderLogo() {
   return (
     <Link
       href="/"
-      aria-label="snap-cn home"
+      aria-label="snapcn home"
       className="flex items-center focus-visible:outline-none"
     >
       <SnapCnLogo />

@@ -1,6 +1,6 @@
 # x-follow-card
 
-**Tier:** `snap-cn` (animation) · **Vibe:** social · **Natural length:** 165f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** social · **Natural length:** 165f @ 30fps
 
 Animated X profile follow card — spring bounce-in, staggered blur-in, and a synthetic cursor that clicks Follow and flips it to Following. Light/dark, horizontal or vertical.
 
@@ -16,8 +16,8 @@ Lands at `components/snap-cn/x-follow-card.tsx`. Pulls `@snap-cn/cursor` automat
 
 | Prop | Type | Default |
 |---|---|---|
-| `name` | `string` | `"snap-cn"` |
-| `handle` | `string` | `"snap-cn"` |
+| `name` | `string` | `"snapcn"` |
+| `handle` | `string` | `"snapcn"` |
 | `bio` | `string` | `"Cinematic video components for React"` |
 | `avatarUrl` | `string` | `""` |
 | `coverUrl` | `string` | `""` |
@@ -32,7 +32,7 @@ Lands at `components/snap-cn/x-follow-card.tsx`. Pulls `@snap-cn/cursor` automat
 ## Example
 
 ```tsx
-<XFollowCard name="snap-cn" handle="snap-cn" bio="Cinematic video components for React" verified />
+<XFollowCard name="snapcn" handle="snapcn" bio="Cinematic video components for React" verified />
 ```
 
 ## Use when

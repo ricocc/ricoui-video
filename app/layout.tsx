@@ -72,7 +72,7 @@ const SITE_URL = "https://snapcn.dev";
  * anyone actually types, *Remotion* and *shadcn*. This is 61 characters, so it
  * survives a SERP intact.
  */
-const SITE_TITLE = "snap-cn — Remotion components, installed with shadcn";
+const SITE_TITLE = "snapcn — Remotion components, installed with shadcn";
 const SITE_DESCRIPTION =
   "A shadcn registry of Remotion components for React video: text animations, captions, device mockups and full scenes. Install with the CLI, own the code. MIT.";
 
@@ -81,13 +81,13 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
     default: SITE_TITLE,
-    template: "%s · snap-cn",
+    template: "%s · snapcn",
   },
   description: SITE_DESCRIPTION,
   openGraph: {
     type: "website",
     url: SITE_URL,
-    siteName: "snap-cn",
+    siteName: "snapcn",
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
     locale: "en_US",

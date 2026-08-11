@@ -1,6 +1,6 @@
 # shader-smoke-ring
 
-**Tier:** `snap-cn` (animation) · **Vibe:** premium · **Natural length:** 150f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** premium · **Natural length:** 150f @ 30fps
 
 Soft smoke ring curling and dissipating in place. Frame-driven (`speed={0}` + `frame` from `useCurrentFrame()`) for deterministic renders. Object-sizing shader — the ring sits centered on `colorBack`.
 

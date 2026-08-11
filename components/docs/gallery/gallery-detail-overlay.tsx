@@ -217,7 +217,7 @@ function OverlayBody({
           </Dialog.Description>
 
           <dl className="text-sm">
-            <MetaRow label="Source">snap-cn</MetaRow>
+            <MetaRow label="Source">snapcn</MetaRow>
             <MetaRow label="Category">{category}</MetaRow>
             <MetaRow label="Type">{typeLabel(item.href)}</MetaRow>
             {preview ? (

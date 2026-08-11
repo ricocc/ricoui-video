@@ -1,6 +1,6 @@
 # shader-simplex-noise
 
-**Tier:** `snap-cn` (animation) · **Vibe:** clean · **Natural length:** 150f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** clean · **Natural length:** 150f @ 30fps
 
 Simplex noise flow field, smoother than Perlin. Frame-driven (`speed={0}` + `frame` from `useCurrentFrame()`) for deterministic renders.
 

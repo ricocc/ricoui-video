@@ -8,7 +8,7 @@ export type VideoTimelineProps = { clips: Clip[] };
 
 /**
  * The video the editor builds: each clip's registry component played back-to-
- * back via `<Series>`, with a baked-in snap-cn watermark. Used by BOTH the
+ * back via `<Series>`, with a baked-in snapcn watermark. Used by BOTH the
  * in-browser `<Player>` preview and the server MP4 render, so it takes only
  * serializable props (`clips`) and resolves the live `Component` from the slug
  * internally. 1280×720 @30fps — clips that share the canvas render cleanly.
@@ -95,11 +95,11 @@ function Watermark() {
         }}
       >
         <svg width={11} height={11} viewBox="0 0 24 24" fill="#0a0a0c">
-          <title>snap-cn</title>
+          <title>snapcn</title>
           <path d="M7 4.5v15l12-7.5z" />
         </svg>
       </span>
-      snap-cn
+      snapcn
     </div>
   );
 }

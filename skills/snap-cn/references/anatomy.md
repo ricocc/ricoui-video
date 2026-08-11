@@ -1,6 +1,6 @@
 # Video Anatomy & Composition Strategy
 
-How to turn "make a product demo with snap-cn" into a coherent video. Read this before composing.
+How to turn "make a product demo with snapcn" into a coherent video. Read this before composing.
 The component catalog is `components/index.md`; the per-archetype recipes are in `archetypes/` (start at `archetypes/index.md`).
 
 This file has three layers, kept separate:

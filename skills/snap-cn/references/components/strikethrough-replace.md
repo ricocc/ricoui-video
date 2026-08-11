@@ -1,6 +1,6 @@
 # strikethrough-replace
 
-**Tier:** `snap-cn` (animation) · **Vibe:** clean · **Natural length:** 120f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** clean · **Natural length:** 120f @ 30fps
 
 Draws a strike line across the `from` text, then fades the `to` text in beneath it — the visual grammar of editorial correction or a before/after reveal. The strike line color (`lineColor`) defaults to red-orange for maximum contrast.
 

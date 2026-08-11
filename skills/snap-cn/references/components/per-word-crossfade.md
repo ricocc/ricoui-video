@@ -1,6 +1,6 @@
 # per-word-crossfade
 
-**Tier:** `snap-cn` (animation) · **Vibe:** clean · **Natural length:** 90f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** clean · **Natural length:** 90f @ 30fps
 
 Words gently fade into place one after another with a short vertical drift, replacing the outgoing text in a calm keynote rhythm. Both the outgoing and incoming text animate at the word level.
 

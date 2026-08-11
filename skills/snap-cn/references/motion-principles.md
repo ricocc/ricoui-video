@@ -1,14 +1,14 @@
-# Motion Principles for snap-cn
+# Motion Principles for snapcn
 
-The 12 classic animation principles, adapted to **composing Remotion videos from snap-cn blocks**.
-Each entry: the principle → the Remotion mechanic that expresses it → a snap-cn component that
-demonstrates it → do/avoid tuned to snap-cn's restraint.
+The 12 classic animation principles, adapted to **composing Remotion videos from snapcn blocks**.
+Each entry: the principle → the Remotion mechanic that expresses it → a snapcn component that
+demonstrates it → do/avoid tuned to snapcn's restraint.
 
 - This file is about **which** principle and **when** (intent). For **how** the APIs work
   (easing curves, sequencing, spring config), see the `remotion-best-practices` skill.
 - Motion must stay restrained — see `design.md`. Where a principle pushes toward boldness
   (squash, exaggeration), the cap below always wins.
-- Idiom note: snap-cn components drive motion with `spring()` and `interpolate()` + `Easing`.
+- Idiom note: snapcn components drive motion with `spring()` and `interpolate()` + `Easing`.
   Examples here use that same idiom.
 
 Tags: **`core`** — routinely useful when assembling scenes · **`rarely-needed`** — character-
@@ -22,7 +22,7 @@ Compress on impact, elongate on speed; preserve volume. For UI this means a tiny
 trade on landing — nothing cartoon.
 
 - **Mechanic:** `spring()` driving `scaleX`/`scaleY` inversely on impact frames.
-- **snap-cn:** `spring-scale-in` (settle), `confetti` (particle pop).
+- **snapcn:** `spring-scale-in` (settle), `confetti` (particle pop).
 - **Do/Avoid:** at most a 2–4% volume trade on a hard landing. ❌ No rubber-band squash on text or
   cards — it fights `design.md`.
 
@@ -32,7 +32,7 @@ A short wind-up before the action makes it feel intentional: a drawer dips befor
 
 - **Mechanic:** `spring()` with light overshoot, or a brief reverse `interpolate` (e.g. `−4px`)
   for 1–3 frames before the main move.
-- **snap-cn:** `spring-scale-in`.
+- **snapcn:** `spring-scale-in`.
 - **Do/Avoid:** keep the wind-up to 1–3 frames, ≤110% scale. ❌ No bouncy cartoon recoil.
 
 ## 3. Staging — `core`
@@ -41,15 +41,15 @@ Direct the eye: one clear idea per scene. Clear the stage before introducing the
 
 - **Mechanic:** `<Sequence>` / `<Series>` to isolate beats; stagger entrances so only one focal
   element moves at a time; dim/scale-down what's leaving.
-- **snap-cn:** most Compositions.
+- **snapcn:** most Compositions.
 - **Do/Avoid:** one focal action per beat. ❌ Don't enter five elements on the same frame.
 
 ## 4. Straight-Ahead vs Pose-to-Pose — `rarely-needed`
 
-Pose-to-pose = define key frames, interpolate between. That's exactly how snap-cn works.
+Pose-to-pose = define key frames, interpolate between. That's exactly how snapcn works.
 
 - **Mechanic:** `interpolate(frame, [k0, k1, k2], [v0, v1, v2])` — your keyframes are the poses.
-- **snap-cn:** every component (key ranges in `index.tsx`).
+- **snapcn:** every component (key ranges in `index.tsx`).
 - **Do/Avoid:** think in keyframes and let `interpolate` fill between. Straight-ahead (frame-by-
   frame) is for hand-drawn organic effects — not block composition.
 
@@ -58,7 +58,7 @@ Pose-to-pose = define key frames, interpolate between. That's exactly how snap-c
 Nothing stops at once; elements arrive staggered. Lighter things lead, heavier lag.
 
 - **Mechanic:** per-element delay offsets (`frame - index * stagger`) on the same animation.
-- **snap-cn:** `staggered-fade-up`, `short-slide-right`.
+- **snapcn:** `staggered-fade-up`, `short-slide-right`.
 - **Do/Avoid:** stagger 3–6 frames between siblings. ❌ Don't land a whole group on one frame
   (reads robotic) and don't over-stagger (feels sluggish).
 
@@ -68,7 +68,7 @@ Ease into and out of poses — almost nothing should move linearly.
 
 - **Mechanic:** `interpolate(..., { easing: Easing.out(Easing.cubic) })`; sharp curve = snappy,
   gentle = graceful.
-- **snap-cn:** transitions (`directional-wipe`, `frosted-glass-wipe`), most text reveals.
+- **snapcn:** transitions (`directional-wipe`, `frosted-glass-wipe`), most text reveals.
 - **Do/Avoid:** default to ease-out for entrances. ❌ Linear `interpolate` for visible motion
   unless it's a constant drift (e.g. marquee, grid pan).
 
@@ -77,7 +77,7 @@ Ease into and out of poses — almost nothing should move linearly.
 Living motion follows curves, not straight lines — especially cursors and gestures.
 
 - **Mechanic:** drive `x` and `y` from separate eased interpolations, or a bezier path.
-- **snap-cn:** `cursor` + `useCursorPath`, social cards' cursor travel to the Follow button.
+- **snapcn:** `cursor` + `useCursorPath`, social cards' cursor travel to the Follow button.
 - **Do/Avoid:** curve cursor/hand paths. ❌ No straight diagonal cursor jumps.
 
 ## 8. Secondary Action — `core`
@@ -86,7 +86,7 @@ Supporting motion that reinforces the primary action without stealing focus.
 
 - **Mechanic:** a small parallel channel — a cursor ripple on click, a shadow that breathes as a
   card opens, a caret blink under typing.
-- **snap-cn:** `x-follow-card` (ripple at click), `terminal-simulator` (`caret` blink).
+- **snapcn:** `x-follow-card` (ripple at click), `terminal-simulator` (`caret` blink).
 - **Do/Avoid:** secondary motion stays subtle and on-theme. ❌ Don't add competing animation that
   splits attention.
 
@@ -94,18 +94,18 @@ Supporting motion that reinforces the primary action without stealing focus.
 
 Frame counts set weight: fast = light, slow = heavy. Vary timing for contrast.
 
-- **Mechanic:** budget in frames @ fps (snap-cn defaults to 30fps; component durations run
+- **Mechanic:** budget in frames @ fps (snapcn defaults to 30fps; component durations run
   ~90–300 frames). The `speed` prop scales the animation tier.
-- **snap-cn:** every animation-tier component (`speed`); composition `durationInFrames`.
+- **snapcn:** every animation-tier component (`speed`); composition `durationInFrames`.
 - **Do/Avoid:** match duration to weight — a heavy hero assemble is slower than a toast. ❌ Don't
   reuse one duration for everything (kills rhythm).
 
 ## 10. Exaggeration — `core` (capped)
 
-Push slightly past literal reality for clarity — but snap-cn's house style is restraint.
+Push slightly past literal reality for clarity — but snapcn's house style is restraint.
 
 - **Mechanic:** a touch of overshoot on `spring()`, a brief ≤110% scale peak.
-- **snap-cn:** `spring-scale-in`, `micro-scale-fade`.
+- **snapcn:** `spring-scale-in`, `micro-scale-fade`.
 - **Do/Avoid:** subtle UI exaggeration only (≤110%, gentle overshoot). ❌ No stretched/cartoon
   exaggeration — this is the principle most likely to collide with `design.md`; the cap wins.
 
@@ -115,7 +115,7 @@ Form, weight, and consistent perspective. For block composition this is mostly f
 components; it matters only if you build 3D-ish scenes.
 
 - **Mechanic:** consistent `perspective` / `transform-origin` across layered elements.
-- **snap-cn:** `spatial-push`, `perspective-marquee`.
+- **snapcn:** `spatial-push`, `perspective-marquee`.
 - **Do/Avoid:** keep one perspective per scene when stacking 3D layers. ❌ Don't mix inconsistent
   vanishing points.
 
@@ -125,6 +125,6 @@ The charisma of the result: clear shapes, balanced proportion, motion that invit
 Emergent, not a knob.
 
 - **Mechanic:** outcome of staging + timing + restraint working together.
-- **snap-cn:** the full Compositions as reference for a coherent, watchable result.
+- **snapcn:** the full Compositions as reference for a coherent, watchable result.
 - **Do/Avoid:** aim for clear and captivating, not busy. ❌ More motion ≠ more appeal — cut what
   doesn't serve the focal idea.

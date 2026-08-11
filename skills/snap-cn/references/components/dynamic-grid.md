@@ -1,6 +1,6 @@
 # dynamic-grid
 
-**Tier:** `snap-cn` (animation) · **Vibe:** premium · **Natural length:** 150f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** premium · **Natural length:** 150f @ 30fps
 
 Subtle moving grid background with configurable cell size and scroll direction. Lines drift continuously — diagonal by default — giving a quiet sense of depth without distracting from foreground content.
 

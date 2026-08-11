@@ -1,6 +1,6 @@
 # backdrop
 
-**Tier:** `snap-cn` (animation) · **Vibe:** clean · **Natural length:** 150f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** clean · **Natural length:** 150f @ 30fps
 
 Configurable full-frame background with Screen Studio-style padding and a rounded, shadowed content frame. Accepts a solid color, gradient, image URL, or a live animated component as its fill — components themselves stay transparent and compose on top.
 

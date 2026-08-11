@@ -1,6 +1,6 @@
 # shader-voronoi
 
-**Tier:** `snap-cn` (animation) · **Vibe:** tech · **Natural length:** 150f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** tech · **Natural length:** 150f @ 30fps
 
 Animated Voronoi cells shifting and re-tessellating. Frame-driven (`speed={0}` + `frame` from `useCurrentFrame()`) for deterministic renders.
 

@@ -25,19 +25,19 @@ import { FadeUp } from "../fade-up";
  */
 export const FAQ_ITEMS: { q: string; a: string }[] = [
   {
-    q: "What is snap-cn?",
-    a: `snap-cn is a shadcn-style registry of ${GALLERY_COUNT} Remotion components for React video — text animations, captions, logo stings, device mockups and full scenes. You install one with the shadcn CLI and the source file is copied into your project, exactly the way shadcn/ui works for interface components.`,
+    q: "What is snapcn?",
+    a: `snapcn is a shadcn-style registry of ${GALLERY_COUNT} Remotion components for React video — text animations, captions, logo stings, device mockups and full scenes. You install one with the shadcn CLI and the source file is copied into your project, exactly the way shadcn/ui works for interface components.`,
   },
   {
     q: "Do I need Remotion installed first?",
-    a: "Yes. snap-cn does not bootstrap a video project — npx create-video@latest does that. Once you have a Remotion project with a components.json, snap-cn installs into it like any other shadcn registry.",
+    a: "Yes. snapcn does not bootstrap a video project — npx create-video@latest does that. Once you have a Remotion project with a components.json, snapcn installs into it like any other shadcn registry.",
   },
   {
-    q: "How do I install a snap-cn component?",
+    q: "How do I install a snapcn component?",
     a: `Run ${INSTALL_COMMAND}. The component is written to components/snap-cn/ (or wherever your components.json points), along with anything it depends on, and every prop but the words you are animating is defaulted, so it renders the moment you mount it in a composition.`,
   },
   {
-    q: "Is snap-cn free?",
+    q: "Is snapcn free?",
     a: "Yes. Every component is MIT licensed, the whole registry is on GitHub, and there is no account, no key and no paid tier to install any of it.",
   },
   {
@@ -46,7 +46,7 @@ export const FAQ_ITEMS: { q: string; a: string }[] = [
   },
   {
     q: "How is this different from an npm animation package?",
-    a: "A package puts the animation behind a version number: you get what its author shipped, you upgrade on their schedule, and a patch release can change your video after you signed it off. A registry copies the code in once. There is no snap-cn in your package.json at all.",
+    a: "A package puts the animation behind a version number: you get what its author shipped, you upgrade on their schedule, and a patch release can change your video after you signed it off. A registry copies the code in once. There is no snapcn in your package.json at all.",
   },
   {
     q: "Does it work in a project without Tailwind?",
@@ -58,7 +58,7 @@ export const FAQ_ITEMS: { q: string; a: string }[] = [
   },
   {
     q: "Does it work with Claude Code and other AI agents?",
-    a: "snap-cn ships an agent skill — the component catalog with props and durations, the motion-design rules, and the anti-patterns — installable with npx skills add snapcndev/snapcn.dev. Your agent then picks the right component and budgets the timeline without you pasting context every time.",
+    a: "snapcn ships an agent skill — the component catalog with props and durations, the motion-design rules, and the anti-patterns — installable with npx skills add snapcndev/snapcn.dev. Your agent then picks the right component and budgets the timeline without you pasting context every time.",
   },
 ];
 

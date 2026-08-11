@@ -52,7 +52,7 @@ Transitions: hook→chat `fade-through` (16f); chat→terminal `directional-wipe
 
 | Field | Required | Notes |
 |---|---|---|
-| `toolName` | yes | Product name, e.g. `vercel-snap`, `vite`, `snap-cn` |
+| `toolName` | yes | Product name, e.g. `vercel-snap`, `vite`, `snapcn` |
 | `tagline` | yes | One phrase — what the tool does in plain language |
 | `command` | yes | Exact shell command to type, e.g. `npx vercel-snap build --prod` |
 | `outputLines[]` | yes | 3–6 log lines; last line is the success line (prefix `✓`); include 1–2 numbers (file count, time) for `rolling-number`; never real transcript walls |

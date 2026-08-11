@@ -1,6 +1,6 @@
 # logo-enter
 
-**Tier:** `snap-cn` (animation) · **Vibe:** social · **Natural length:** 90f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** social · **Natural length:** 90f @ 30fps
 
 A stacked group of round, ring-bordered brand chips that spring in one-by-one (scale-up + small slide, staggered) and then hold. Ships a sample set of AI-tool marks so it renders immediately; swap the `logos` prop for your own inline-SVG marks. Enter-only — compose the exit with a transition.
 

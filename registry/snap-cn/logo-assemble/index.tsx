@@ -182,7 +182,7 @@ function resolveSrc(src: string): string {
 
 export function LogoAssemble({
   logoSrc = "https://snapcn.dev/logo/snapcn-white.png",
-  brandName = "snap-cn",
+  brandName = "snapcn",
   middleText = "Cinematic components\nfor React",
   images = DEFAULT_IMAGES,
   count = 10,

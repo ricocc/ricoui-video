@@ -1,6 +1,6 @@
 # glass-code-block
 
-**Tier:** `snap-cn` (animation) · **Vibe:** tech · **Natural length:** 180f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** tech · **Natural length:** 180f @ 30fps
 
 A premium frosted-glass code editor window with a regex tokenizer and line-by-line stagger reveal. Lines fade and slide in sequentially against a translucent dark panel with traffic-light chrome, making it suitable as a hero background or feature highlight.
 

@@ -1,6 +1,6 @@
 # marker-highlight
 
-**Tier:** `snap-cn` (animation) · **Vibe:** playful · **Natural length:** 90f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** playful · **Natural length:** 90f @ 30fps
 
 A colored marker block animates behind a phrase as the text color shifts — the fill draws from left to right like a physical highlighter pen passing over the words.
 

@@ -1,6 +1,6 @@
 # bottom-up-letters
 
-**Tier:** `snap-cn` (animation) · **Vibe:** clean · **Natural length:** 60f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** clean · **Natural length:** 60f @ 30fps
 
 Letters rise from below in a pronounced staircase cadence, one symbol at a time, with zero blur. The large default `distance` makes each character's travel arc highly visible.
 

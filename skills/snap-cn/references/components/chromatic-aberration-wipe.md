@@ -1,6 +1,6 @@
 # chromatic-aberration-wipe
 
-**Tier:** `snap-cn` (animation) · **Vibe:** premium · **Natural length:** 90f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** premium · **Natural length:** 90f @ 30fps
 
 An ultra-fast slide transition between two scenes with an RGB channel-split glitch on the peak frames. The `from` scene exits and the `to` scene enters; the aberration burst fires at the cut point for a high-energy feel.
 

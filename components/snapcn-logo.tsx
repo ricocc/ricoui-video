@@ -5,7 +5,7 @@ const WIDTH = 464;
 const HEIGHT = 409;
 
 /**
- * The snap-cn mark, as a light/dark pair.
+ * The snapcn mark, as a light/dark pair.
  *
  * The mark is a single flat colour on transparency, so it cannot be one file:
  * the dark mark vanishes on the dark theme and the white one vanishes on the
@@ -24,7 +24,7 @@ export function SnapCnLogo({ className }: { className?: string }) {
     <>
       <Image
         src="/logo/snapcn.png"
-        alt="snap-cn"
+        alt="snapcn"
         width={WIDTH}
         height={HEIGHT}
         priority
