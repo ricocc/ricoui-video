@@ -12,11 +12,11 @@ your additions to match the library — without you pasting context every time.
 
 ## Install with skills.sh
 
-The skill lives in the [`skills/`](https://github.com/snapcndev/snapcn.dev/tree/main/skills) folder of
+The skill lives in the [`skills/`](https://github.com/snapcndev/snapcn/tree/main/skills) folder of
 the snapcn repo. Install it with the [`skills`](https://skills.sh) CLI:
 
 ```bash
-npx skills add snapcndev/snapcn.dev
+npx skills add snapcndev/snapcn
 ```
 
 This finds the `snapcn` skill and installs it into your agent (for Claude Code:
@@ -26,16 +26,16 @@ This finds the `snapcn` skill and installs it into your agent (for Claude Code:
 
 ```bash
 # Install straight to the snapcn skill, no prompts
-npx skills add snapcndev/snapcn.dev --skill snapcn --yes
+npx skills add snapcndev/snapcn --skill snapcn --yes
 
 # Install globally (available in every project)
-npx skills add snapcndev/snapcn.dev --skill snapcn -g
+npx skills add snapcndev/snapcn --skill snapcn -g
 
 # Target a specific agent
-npx skills add snapcndev/snapcn.dev -a claude-code
+npx skills add snapcndev/snapcn -a claude-code
 
 # Just list what's available in the repo
-npx skills add snapcndev/snapcn.dev --list
+npx skills add snapcndev/snapcn --list
 ```
 
 ### Use without installing
@@ -43,7 +43,7 @@ npx skills add snapcndev/snapcn.dev --list
 To try it for a single session without writing files:
 
 ```bash
-npx skills use snapcndev/snapcn.dev@snap-cn | claude
+npx skills use snapcndev/snapcn@snap-cn | claude
 ```
 
 ## What's inside

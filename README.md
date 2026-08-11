@@ -16,8 +16,8 @@ device frames, captions — as components you install with the shadcn CLI and ow
 </p>
 
 <p>
-<img alt="MIT License" src="https://img.shields.io/github/license/snapcndev/snapcn.dev?style=flat-square&color=blue">
-<img alt="Stars" src="https://img.shields.io/github/stars/snapcndev/snapcn.dev?style=flat-square&color=blue">
+<img alt="MIT License" src="https://img.shields.io/github/license/snapcndev/snapcn?style=flat-square&color=blue">
+<img alt="Stars" src="https://img.shields.io/github/stars/snapcndev/snapcn?style=flat-square&color=blue">
 <img alt="Remotion 4" src="https://img.shields.io/badge/Remotion-4.0-blue?style=flat-square">
 </p>
 
@@ -102,7 +102,7 @@ rules above — so your agent picks the right component and budgets the timeline
 `interpolate()` calls:
 
 ```bash
-npx skills add snapcndev/snapcn.dev --skill snapcn --yes
+npx skills add snapcndev/snapcn --skill snapcn --yes
 ```
 
 Agents that read context files instead can pull [`llms.txt`](https://snapcn.dev/llms.txt) or the
@@ -118,7 +118,7 @@ full corpus at [`llms-full.txt`](https://snapcn.dev/llms-full.txt).
 ## Contributing
 
 Issues and PRs welcome — see [CONTRIBUTING.md](./CONTRIBUTING.md). Missing a component you need?
-[Open an issue](https://github.com/snapcndev/snapcn.dev/issues) — the roadmap is mostly whatever
+[Open an issue](https://github.com/snapcndev/snapcn/issues) — the roadmap is mostly whatever
 people ask for.
 
 ## Author
