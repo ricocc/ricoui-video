@@ -1,6 +1,6 @@
 # slot-machine-roll
 
-**Tier:** `snap-cn` (animation) · **Vibe:** playful · **Natural length:** 90f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** playful · **Natural length:** 90f @ 30fps
 
 A vertical character reel scrolls from one string value to another, like a slot machine drum spinning to a new result. Accepts arbitrary string inputs including currency symbols, units, and mixed characters.
 

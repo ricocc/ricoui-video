@@ -1,6 +1,6 @@
 # spatial-push
 
-**Tier:** `snap-cn` (animation) · **Vibe:** premium · **Natural length:** 90f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** premium · **Natural length:** 90f @ 30fps
 
 A new scene physically presses the old one back into the frame — the incoming scene scales up from depth while the outgoing scene shrinks away, creating a 3-D push-in feel that implies the viewer is moving forward through space.
 

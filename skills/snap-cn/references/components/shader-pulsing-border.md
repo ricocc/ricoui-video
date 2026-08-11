@@ -1,6 +1,6 @@
 # shader-pulsing-border
 
-**Tier:** `snap-cn` (animation) · **Vibe:** premium · **Natural length:** 150f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** premium · **Natural length:** 150f @ 30fps
 
 Glowing border frame that pulses around the edges. Frame-driven (`speed={0}` + `frame` from `useCurrentFrame()`) for deterministic renders.
 

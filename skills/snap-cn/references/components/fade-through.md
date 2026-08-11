@@ -1,6 +1,6 @@
 # fade-through
 
-**Tier:** `snap-cn` (animation) · **Vibe:** clean · **Natural length:** 90f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** clean · **Natural length:** 90f @ 30fps
 
 A Material-style content transition: the outgoing text fades to zero, then the incoming text fades in with a soft delay between the two phases. Neither text moves — only opacity changes.
 

@@ -5,7 +5,7 @@ export const dynamic = "force-static";
 /**
  * llms-full.txt: the entire documentation as one plain-markdown file, with
  * install widgets rewritten to runnable CLI commands. This is what agents and
- * answer engines ingest to answer "how do I build X with snap-cn".
+ * answer engines ingest to answer "how do I build X with snapcn".
  */
 export function GET() {
   const pages = collectDocsPages();

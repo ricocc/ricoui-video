@@ -1,6 +1,6 @@
 # shader-warp
 
-**Tier:** `snap-cn` (animation) · **Vibe:** premium · **Natural length:** 150f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** premium · **Natural length:** 150f @ 30fps
 
 Domain-warped color field that folds and stretches like liquid. Frame-driven (`speed={0}` + `frame` from `useCurrentFrame()`) for deterministic renders.
 

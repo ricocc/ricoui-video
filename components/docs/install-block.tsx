@@ -12,10 +12,10 @@ import { CodeBlockCommand } from "./code-block-command";
  */
 export function InstallBlock({
   name,
-  registry = "snap-cn",
+  registry = "snapcn",
 }: {
   name: string;
-  registry?: "snap-cn" | "snap-cn-ui";
+  registry?: "snapcn" | "snap-cn-ui";
 }) {
   const npmCommand = installCommand(name);
   return (

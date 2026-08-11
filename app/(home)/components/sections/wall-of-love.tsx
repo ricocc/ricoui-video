@@ -28,7 +28,7 @@ const intent = (text: string) =>
 
 const POSTS = [
   {
-    label: "Post about snap-cn",
+    label: "Post about snapcn",
     // Written in the reader's voice, not ours — they are the one posting it, and
     // a line of marketing copy in the first person is the thing people delete.
     text: `@snapcn: ready-made Remotion components for video, installed with the shadcn CLI. Copy the code, own it forever.`,
@@ -36,7 +36,7 @@ const POSTS = [
   },
   {
     label: "Show what you built",
-    text: `Made this with snap-cn 🎬
+    text: `Made this with snapcn 🎬
 
 Remotion video components you install with the shadcn CLI:
 ${SITE_URL}`,

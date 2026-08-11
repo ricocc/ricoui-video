@@ -71,7 +71,7 @@ function buildSpec(body: unknown): RenderSpec {
     inputProps: { clips },
     width: CANVAS.width,
     height: CANVAS.height,
-    fileName: "snap-cn-video.mp4",
+    fileName: "snapcn-video.mp4",
   };
 }
 

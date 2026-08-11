@@ -51,7 +51,7 @@ export function CategoryDoc({ category }: { category: CategoryId }) {
       <h2 id="install">Install</h2>
       <p>
         Components are installed into your own Remotion project with the shadcn
-        CLI, and the file it writes is yours to edit — there is no snap-cn
+        CLI, and the file it writes is yours to edit — there is no snapcn
         package to depend on.{" "}
         <Link href="/docs/getting-started/installation">
           Set the registry up once
@@ -115,7 +115,7 @@ export const RemotionRoot = () => (
         </li>
         <li>
           <Link href="/docs/getting-started/agent-skill">Agent skill</Link> —
-          hand snap-cn to a coding agent so it picks the right component itself.
+          hand snapcn to a coding agent so it picks the right component itself.
         </li>
       </ul>
     </>

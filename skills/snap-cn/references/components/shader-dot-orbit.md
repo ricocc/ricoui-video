@@ -1,6 +1,6 @@
 # shader-dot-orbit
 
-**Tier:** `snap-cn` (animation) · **Vibe:** tech · **Natural length:** 150f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** tech · **Natural length:** 150f @ 30fps
 
 Dots orbiting on concentric paths across the frame. Frame-driven (`speed={0}` + `frame` from `useCurrentFrame()`) for deterministic renders.
 

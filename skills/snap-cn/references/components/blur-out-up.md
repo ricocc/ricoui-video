@@ -1,6 +1,6 @@
 # blur-out-up
 
-**Tier:** `snap-cn` (animation) · **Vibe:** premium · **Natural length:** 90f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** premium · **Natural length:** 90f @ 30fps
 
 Words arrive clean then depart upward with increasing blur, producing an airy, editorial exit. The in-phase is an instant appearance; the motion happens entirely on the way out.
 

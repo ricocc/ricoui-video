@@ -1,4 +1,4 @@
-# snap-cn Component Index
+# snapcn Component Index
 
 Router for the per-component reference files in this directory. **Scan this table to pick candidates, then open only the `components/<name>.md` files you actually need** — do not read every file.
 
@@ -9,7 +9,7 @@ Install any entry: `shadcn add @snap-cn/<name>` (lands at `components/snap-cn/<n
 
 ## Text Animations
 
-Tier `snap-cn`. Reveal / replace / emphasize text and numbers. Frame-driven, shared `speed` prop.
+Tier `snapcn`. Reveal / replace / emphasize text and numbers. Frame-driven, shared `speed` prop.
 
 | Component | Use for | Avoid for | Length | Vibe | Deps |
 |---|---|---|---|---|---|
@@ -47,7 +47,7 @@ Tier `snap-cn`. Reveal / replace / emphasize text and numbers. Frame-driven, sha
 
 ## Backgrounds & Effects
 
-Tier `snap-cn`. Animated foundations, one-shot effects.
+Tier `snapcn`. Animated foundations, one-shot effects.
 
 | Component | Use for | Avoid for | Length | Vibe | Deps |
 |---|---|---|---|---|---|
@@ -58,7 +58,7 @@ Tier `snap-cn`. Animated foundations, one-shot effects.
 
 ## Shaders
 
-Tier `snap-cn`. WebGL shader backdrops from `@paper-design/shaders`, wrapped for Remotion. Frozen to the current frame (`speed={0}` + `frame` from `useCurrentFrame()`) so renders stay deterministic; full-bleed; muted defaults; every raw paper prop forwarded via `...rest`. Deps: `@paper-design/shaders-react`.
+Tier `snapcn`. WebGL shader backdrops from `@paper-design/shaders`, wrapped for Remotion. Frozen to the current frame (`speed={0}` + `frame` from `useCurrentFrame()`) so renders stay deterministic; full-bleed; muted defaults; every raw paper prop forwarded via `...rest`. Deps: `@paper-design/shaders-react`.
 
 | Component | Use for | Avoid for | Length | Vibe | Deps |
 |---|---|---|---|---|---|
@@ -83,7 +83,7 @@ Tier `snap-cn`. WebGL shader backdrops from `@paper-design/shaders`, wrapped for
 
 ## Transitions & Wipes
 
-Tier `snap-cn`. Swap between two scenes — wrap `from` / `to` as ReactNode plus `transitionDuration`.
+Tier `snapcn`. Swap between two scenes — wrap `from` / `to` as ReactNode plus `transitionDuration`.
 
 | Component | Use for | Avoid for | Length | Vibe | Deps |
 |---|---|---|---|---|---|
@@ -96,7 +96,7 @@ Tier `snap-cn`. Swap between two scenes — wrap `from` / `to` as ReactNode plus
 
 ## UI Blocks
 
-Tier `snap-cn`. Interface simulations for product demos.
+Tier `snapcn`. Interface simulations for product demos.
 
 | Component | Use for | Avoid for | Length | Vibe | Deps |
 |---|---|---|---|---|---|
@@ -105,7 +105,7 @@ Tier `snap-cn`. Interface simulations for product demos.
 
 ## AI & Social Cards
 
-Tier `snap-cn`. Brand / product card scenes. Render offline (gradient fallbacks).
+Tier `snapcn`. Brand / product card scenes. Render offline (gradient fallbacks).
 
 | Component | Use for | Avoid for | Length | Vibe | Deps |
 |---|---|---|---|---|---|

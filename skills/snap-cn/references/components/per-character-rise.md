@@ -1,6 +1,6 @@
 # per-character-rise
 
-**Tier:** `snap-cn` (animation) · **Vibe:** clean · **Natural length:** 60f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** clean · **Natural length:** 60f @ 30fps
 
 Letters slide up from below with no blur — crisp, deliberate, kinetic. Each character rises independently with an even stagger, landing sharply at the baseline.
 

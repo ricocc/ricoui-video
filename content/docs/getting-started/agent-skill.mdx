@@ -1,10 +1,10 @@
 ---
 title: Agent Skill
-description: Install the snap-cn agent skill with skills.sh so your AI generates better Remotion videos
+description: Install the snapcn agent skill with skills.sh so your AI generates better Remotion videos
 ---
 
-snap-cn ships an **agent skill** — a knowledge pack that teaches AI coding agents (Claude Code and
-friends) how to build videos with snap-cn: the full component catalog with props and durations,
+snapcn ships an **agent skill** — a knowledge pack that teaches AI coding agents (Claude Code and
+friends) how to build videos with snapcn: the full component catalog with props and durations,
 design defaults, motion-design principles, and common anti-patterns.
 
 Once installed, your agent picks the right components, budgets the timeline correctly, and styles
@@ -13,23 +13,23 @@ your additions to match the library — without you pasting context every time.
 ## Install with skills.sh
 
 The skill lives in the [`skills/`](https://github.com/snapcndev/snapcn.dev/tree/main/skills) folder of
-the snap-cn repo. Install it with the [`skills`](https://skills.sh) CLI:
+the snapcn repo. Install it with the [`skills`](https://skills.sh) CLI:
 
 ```bash
 npx skills add snapcndev/snapcn.dev
 ```
 
-This finds the `snap-cn` skill and installs it into your agent (for Claude Code:
+This finds the `snapcn` skill and installs it into your agent (for Claude Code:
 `.claude/skills/snap-cn/`). The CLI is interactive — pick the skill and target agent when prompted.
 
 ### Common flags
 
 ```bash
-# Install straight to the snap-cn skill, no prompts
-npx skills add snapcndev/snapcn.dev --skill snap-cn --yes
+# Install straight to the snapcn skill, no prompts
+npx skills add snapcndev/snapcn.dev --skill snapcn --yes
 
 # Install globally (available in every project)
-npx skills add snapcndev/snapcn.dev --skill snap-cn -g
+npx skills add snapcndev/snapcn.dev --skill snapcn -g
 
 # Target a specific agent
 npx skills add snapcndev/snapcn.dev -a claude-code
@@ -53,10 +53,10 @@ npx skills use snapcndev/snapcn.dev@snap-cn | claude
 | `SKILL.md` | Install flow, the two tiers, categories, patterns, design defaults |
 | `references/components.md` | Every component — props, defaults, dependencies, duration & vibe |
 | `references/design.md` | Anti-slop design defaults + tokens (palette, fonts, canvas) |
-| `references/motion-principles.md` | The 12 motion principles adapted to snap-cn |
+| `references/motion-principles.md` | The 12 motion principles adapted to snapcn |
 | `references/anti-patterns.md` | Common generation mistakes and their fixes |
 
 ## Prerequisites
 
 - An AI agent that loads skills (e.g. Claude Code).
-- A Remotion project with snap-cn — see [Installation](/docs/getting-started/installation).
+- A Remotion project with snapcn — see [Installation](/docs/getting-started/installation).

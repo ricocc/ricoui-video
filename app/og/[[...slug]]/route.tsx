@@ -32,7 +32,7 @@ export async function GET(
   const page = slug?.length ? source.getPage(slug) : undefined;
   const data = page?.data as { title?: string; description?: string };
 
-  const title = data?.title ?? "snap-cn";
+  const title = data?.title ?? "snapcn";
   const description =
     data?.description ??
     "Cinematic video components for React. Production-ready Remotion animations, transitions and backgrounds — installed with the shadcn CLI.";
@@ -64,7 +64,7 @@ export async function GET(
           }}
         />
         <div style={{ fontSize: 32, fontWeight: 700, letterSpacing: -1 }}>
-          snap-cn
+          snapcn
         </div>
         {category ? (
           <div

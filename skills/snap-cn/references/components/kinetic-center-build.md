@@ -1,6 +1,6 @@
 # kinetic-center-build
 
-**Tier:** `snap-cn` (animation) · **Vibe:** premium · **Natural length:** 60f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** premium · **Natural length:** 60f @ 30fps
 
 A word appears in the center; each subsequent word enters from the right and pushes the line outward until the full phrase locks into a centered final position. The growing line snaps to center as it builds.
 

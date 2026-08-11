@@ -94,7 +94,7 @@ export function SiteFooter() {
           className="mt-14 text-sm text-muted-foreground sm:mt-16"
           suppressHydrationWarning
         >
-          © {new Date().getFullYear()} snap-cn — MIT licensed
+          © {new Date().getFullYear()} snapcn — MIT licensed
         </p>
       </div>
     </footer>

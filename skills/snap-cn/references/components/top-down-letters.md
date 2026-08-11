@@ -1,6 +1,6 @@
 # top-down-letters
 
-**Tier:** `snap-cn` (animation) · **Vibe:** clean · **Natural length:** 60f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** clean · **Natural length:** 60f @ 30fps
 
 Letters descend from above in a pronounced staircase — one character at a time — with a large vertical offset and zero blur. Sharp, structural, and authoritative; each letter snaps into its baseline position in sequence.
 

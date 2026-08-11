@@ -1,6 +1,6 @@
 <div align="center">
 
-<h1>snap-cn</h1>
+<h1>snapcn</h1>
 
 <h3>Product demo videos, built in React.</h3>
 
@@ -21,7 +21,7 @@ device frames, captions — as components you install with the shadcn CLI and ow
 <img alt="Remotion 4" src="https://img.shields.io/badge/Remotion-4.0-blue?style=flat-square">
 </p>
 
-<img src="./public/hero.gif" alt="snap-cn components animating" width="100%">
+<img src="./public/hero.gif" alt="snapcn components animating" width="100%">
 
 </div>
 
@@ -77,7 +77,7 @@ Alongside them, `snap-cn-ui` — timeline-driven versions of shadcn atoms (`inpu
 scene components paint from, so a text field in your video is drawn from the same tokens as the one
 in your app.
 
-## Why snap-cn
+## Why snapcn
 
 **It's built for showing software.** Streaming AI answers, a cursor typing into a search field, a
 terminal running a build, a phone tilting into frame. These are the shots a product demo is made of,
@@ -97,12 +97,12 @@ nothing, no black box.
 
 ## Use it with an AI agent
 
-snap-cn ships a skill that teaches coding agents the catalog, prop shapes, durations and the motion
+snapcn ships a skill that teaches coding agents the catalog, prop shapes, durations and the motion
 rules above — so your agent picks the right component and budgets the timeline instead of inventing
 `interpolate()` calls:
 
 ```bash
-npx skills add snapcndev/snapcn.dev --skill snap-cn --yes
+npx skills add snapcndev/snapcn.dev --skill snapcn --yes
 ```
 
 Agents that read context files instead can pull [`llms.txt`](https://snapcn.dev/llms.txt) or the

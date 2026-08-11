@@ -1,6 +1,6 @@
 # zoom-through-transition
 
-**Tier:** `snap-cn` (animation) · **Vibe:** premium · **Natural length:** 60f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** premium · **Natural length:** 60f @ 30fps
 
 Aggressively scales into the center of a scene element until the frame goes white (or a configurable background color), then cuts to the next scene. A "punch through" exit — kinetic, intentional, and brief.
 

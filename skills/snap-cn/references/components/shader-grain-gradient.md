@@ -1,6 +1,6 @@
 # shader-grain-gradient
 
-**Tier:** `snap-cn` (animation) · **Vibe:** premium · **Natural length:** 150f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** premium · **Natural length:** 150f @ 30fps
 
 Grainy multi-stop gradient that drifts slowly with film-grain texture laid over the blend. Frame-driven (`speed={0}` + `frame` from `useCurrentFrame()`) for deterministic renders.
 

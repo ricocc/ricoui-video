@@ -1,6 +1,6 @@
 # frosted-glass-wipe
 
-**Tier:** `snap-cn` (animation) · **Vibe:** premium · **Natural length:** 90f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** premium · **Natural length:** 90f @ 30fps
 
 An elegant scene transition through a sliding pane of frosted glass. A blurred, semi-transparent panel sweeps across the frame — briefly obscuring the outgoing scene before clearing to reveal the incoming one. The mechanism is visual material, not a hard geometric cut.
 

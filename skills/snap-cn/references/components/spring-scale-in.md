@@ -1,6 +1,6 @@
 # spring-scale-in
 
-**Tier:** `snap-cn` (animation) · **Vibe:** playful · **Natural length:** 60f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** playful · **Natural length:** 60f @ 30fps
 
 Words pop in with a soft overshoot scale, each bouncing slightly past 1× before settling — like a physical spring releasing. The stagger delay controls how quickly successive words snap into position.
 

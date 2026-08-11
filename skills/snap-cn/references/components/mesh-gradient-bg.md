@@ -1,6 +1,6 @@
 # mesh-gradient-bg
 
-**Tier:** `snap-cn` (animation) · **Vibe:** premium · **Natural length:** 150f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** premium · **Natural length:** 150f @ 30fps
 
 Living gradient with amorphous color blobs slowly drifting across the frame. Blobs are implemented as blurred radial shapes animated with sinusoidal offsets.
 

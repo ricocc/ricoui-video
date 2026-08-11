@@ -1,6 +1,6 @@
-# snap-cn Anti-Patterns
+# snapcn Anti-Patterns
 
-Common mistakes when generating snap-cn videos. Each is something the model tends to do wrong.
+Common mistakes when generating snapcn videos. Each is something the model tends to do wrong.
 
 ## 1. Clipping a component by under-budgeting its Sequence
 
@@ -75,7 +75,7 @@ body per frame. Unloaded fonts flash fallback in the export.
 
 ## 9. Hardcoding a background on a component
 
-snap-cn components render **transparent** — they don't own a background. Set the scene background
+snapcn components render **transparent** — they don't own a background. Set the scene background
 with `backdrop` (or your own container), not by hardcoding a fill into the component.
 
 ## 10. Slop styling on your own additions

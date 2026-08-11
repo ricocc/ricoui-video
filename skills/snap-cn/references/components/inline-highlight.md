@@ -1,6 +1,6 @@
 # inline-highlight
 
-**Tier:** `snap-cn` (animation) · **Vibe:** clean · **Natural length:** 90f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** clean · **Natural length:** 90f @ 30fps
 
 Animates a single word inside a sentence from a base color to a brand highlight color. The surrounding text is static; only the target word transitions, with no background block or underline.
 

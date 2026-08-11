@@ -3,7 +3,7 @@ import { ComingSoonPage } from "@/components/docs/gallery/coming-soon-page";
 
 const TITLE = "Video Editor";
 const DESCRIPTION =
-  "Compose a video from snap-cn components — add clips, edit text and images, and export an MP4.";
+  "Compose a video from snapcn components — add clips, edit text and images, and export an MP4.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     url: "/docs/video-editor",
     title: TITLE,
     description: DESCRIPTION,
-    siteName: "snap-cn",
+    siteName: "snapcn",
   },
 };
 

@@ -1,6 +1,6 @@
 # staggered-fade-up
 
-**Tier:** `snap-cn` (animation) · **Vibe:** clean · **Natural length:** 90f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** clean · **Natural length:** 90f @ 30fps
 
 Words fade in and slide upward one after another with a configurable stagger delay. The workhorse text entrance for body copy and multi-word headlines — readable at any length, no blur or bounce.
 

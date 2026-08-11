@@ -163,7 +163,7 @@ Other core exports you reuse, never re-implement: `mixOklch` (animated colors),
 ## 6. Theming
 
 - JS theme object with stock shadcn token names is the source of truth
-  (`SnapCnTheme`); defaults follow the snap-cn design system — light-first,
+  (`SnapCnTheme`); defaults follow the snapcn design system — light-first,
   white surfaces (`#FFFFFF`) on a near-white page (`#FAFAFA`), hairline borders
   (`#E4E7EC` light / `#26272B` dark), deep slate text (`#101828`), muted text
   (`#667085` light / `#A1A1AA` dark), and one accent blue (`#266DF0`) shared by

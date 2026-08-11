@@ -1,6 +1,6 @@
 # shared-axis-z
 
-**Tier:** `snap-cn` (animation) · **Vibe:** clean · **Natural length:** 90f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** clean · **Natural length:** 90f @ 30fps
 
 Scale-based shared-axis transition: the outgoing text shrinks away while the incoming text grows into full size, simulating a camera push or focus shift along the Z axis.
 

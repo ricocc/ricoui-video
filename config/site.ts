@@ -2,7 +2,7 @@ import snapCnRegistry from "@/registry/snap-cn/registry.json";
 import snapCnUiRegistry from "@/registry/snap-cn-ui/registry.json";
 
 // Pastel palette used only inside demo/sample video content (code snippet
-// accents). Site chrome sticks to the snap-cn design system tokens — neutral
+// accents). Site chrome sticks to the snapcn design system tokens — neutral
 // surfaces with a single blue accent (see app/globals.css).
 export const PEACH = "#FFB38E";
 export const LAVENDER = "#D4B3FF";
@@ -34,7 +34,7 @@ export const INSTALL_ALL_COMMAND = `npx shadcn@latest add ${INSTALL_ALL_NAMES.ma
   (name) => `@snap-cn/${name}`,
 ).join(" ")}`;
 
-// snap-cn design system motion: fast, subtle ease-out tweens — no bounce or
+// snapcn design system motion: fast, subtle ease-out tweens — no bounce or
 // overshoot anywhere in the site chrome.
 export const EASE_OUT = {
   type: "tween" as const,

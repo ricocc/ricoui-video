@@ -1,6 +1,6 @@
 # rolling-number
 
-**Tier:** `snap-cn` (animation) · **Vibe:** data · **Natural length:** 150f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** data · **Natural length:** 150f @ 30fps
 
 Odometer-style counter where each decimal place scrolls at its own speed, new digits rising into view and settling exactly on the target value. Built for large numeric metrics — revenue, user counts, impressions — where place-by-place motion communicates scale.
 

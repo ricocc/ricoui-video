@@ -1,8 +1,8 @@
-# Plan: snap-cn — Initial Bootstrap (historical)
+# Plan: snapcn — Initial Bootstrap (historical)
 
 ## Context
 
-snap-cn is a shadcn-style registry of production-ready Remotion video components. The repo started empty (only CLAUDE.md + DESIGN.md). This plan bootstrapped the whole project: a single flat Next.js app managed with pnpm, with Fumadocs docs, the shadcn registry, and the first primitive component (SoftBlurIn).
+snapcn is a shadcn-style registry of production-ready Remotion video components. The repo started empty (only CLAUDE.md + DESIGN.md). This plan bootstrapped the whole project: a single flat Next.js app managed with pnpm, with Fumadocs docs, the shadcn registry, and the first primitive component (SoftBlurIn).
 
 Design: Vercel visual language (DESIGN.md) — Geist fonts, shadow-as-border, aggressive negative letter-spacing, achromatic palette.
 

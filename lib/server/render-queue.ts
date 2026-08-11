@@ -27,7 +27,7 @@ export interface JobState {
   outputPath?: string;
   /** Human-readable failure reason (only once status === "error"). */
   error?: string;
-  /** Attachment filename served on download (e.g. "snap-cn-video.mp4"). */
+  /** Attachment filename served on download (e.g. "snapcn-video.mp4"). */
   fileName: string;
   createdAt: number;
 }

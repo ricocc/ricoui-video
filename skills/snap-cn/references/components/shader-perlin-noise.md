@@ -1,6 +1,6 @@
 # shader-perlin-noise
 
-**Tier:** `snap-cn` (animation) · **Vibe:** clean · **Natural length:** 150f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** clean · **Natural length:** 150f @ 30fps
 
 Classic Perlin noise clouds drifting across the frame. Frame-driven (`speed={0}` + `frame` from `useCurrentFrame()`) for deterministic renders.
 

@@ -1,6 +1,6 @@
 # shader-mesh-gradient
 
-**Tier:** `snap-cn` (animation) · **Vibe:** premium · **Natural length:** 150f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** premium · **Natural length:** 150f @ 30fps
 
 WebGL mesh gradient with drifting color blobs, driven per-frame. The production-grade replacement for the low-quality `mesh-gradient-bg`. Deterministic: the shader is frozen (`speed={0}`) and its `frame` uniform is driven from `useCurrentFrame()`, so every render pass is identical.
 

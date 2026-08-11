@@ -1,6 +1,6 @@
 # perspective-marquee
 
-**Tier:** `snap-cn` (animation) · **Vibe:** premium · **Natural length:** 240f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** premium · **Natural length:** 240f @ 30fps
 
 A 3D-tilted infinite marquee with depth-of-field blur on items rolling toward the horizon. The strip is perspective-transformed via `rotateY` and `rotateX`, and items fade at the edges via `fadeColor`.
 

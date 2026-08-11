@@ -15,7 +15,7 @@ function CalloutBase({
   icon: ReactNode;
   title?: string;
   children: ReactNode;
-  /** Accent that tints the border + icon (snap-cn design system colors). */
+  /** Accent that tints the border + icon (snapcn design system colors). */
   accent?: string;
   className?: string;
 }) {

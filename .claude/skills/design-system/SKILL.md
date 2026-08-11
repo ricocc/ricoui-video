@@ -1,11 +1,11 @@
 ---
 name: design-system
-description: How a snap-cn component is allowed to look. READ THIS BEFORE you write a colour, a border, a shadow, a radius or a font stack into a registry component. snap-cn ships a shadcn design system (SnapCnTheme) and a tier of shadcn UI primitives (snap-cn-ui) — components compose them, they do not re-invent them. Explains which tokens exist, how to resolve them, how to reuse a primitive's own surface instead of hand-rolling one, and why var(--token) does not survive a Remotion render. Triggers - color, colour, hex, rgba, box-shadow, drop shadow, border, hairline, radius, surface, background, theme, dark mode, styling a component, "looks wrong on white", "the shadow is bad", shadcn, Input, Button, Card.
+description: How a snapcn component is allowed to look. READ THIS BEFORE you write a colour, a border, a shadow, a radius or a font stack into a registry component. snapcn ships a shadcn design system (SnapCnTheme) and a tier of shadcn UI primitives (snap-cn-ui) — components compose them, they do not re-invent them. Explains which tokens exist, how to resolve them, how to reuse a primitive's own surface instead of hand-rolling one, and why var(--token) does not survive a Remotion render. Triggers - color, colour, hex, rgba, box-shadow, drop shadow, border, hairline, radius, surface, background, theme, dark mode, styling a component, "looks wrong on white", "the shadow is bad", shadcn, Input, Button, Card.
 ---
 
 # The design system
 
-snap-cn is a **shadcn** registry. That is not branding — it is a constraint. Every
+snapcn is a **shadcn** registry. That is not branding — it is a constraint. Every
 component we ship lands in somebody's shadcn project, next to their `Input` and
 their `Button`, and it has to look like it belongs there. A scene component that
 paints its own greys is a scene component that will clash with the app that

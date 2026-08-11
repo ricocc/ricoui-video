@@ -1,6 +1,6 @@
 # terminal-simulator
 
-**Tier:** `snap-cn` (animation) · **Vibe:** tech · **Natural length:** 240f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** tech · **Natural length:** 240f @ 30fps
 
 Terminal window that types out commands and rolls old lines off the top. Each line appears via a character-by-character type simulation; when the buffer fills, old lines scroll off as an instant step-function jump — never eased — matching real terminal behavior.
 

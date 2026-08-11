@@ -1,6 +1,6 @@
 # shader-god-rays
 
-**Tier:** `snap-cn` (animation) · **Vibe:** premium · **Natural length:** 150f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** premium · **Natural length:** 150f @ 30fps
 
 Volumetric light rays radiating from an off-screen source. Frame-driven (`speed={0}` + `frame` from `useCurrentFrame()`) for deterministic renders.
 

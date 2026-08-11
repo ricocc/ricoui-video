@@ -1,6 +1,6 @@
 # focus-blur-resolve
 
-**Tier:** `snap-cn` (animation) · **Vibe:** premium · **Natural length:** 90f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** premium · **Natural length:** 90f @ 30fps
 
 A cinematic focus pull: text opens heavy-blurred, sharpens to full crispness at the climax, then softly blurs out on exit. The full arc — in, hold, out — plays within a single clip.
 

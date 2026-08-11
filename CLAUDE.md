@@ -1,4 +1,4 @@
-# snap-cn
+# snapcn
 
 A shadcn registry of ready-made animations, transitions, and backgrounds for Remotion.
 
@@ -8,7 +8,7 @@ A set of production-ready components for building videos in Remotion. Users inst
 
 ## Target audience
 
-Solo builders and small teams (1–2 people) — frontend developers familiar with the shadcn ecosystem. Typical scenario: you shipped a product, you need a demo video, you grab snap-cn.
+Solo builders and small teams (1–2 people) — frontend developers familiar with the shadcn ecosystem. Typical scenario: you shipped a product, you need a demo video, you grab snapcn.
 
 ## Repo layout
 
@@ -58,7 +58,7 @@ Events are not sent from `pnpm dev`; verify with `pnpm build && pnpm start`.
 ## Design system — READ THE SKILL BEFORE YOU WRITE A COLOUR
 
 **Before you write a colour, a border, a shadow, a radius or a font stack into a
-registry component: read the `design-system` skill.** snap-cn is a *shadcn*
+registry component: read the `design-system` skill.** snapcn is a *shadcn*
 registry — every component lands next to somebody's `Input` and `Button` and has to
 belong there. Components **compose** the design system (`SnapCnTheme`, and the
 snap-cn-ui primitives' own style contexts like `inputStyleContext`); they do not

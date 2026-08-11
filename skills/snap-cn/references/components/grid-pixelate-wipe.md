@@ -1,6 +1,6 @@
 # grid-pixelate-wipe
 
-**Tier:** `snap-cn` (animation) · **Vibe:** premium · **Natural length:** 90f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** premium · **Natural length:** 90f @ 30fps
 
 Dissolves from one scene to the next through a deterministic grid of mask cells. Each cell fades independently in a configurable wave, diagonal, or spiral pattern — a structured, geometric dissolve that reads as deliberate and designed.
 

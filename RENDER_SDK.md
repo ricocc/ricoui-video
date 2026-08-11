@@ -10,7 +10,7 @@ A separate project in a separate repository. License — MIT.
 
 ## 1. Why
 
-The render mechanism in snap-cn is already **duplicated**: `lib/server/render-queue.ts` +
+The render mechanism in snapcn is already **duplicated**: `lib/server/render-queue.ts` +
 `app/api/render/*` (github-stars), and its copy-paste in `lib/server/site-video/*` +
 `app/api/site-video/render/*` on the `feat/site-to-video` branch (two independent `p-limit`
 instances in one process). A third consumer is on the way — **studio** (`studio.snapcn.dev`,
@@ -333,7 +333,7 @@ const { serveUrl } = await deploySite({ region, entryPoint, /* ... */ });
 
 ## 15. Known limitations of v1
 
-- **State / limiter / url are per-process.** Multi-instance → you need a shared store (Redis) and sticky routing / a shared volume for static serving of `workDir`. A single-process deployment (like snap-cn on Coolify) works out of the box.
+- **State / limiter / url are per-process.** Multi-instance → you need a shared store (Redis) and sticky routing / a shared volume for static serving of `workDir`. A single-process deployment (like snapcn on Coolify) works out of the box.
 - **`getUrl` is valid only when `status === "done"`** (before that the file/object isn't ready → 404).
 - **Cloud Run / Vercel Sandbox / WebCodecs** — not in v1 (Remotion's Cloud Run is in alpha and not being developed; the rest are candidates for future adapters).
 

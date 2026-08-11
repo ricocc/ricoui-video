@@ -1,6 +1,6 @@
 # line-by-line-slide
 
-**Tier:** `snap-cn` (animation) · **Vibe:** clean · **Natural length:** 90f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** clean · **Natural length:** 90f @ 30fps
 
 Each line of a multi-line text block enters from the left with a staggered slide and exits to the right, creating a flowing paragraph reveal with directional continuity.
 

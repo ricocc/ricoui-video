@@ -112,7 +112,7 @@ function resolveSrc(src: string): string {
 
 export function LogoFlicker({
   logoSrc = "https://snapcn.dev/logo/snapcn-white.png",
-  brandName = "snap-cn",
+  brandName = "snapcn",
   images = DEFAULT_IMAGES,
   flipInterval = FLIP_INTERVAL,
   background,

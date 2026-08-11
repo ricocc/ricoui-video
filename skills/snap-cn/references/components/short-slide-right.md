@@ -1,6 +1,6 @@
 # short-slide-right
 
-**Tier:** `snap-cn` (animation) · **Vibe:** clean · **Natural length:** 60f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** clean · **Natural length:** 60f @ 30fps
 
 The whole phrase glides in from the left as one compact horizontal move while individual words reveal sequentially through opacity, landing as a single unified block.
 

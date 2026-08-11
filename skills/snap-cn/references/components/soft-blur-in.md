@@ -1,6 +1,6 @@
 # soft-blur-in
 
-**Tier:** `snap-cn` (animation) · **Vibe:** premium · **Natural length:** 60f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** premium · **Natural length:** 60f @ 30fps
 
 Per-character fade-in with a gentle blur that clears and a slight upward drift — Apple's signature hero-title reveal. Each character enters from below with blur, making long text feel effortless rather than heavy.
 

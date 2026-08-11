@@ -1,6 +1,6 @@
 # infinite-marquee
 
-**Tier:** `snap-cn` (animation) · **Vibe:** clean · **Natural length:** 180f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** clean · **Natural length:** 180f @ 30fps
 
 Seamlessly looping horizontal text strip driven by `pixelsPerFrame`, with an optional outline/stroke style. The strip never enters or exits — it loops for the entire clip duration.
 

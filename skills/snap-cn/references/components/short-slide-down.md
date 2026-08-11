@@ -1,6 +1,6 @@
 # short-slide-down
 
-**Tier:** `snap-cn` (animation) · **Vibe:** clean · **Natural length:** 60f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** clean · **Natural length:** 60f @ 30fps
 
 Each new word drops in from above into its own line and pushes the stack downward until a centered multi-line composition locks in place. Fast and compositional — the viewer watches the layout build word-by-word.
 

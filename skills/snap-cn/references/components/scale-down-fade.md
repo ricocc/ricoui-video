@@ -1,6 +1,6 @@
 # scale-down-fade
 
-**Tier:** `snap-cn` (animation) · **Vibe:** clean · **Natural length:** 90f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** clean · **Natural length:** 90f @ 30fps
 
 Subtle premium settle-in: text enters slightly oversized and scales down to 1× while fading in, landing with a restrained, confident feel. No bounce, no blur — just a precise scale-and-opacity move.
 

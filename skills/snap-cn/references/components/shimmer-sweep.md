@@ -1,6 +1,6 @@
 # shimmer-sweep
 
-**Tier:** `snap-cn` (animation) · **Vibe:** premium · **Natural length:** 120f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** premium · **Natural length:** 120f @ 30fps
 
 A light-shine sweeps horizontally across muted text via `background-clip: text`, transitioning each character from the `baseColor` to the bright `shineColor` and back. Reads like a reflection passing over polished metal or glass.
 

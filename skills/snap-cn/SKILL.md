@@ -1,17 +1,17 @@
 ---
-name: snap-cn
+name: snapcn
 description: >
-  Build Remotion videos with snap-cn — a shadcn registry of copy-paste animation components and
+  Build Remotion videos with snapcn — a shadcn registry of copy-paste animation components and
   timeline-driven UI primitives. Use when composing video scenes, adding text animations,
   transitions, backgrounds, UI blocks, brand/social cards, or full compositions in a Remotion
-  project. Triggers include "snap-cn", "video component", "add animation", "text reveal",
+  project. Triggers include "snapcn", "video component", "add animation", "text reveal",
   "scene transition", "product demo video", "remotion component", "terminal
   simulator", "glass code block", and the UI-primitive tier: "video dialog", "video button",
-  "command menu", "video select", "video tooltip". Even if the user doesn't mention snap-cn,
+  "command menu", "video select", "video tooltip". Even if the user doesn't mention snapcn,
   activate when they need polished video primitives for Remotion.
 ---
 
-# snap-cn
+# snapcn
 
 Copy-paste components for Remotion videos. Components install via `shadcn` and land in
 `components/snap-cn/` — you own the code.
@@ -41,9 +41,9 @@ For example, `shadcn add @snap-cn/claude-chat` also pulls `@snap-cn/snap-cn-ui` 
 
 ## Two tiers
 
-snap-cn has two kinds of components — they have **different APIs**:
+snapcn has two kinds of components — they have **different APIs**:
 
-- **Animation tier** (`snap-cn`) — text animations, transitions, backgrounds, UI-block sims,
+- **Animation tier** (`snapcn`) — text animations, transitions, backgrounds, UI-block sims,
   brand/social cards, full compositions. Frame-driven. Shared props: `speed` (time multiplier),
   and for text: `fontSize`, `color`, `fontWeight`.
 - **UI Primitives** (`snap-cn-ui`) — timeline-driven shadcn-style primitives (button, dialog,
@@ -60,19 +60,19 @@ notes). Don't read every file.
 
 | Category | Tier | Use for |
 |---|---|---|
-| **Text Animations** | `snap-cn` | Reveal/replace/emphasize text (`text-reveal`, `blur-out-up`, `tracking-in`, `rolling-number`, `shimmer-sweep`…) |
-| **Backgrounds & Effects** | `snap-cn` | Animated foundations, one-shot effects (`mesh-gradient-bg`, `dynamic-grid`, `confetti`, `backdrop`) |
-| **Shaders** | `snap-cn` | WebGL shader backdrops, frame-driven for deterministic renders (`shader-mesh-gradient`, `shader-warp`, `shader-voronoi`, `shader-god-rays`, `shader-metaballs`…) |
-| **Transitions & Wipes** | `snap-cn` | Swap between two scenes (`directional-wipe`, `frosted-glass-wipe`, `spatial-push`, `zoom-through-transition`…) |
-| **UI Blocks** | `snap-cn` | Interface sims for product demos (`terminal-simulator`, `glass-code-block`, `animated-bar-chart`…) |
-| **AI & Social Cards** | `snap-cn` | Brand/product card scenes (`claude-chat`, `v0`, `github-stars`, `x-follow-card`…) |
+| **Text Animations** | `snapcn` | Reveal/replace/emphasize text (`text-reveal`, `blur-out-up`, `tracking-in`, `rolling-number`, `shimmer-sweep`…) |
+| **Backgrounds & Effects** | `snapcn` | Animated foundations, one-shot effects (`mesh-gradient-bg`, `dynamic-grid`, `confetti`, `backdrop`) |
+| **Shaders** | `snapcn` | WebGL shader backdrops, frame-driven for deterministic renders (`shader-mesh-gradient`, `shader-warp`, `shader-voronoi`, `shader-god-rays`, `shader-metaballs`…) |
+| **Transitions & Wipes** | `snapcn` | Swap between two scenes (`directional-wipe`, `frosted-glass-wipe`, `spatial-push`, `zoom-through-transition`…) |
+| **UI Blocks** | `snapcn` | Interface sims for product demos (`terminal-simulator`, `glass-code-block`, `animated-bar-chart`…) |
+| **AI & Social Cards** | `snapcn` | Brand/product card scenes (`claude-chat`, `v0`, `github-stars`, `x-follow-card`…) |
 | **UI Primitives** | `snap-cn-ui` | shadcn-style primitives for video (`button`, `dialog`, `select`, `command-menu`, `tooltip`…) |
 
 ## Component patterns
 
 Conventions differ by tier — don't assume animation-tier props on a primitive.
 
-### Animation tier (`snap-cn`)
+### Animation tier (`snapcn`)
 
 - Named `Props` interface per component (e.g. `BlurOutUpProps`).
 - `speed?: number` — global time multiplier (default `1`), applied as `frame * speed`.
@@ -145,7 +145,7 @@ all legitimate. The rules govern *your* additions, not the library.
 Full do/avoid examples: `references/design.md`. For motion quality (timing, anticipation,
 staging, easing), see `references/motion-principles.md`.
 
-## Gotchas (snap-cn-specific)
+## Gotchas (snapcn-specific)
 
 - **Transitions wrap two scenes** — pass `from` / `to` as `ReactNode`, not as a static instance.
 - **Terminal scroll is instant** — step-function `translateY`, never spring/ease the scroll.
@@ -180,5 +180,5 @@ Don't dump components — compose one story. When asked to build a full video ("
 - `references/archetypes/index.md` — router to per-archetype build recipes (product-demo flagship + changelog, feature-announcement, oss-showcase, cli-tool-demo, testimonial-reel, year-in-review, pricing-reveal, logo-bumper): content contract, duration variants, beat→slot map.
 - `references/components/index.md` — router table (all components, grouped by category, with `Use for` / `Avoid for`). Open `references/components/<name>.md` for one component's full props, example, and use / don't-use notes.
 - `references/design.md` — anti-slop design defaults (do/avoid) + design tokens (palette, fonts, canvas).
-- `references/motion-principles.md` — motion-design principles adapted to snap-cn + Remotion.
+- `references/motion-principles.md` — motion-design principles adapted to snapcn + Remotion.
 - `references/anti-patterns.md` — common generation mistakes and their fixes.

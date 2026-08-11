@@ -1,6 +1,6 @@
 # shader-liquid-metal
 
-**Tier:** `snap-cn` (animation) · **Vibe:** premium · **Natural length:** 150f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** premium · **Natural length:** 150f @ 30fps
 
 Molten metallic surface with flowing specular highlights. Frame-driven (`speed={0}` + `frame` from `useCurrentFrame()`) for deterministic renders. Defaults to `shape="none"` so it fills the frame instead of rendering a centered emblem.
 

@@ -1,6 +1,6 @@
 # mask-reveal-up
 
-**Tier:** `snap-cn` (animation) · **Vibe:** clean · **Natural length:** 90f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** clean · **Natural length:** 90f @ 30fps
 
 Lines reveal upward through a soft clip mask with a compact stagger between each line. Text stays in place after the reveal — no exit animation.
 

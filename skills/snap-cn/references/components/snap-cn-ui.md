@@ -19,4 +19,4 @@ You rarely install it directly — it is pulled transitively as a `registryDepen
 ## Don't use when
 
 - You just want to use an existing primitive — add the primitive (`shadcn add @snap-cn/<name>`); this lib comes along automatically.
-- You are in the animation tier (`snap-cn`) — those components are frame-driven and don't need it.
+- You are in the animation tier (`snapcn`) — those components are frame-driven and don't need it.

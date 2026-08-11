@@ -1,6 +1,6 @@
 # tracking-in
 
-**Tier:** `snap-cn` (animation) · **Vibe:** premium · **Natural length:** 90f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** premium · **Natural length:** 90f @ 30fps
 
 Letter-spacing collapses from wide to normal while a blur simultaneously clears, both driven by a springy motion curve. The wide-to-tight tracking movement is the designed essence of this component — intentional typographic choreography, not decoration.
 

@@ -1,6 +1,6 @@
 # shared-axis-y
 
-**Tier:** `snap-cn` (animation) · **Vibe:** clean · **Natural length:** 90f @ 30fps
+**Tier:** `snapcn` (animation) · **Vibe:** clean · **Natural length:** 90f @ 30fps
 
 Per-word hard-cut transition that swaps two text values with staircase timing along the vertical axis. The outgoing text exits upward word-by-word while the incoming text drops in, creating a sharp editorial swap with zero blur.
 

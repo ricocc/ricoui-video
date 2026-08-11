@@ -12,7 +12,7 @@ import { FadeUp } from "../fade-up";
  * ## Why the panels are code and not screenshots
  *
  * The reference this is modelled on screenshots its own editor, because its
- * product *is* an editor. snap-cn has no app to photograph — what a reader
+ * product *is* an editor. snapcn has no app to photograph — what a reader
  * actually receives is a file in their repo. So the panel shows the file. It is
  * also the only "screenshot" here that can never go stale against the product,
  * because it is not a picture of the product, it is the product.
