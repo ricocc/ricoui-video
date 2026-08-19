@@ -9,6 +9,7 @@ export const LAVENDER = "#D4B3FF";
 export const MINT = "#A1EEBD";
 
 export const GITHUB_URL = "https://github.com/snapcndev/snapcn";
+export const X_URL = "https://x.com/snapcndev";
 
 /**
  * The one place the install command is spelled.
