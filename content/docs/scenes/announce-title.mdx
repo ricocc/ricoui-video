@@ -1,0 +1,255 @@
+---
+title: Announce Title
+description: A four-shot announcement title — the eyebrow rushes past the camera on a receding type plane, the name assembles on paper, and a macro pan cuts wide as the tagline builds itself last word first
+---
+
+<ComponentPreview name="announce-title" />
+
+## Installation
+
+<InstallBlock name="announce-title" />
+
+## Component code
+
+The exact file `shadcn add` copies into your project.
+
+<ComponentSource name="announce-title" />
+
+## Usage
+
+Three strings and it is a launch film. Everything else has a measured default.
+
+```tsx
+// src/Root.tsx
+import { Composition } from "remotion";
+import { AnnounceTitle } from "@/components/snap-cn/announce-title";
+
+const Launch = () => (
+  <AnnounceTitle
+    eyebrow="Introducing"
+    title="snapcn 1.0"
+    tagline="Ready-made scenes for Remotion, in one command."
+  />
+);
+
+export const RemotionRoot = () => (
+  <Composition
+    id="AnnounceTitle"
+    component={Launch}
+    durationInFrames={170}
+    fps={30}
+    width={1280}
+    height={720}
+  />
+);
+```
+
+## Four shots, three cuts
+
+Nothing here crossfades, and nothing is continuous across a cut.
+
+**The rush** (frames 0–17). The eyebrow is laid on a plane raked away from the
+viewer and thrown past the camera. It starts 53× its resting size with the
+plane's horizon *inside the frame* — one letter fills the screen — and lands at
+4× as the horizon leaves and the plane flattens to face-on. Magnification and
+rake are both frame-by-frame tables rather than curves, because the move slows
+to a near-hold around frame 12 and then speeds up again into the cut, which no
+single easing does.
+
+**The field** (18–40). The same word, flat, finishing the move: 1.530× down to
+rest, its excess shrinking 24% per frame. Then it is torn off to the **left**,
+displacement tripling every frame, staggered about a fifth of a frame per letter
+— by frame 38 the first letter has travelled 56px and the last one five.
+
+**The paper** (41–79). Each word of the name slides in from the right into a
+slot that is already laid out. They never push each other around, they all close
+at the same 0.82 per frame, and the lead word travels 1.63× as far as the rest.
+Each pops in at partial opacity rather than fading up from nothing.
+
+**The macro pan and the close** (80–169). A macro shot of the middle of the
+tagline pans left — decelerating from 52px/frame to 9 at the hold, then
+accelerating out to 105 — with the symbol crossing the other way at the same
+speed. It cuts wide, and the line builds itself **last word first** while a
+white sweep crosses it left to right and drains the colour out of it.
+
+## Making it yours
+
+### The symbol
+
+The mark that leads the closing line is a path in a `0 0 100 100` box — it
+ships as the snapcn mark, and any other drops straight in: your logo, a bullet,
+a glyph you traced.
+
+```tsx
+<AnnounceTitle
+  symbolPath="M50 5 L61 39 L96 39 L68 60 L79 95 L50 74 L21 95 L32 60 L4 39 L39 39 Z"
+  symbolColors={["#3072db", "#7c3aed"]}
+  symbolScale={1.2}
+/>
+```
+
+`symbolColors` are gradient stops spaced evenly from the mark's first tip to the
+last — two give a plain ramp, one a flat fill, and leaving it out keeps the ten
+measured stops of the default spark. The customizer's text field takes the same
+thing comma-separated. `symbolPath=""` removes the mark entirely.
+
+### Colour
+
+A title sequence is burned-in film type, not app chrome, so its palette is the
+design rather than the design system — every ground and ink is a prop:
+
+```tsx
+<AnnounceTitle
+  fieldColor="#3072db"
+  titleColor="#1b3fb8"
+  nightColor="#05070f"
+  glowColor="#3072db"
+  glowStrength={0.12}
+  taglineColor="#f7fbff"
+/>
+```
+
+### Length
+
+Type sizes are measured to the pixel, and a size fixed to one sentence clips the
+moment you write a longer one. So each line is drawn once into a hidden probe,
+its real width read off it, and its size scaled down only if it would overrun
+its share of the frame — a line that already fits renders at exactly the
+measured size. A character count cannot do this: the default tagline is one
+character longer than the one everything was measured against and **14% wider**,
+because `Ready-made` and `Remotion,` carry wider glyphs than `Perfect` and
+`massive`.
+
+## Measured
+
+Every number below came off rendered frames, not taste.
+
+| | measured |
+| --- | --- |
+| cuts | frames `18`, `41`, `80`, `110` |
+| opening magnification | `53×` → `4×`, rake `81°` → `14°` |
+| eyebrow settle | `1.530×`, decaying `0.7605` per frame |
+| eyebrow exit | `×3.2` per frame, leftward, `0.215` frames per letter |
+| title words | `0.82` per frame; lead word travels `1.63×` the others |
+| macro pan | `52` → `9` → `105` px/frame |
+| closing slide | `0.792` per frame |
+| word reveal | one word every `2.833` frames, right to left |
+| white sweep | `31.7` px/frame, left to right, `0.21 W` soft edge |
+
+The settles are all the same curve — a first-order exponential lag, not a
+cubic-bezier — normalised over a fixed window so it *lands* instead of spending
+its last five frames moving less than half a pixel.
+
+## Props
+
+<PropsTable
+  rows={[
+    {
+      name: "eyebrow",
+      type: "string",
+      default: '"Introducing"',
+      description:
+        "The word that rushes past the camera and lands on the colour field",
+    },
+    {
+      name: "title",
+      type: "string",
+      default: '"snapcn 1.0"',
+      description:
+        "The name, assembled word by word on the paper card. Any number of words",
+    },
+    {
+      name: "tagline",
+      type: "string",
+      default: '"Ready-made scenes for Remotion, in one command."',
+      description:
+        "The closing line — revealed last word first, then drained to white",
+    },
+    {
+      name: "symbolPath",
+      type: "string",
+      default: "the snapcn mark",
+      description:
+        'SVG path for the mark that leads the closing line, drawn in a 0 0 100 100 box. "" removes it',
+    },
+    {
+      name: "symbolColors",
+      type: "string[] | string",
+      default: "the ten measured spark stops",
+      description:
+        "Gradient stops for the mark, spaced evenly tip to tip. Also accepts a comma-separated string",
+    },
+    {
+      name: "symbolScale",
+      type: "number",
+      default: "1",
+      description:
+        "Multiplier on the mark's size, in both the macro shot and the close",
+    },
+    {
+      name: "voidColor",
+      type: "string",
+      default: '"#100022"',
+      description: "Ground behind the opening rush",
+    },
+    {
+      name: "fieldColor",
+      type: "string",
+      default: '"#5600f5"',
+      description: "The colour field the eyebrow lands on",
+    },
+    {
+      name: "paperColor",
+      type: "string",
+      default: '"#fcfcfa"',
+      description: "Paper the title is set on",
+    },
+    {
+      name: "titleColor",
+      type: "string",
+      default: '"#4800c9"',
+      description: "Ink the title is set in",
+    },
+    {
+      name: "nightColor",
+      type: "string",
+      default: '"#000028"',
+      description: "Ground behind the macro shot and the close, under the glow",
+    },
+    {
+      name: "glowColor",
+      type: "string",
+      default: '"#08ff4b"',
+      description: "The glow lifting that ground off the base, low and centre",
+    },
+    {
+      name: "glowStrength",
+      type: "number",
+      default: "0.139",
+      description:
+        "How far it lifts, 0–1. Above about 0.3 the ground stops reading black",
+    },
+    {
+      name: "taglineColor",
+      type: "string",
+      default: '"#f2f8ff"',
+      description: "Where the tagline settles once the white has swept through",
+    },
+    {
+      name: "speed",
+      type: "number",
+      default: "1",
+      description:
+        "Timeline multiplier. Minimum 1 — the colour drain finishes at frame 147 of 170, and below 1 it never gets there",
+    },
+  ]}
+/>
+
+<Note>
+This scene plays as a rendered mp4 rather than a live `<Player>`. Type is under a
+moving scale for most of the run — a receding 3D plane, a 1.5× settle, then a
+whole line panned at 14× — and the first two shots are each drawn up to 44 times
+a frame for the shutter. A browser has an 8ms budget for all of that; a render
+has none, and the difference is the whole read of the opening. Touch any control
+and the customizer hands you the live Player back.
+</Note>

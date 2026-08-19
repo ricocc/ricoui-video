@@ -1,0 +1,304 @@
+---
+title: Status Cycle
+description: A status pill whose label rolls behind a hard clip while its width springs past the target and back, then the field crossfades to a column of chips stepping up from below
+---
+
+<ComponentPreview name="status-cycle" />
+
+## Installation
+
+<InstallBlock name="status-cycle" />
+
+## Component code
+
+The exact file `shadcn add` copies into your project.
+
+<ComponentSource name="status-cycle" />
+
+## Usage
+
+A prefix, a list of statuses and a list of chips. Everything else has a measured
+default.
+
+```tsx
+// src/Root.tsx
+import { Composition } from "remotion";
+import { StatusCycle } from "@/components/snap-cn/status-cycle";
+
+const Cycle = () => (
+  <StatusCycle
+    prefix="snapcn is"
+    statuses={["animating", "transitioning", "rendering a scene", "installed"]}
+    chips={["text-reveal", "phone-frame", "answer-stream", "word-flip"]}
+  />
+);
+
+export const RemotionRoot = () => (
+  <Composition
+    id="StatusCycle"
+    component={Cycle}
+    durationInFrames={150}
+    fps={30}
+    width={1280}
+    height={720}
+  />
+);
+```
+
+`durationInFrames` has to cover the whole arc: the intro, one `statusHold` per
+status, the crossfade, and one `chipStagger` per chip. The default 150 fits the
+default content with a hold at the end; add roughly 18 frames per extra status
+and 8 per extra chip.
+
+## How the swap works
+
+Three things happen on the same frame, and keeping them on the same frame is
+most of the effect.
+
+**The label rolls.** The outgoing label translates up and out through the pill's
+top edge while the incoming one arrives from below, both hard-clipped by the
+pill's rounded box. There is no crossfade — the label's ink never dims — and the
+travel is one pill height.
+
+**The pill's width springs past its target.** Not a spring, though: the curve is
+`cubic-bezier(0.65, 0.2, 0.3, 1.5)`, and the `y2 > 1` control value *is* the
+overshoot. A real spring cannot make this shape. One frame into an eleven-frame
+rise a spring released from rest is already 4.1% of the way there; the reference
+is at 0.65%, six times flatter, and no damping/stiffness pair fixes that without
+losing the early peak.
+
+**The line re-centres.** The lockup is centred as a whole, so a widening pill
+pushes the prefix left and a narrowing one lets it back. The prefix does not
+re-animate; it only moves.
+
+The label is laid out at its full final width and centred, and the widening pill
+reveals it from the middle outward — so during a morph you see the middle of the
+new label with both ends clipped. That is why the width is its own animated
+quantity and is never derived from a padded text box.
+
+## Content of any length
+
+Every width in the scene is measured at runtime behind `delayRender()` — the
+prefix's glyph advances, each status label, each chip — so a longer status or a
+longer chip simply makes a wider box. Nothing is tuned to one sentence. Every
+other proportion is a fraction of the composition rather than a pixel, so the
+scene holds its shape at 720p, 1080p or a vertical crop.
+
+## Colour
+
+Leave the colour props off and the scene paints from the design system:
+`primary` for the first field, `background` for the second, `foreground` for the
+pill and the ink, and a pale tint of the field for the pill's label. Pass any of
+them to override.
+
+```tsx
+<StatusCycle
+  fieldColor="#0f766e"
+  pageColor="#f5f5f4"
+  chipFills={["#ffffff", "#e7f5f3", "#0f766e"]}
+/>
+```
+
+## Overriding the motion
+
+Every curve and duration is a measured default on the exported
+`STATUS_CYCLE_MOTION`, and `motion` is merged over it — so you override one
+without restating the rest.
+
+```tsx
+import { Easing } from "remotion";
+
+<StatusCycle
+  motion={{
+    // Flatten the overshoot out of the width morph.
+    widthEase: Easing.bezier(0.4, 0, 0.2, 1),
+    // And give the chips a slower step.
+    scrollTau: 0.12,
+  }}
+/>
+```
+
+## Props
+
+<PropsTable
+  rows={[
+    {
+      name: "prefix",
+      type: "string",
+      default: '"snapcn is"',
+      description: "The line that does not change, to the left of the pill",
+    },
+    {
+      name: "statuses",
+      type: "string[] | string",
+      default: '["animating", "transitioning", "rendering a scene", "installed"]',
+      description:
+        "Pill labels, in order. Also accepts a comma-separated string, which is what the customizer passes",
+    },
+    {
+      name: "chips",
+      type: "string[] | string",
+      default: '["text-reveal", "phone-frame", "answer-stream", "word-flip", "orbit-gallery"]',
+      description:
+        "Act-2 chip labels, in order. Also accepts a comma-separated string",
+    },
+    {
+      name: "fieldColor",
+      type: "string",
+      default: "theme.primary",
+      description: "The field act 1 sits on",
+    },
+    {
+      name: "pageColor",
+      type: "string",
+      default: "theme.background",
+      description: "The field act 2 sits on; the crossfade runs between the two",
+    },
+    {
+      name: "pillColor",
+      type: "string",
+      default: "theme.foreground",
+      description: "Pill fill",
+    },
+    {
+      name: "pillLabelColor",
+      type: "string",
+      default: "a pale tint of fieldColor",
+      description: "Pill label ink",
+    },
+    {
+      name: "prefixColor",
+      type: "string",
+      default: "theme.foreground",
+      description: "Prefix ink",
+    },
+    {
+      name: "chipFills",
+      type: "string[] | string",
+      default: "card, a pale tint of the field, the field",
+      description:
+        "Chip fills, cycled in order. Three of them gives the reference's period-3 rhythm",
+    },
+    {
+      name: "chipTextColor",
+      type: "string",
+      default: "theme.foreground",
+      description:
+        "Chip ink. One colour on every chip, including the saturated one",
+    },
+    {
+      name: "chipBorderColor",
+      type: "string",
+      default: "mixOklch(theme.border, theme.foreground, 0.28)",
+      description:
+        "Chip hairline. The default is the design system's own recipe for carrying a border token up to a surface this size",
+    },
+    {
+      name: "fontWeight",
+      type: "number",
+      default: "400",
+      description: "Act-1 type weight",
+    },
+    {
+      name: "chipFontWeight",
+      type: "number",
+      default: "400",
+      description:
+        "Act-2 type weight. Measured 400 — the chips are bigger, not heavier, and bumping this is the usual way to make them look cheap",
+    },
+    {
+      name: "pillRadius",
+      type: "number",
+      default: "0.229 x pill height",
+      description:
+        "Pill corner radius in px. The default ratio is very nearly shadcn's own radius token over a 40px control (10/40 = 0.25), so it already sits in the design system. Not a stadium — h/2 fits the reference's edge two orders of magnitude worse",
+    },
+    {
+      name: "chipRadius",
+      type: "number",
+      default: "0.162 x chip height",
+      description: "Chip corner radius in px",
+    },
+    {
+      name: "chipBorderWidth",
+      type: "number",
+      default: "0.017 x chip height",
+      description: "Chip hairline width in px",
+    },
+    {
+      name: "pillCenterY",
+      type: "number",
+      default: "0.516",
+      description:
+        "Pill centre as a fraction of frame height. The reference's lockup rides 1.6% low",
+    },
+    {
+      name: "motion",
+      type: "Partial<StatusCycleMotion>",
+      default: "STATUS_CYCLE_MOTION",
+      description:
+        "Curve and timing overrides: widthEase, widthSeconds, rollEase, rollSeconds, rollTravel, fadeSeconds, exitSeconds, scrollTau, letterSpring, letterStagger. Every default is fitted from frame data, so overriding one is a departure rather than a tweak",
+    },
+    {
+      name: "fontSize",
+      type: "number",
+      default: "8.7% of the composition height",
+      description: "Act-1 type size in px",
+    },
+    {
+      name: "chipFontSize",
+      type: "number",
+      default: "22.2% of the composition height",
+      description: "Act-2 type size in px",
+    },
+    {
+      name: "fontFamily",
+      type: "string",
+      default: "Inter",
+      description:
+        "Loaded through @remotion/google-fonts, so the Player and the render agree",
+    },
+    {
+      name: "introFrames",
+      type: "number",
+      default: "24",
+      description:
+        "Frames the per-letter intro cascade gets before the first status swap",
+    },
+    {
+      name: "statusHold",
+      type: "number",
+      default: "18",
+      description:
+        "Frames from one status swap to the next. Shorter than the 18-frame width morph on purpose — the next swap starts while the last is still settling",
+    },
+    {
+      name: "chipStagger",
+      type: "number",
+      default: "8",
+      description: "Frames from one chip's arrival to the next",
+    },
+    {
+      name: "startAt",
+      type: "number",
+      default: "0",
+      description: "Frame the scene starts on",
+    },
+    {
+      name: "speed",
+      type: "number",
+      default: "1",
+      description: "Playback rate. Below 1 the last chip never arrives",
+    },
+    {
+      name: "theme",
+      type: "Partial<SnapCnTheme>",
+      description: "Design-system token overrides",
+    },
+    {
+      name: "mode",
+      type: '"light" | "dark"',
+      description: "Which side of the token set to resolve",
+    },
+  ]}
+/>

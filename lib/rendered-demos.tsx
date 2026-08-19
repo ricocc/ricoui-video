@@ -50,6 +50,12 @@ export const RENDERED_DEMOS: readonly string[] = [
   "text-reveal",
   "text-swell",
   "hero-launch",
+  // Type is under a moving scale for most of the run — a receding 3D plane, a
+  // 1.5x settle, then a whole line panned at 19x — and each of the first two
+  // shots is drawn eight times a frame for the shutter. A live Player has an
+  // 8ms budget for all of that; the render has none, and the difference is the
+  // whole read of the opening.
+  "announce-title",
   // The screen-takeover finale is a slow camera dolly (scale) on a whole video
   // screen over ~45 frames, then a long hold — the exact slow, smooth motion a
   // live Player mispaces on a high-refresh display. The render doesn't mispace.
@@ -99,6 +105,12 @@ export const RENDERED_DEMOS: readonly string[] = [
   // If any of these ever costs more than it earns, the fix is to delete the line
   // — `renderedDemoSrc` returns null and the page falls straight back to the
   // live `<Player>`. Nothing else has to change.
+  // A width that morphs under a label that must not move with it, a per-letter
+  // scale cascade, and a field that steps 200px with a 1.8-frame time constant.
+  // All three are slow, smooth, sub-pixel motion on type — the exact thing a
+  // live Player mispaces on a high-refresh display, and the width morph's
+  // overshoot is only legible if every frame is held for the right length.
+  "status-cycle",
   "text-highlight",
   "text-build",
   "word-captions",

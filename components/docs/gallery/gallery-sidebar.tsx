@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SearchButton } from "@/components/search-button";
 import { SnapCnLogo } from "@/components/snapcn-logo";
-import { GITHUB_URL } from "@/config/site";
+import { GITHUB_URL, X_URL } from "@/config/site";
 import { DOCS_NAV } from "@/lib/docs-nav";
 import { GALLERY_COUNT } from "@/lib/gallery-data";
 import { cn } from "@/lib/utils";
@@ -153,9 +153,7 @@ export function GallerySidebar({
           <GitHubIcon className="size-5 text-foreground" />
         </div>
         <div>
-          <p className="text-[13px] font-medium text-foreground">
-            Star snapcn
-          </p>
+          <p className="text-[13px] font-medium text-foreground">Star snapcn</p>
           <p className="text-[13px] text-muted-foreground">
             Free, open-source components.
           </p>
@@ -164,15 +162,23 @@ export function GallerySidebar({
           Production-ready Remotion animations, transitions and backgrounds —
           you own the code.
         </p>
-        <a
-          href={GITHUB_URL}
-          target="_blank"
-          rel="noreferrer"
-          className="inline-flex items-center gap-1.5 self-start rounded-4xl border border-border px-4 py-2 text-[13px] font-medium text-foreground transition-colors hover:bg-muted"
-        >
-          Star on GitHub
-          <ArrowUpRight className="size-3.5" />
-        </a>
+        <div className="flex flex-wrap items-center gap-2">
+          <a
+            href={GITHUB_URL}
+            target="_blank"
+            rel="noreferrer"
+            className={PILL}
+          >
+            Star on GitHub
+            <ArrowUpRight className="size-3.5" />
+          </a>
+          {/* The project account, not a personal one — this is where releases
+              and new components get announced. */}
+          <a href={X_URL} target="_blank" rel="noreferrer" className={PILL}>
+            <XIcon className="size-3.5" />
+            Follow
+          </a>
+        </div>
         {/* Full-width hairline with a short near-black head, as on the
             reference rail — the dark segment is what reads as a rule end-stop;
             a bare 1px line at this width just looks like a gap. */}
@@ -188,8 +194,12 @@ export function GallerySidebar({
   );
 }
 
+/** Shared by the two social links in the promo block. */
+const PILL =
+  "inline-flex items-center gap-1.5 rounded-4xl border border-border px-4 py-2 text-[13px] font-medium text-foreground transition-colors hover:bg-muted";
+
 // lucide-react (as pinned in this repo) ships no brand/logo icons, so the
-// GitHub glyph is inlined here.
+// GitHub and X glyphs are inlined here.
 function GitHubIcon({ className }: { className?: string }) {
   return (
     <svg
@@ -201,6 +211,21 @@ function GitHubIcon({ className }: { className?: string }) {
     >
       <title>GitHub</title>
       <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.27-.01-1-.02-1.96-3.2.69-3.87-1.54-3.87-1.54-.52-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.71 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.79 0c2.21-1.49 3.18-1.18 3.18-1.18.63 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.44-2.7 5.41-5.27 5.7.41.36.78 1.06.78 2.14 0 1.55-.01 2.8-.01 3.18 0 .31.21.68.8.56C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5Z" />
+    </svg>
+  );
+}
+
+function XIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className={className}
+      fill="currentColor"
+      role="img"
+      aria-label="X"
+    >
+      <title>X</title>
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
     </svg>
   );
 }

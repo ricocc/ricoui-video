@@ -74,11 +74,11 @@ export function Hero() {
                 nativeButton={false}
                 render={
                   <Link
-                    href="/docs/getting-started/introduction"
+                    href="/docs/components"
                     onClick={() =>
                       trackEvent("cta_clicked", {
                         cta: "hero_browse",
-                        destination: "/docs/getting-started/introduction",
+                        destination: "/docs/components",
                       })
                     }
                   />

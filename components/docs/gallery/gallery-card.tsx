@@ -134,9 +134,10 @@ export function GalleryCard({
       // (design-system rule 3b, run in the other direction) — it is only here to
       // stop a near-white preview bleeding into the page.
       //
-      // `mb-3` must stay equal to the grid's `gap-3`: this margin is the only
-      // thing making the vertical gutter, so the two drift apart if one moves.
-      className="group/card relative mb-3 block break-inside-avoid overflow-hidden rounded-2xl bg-gallery-card outline-none ring-1 ring-border/30 focus-visible:ring-2 focus-visible:ring-ring/40"
+      // No `mb-*` and no `break-inside-avoid`: the grid's `gap-3` makes both
+      // gutters now. Left in, the margin stacked on top of the row gap and the
+      // vertical gutter came out at twice the horizontal one.
+      className="group/card relative block overflow-hidden rounded-2xl bg-gallery-card outline-none ring-1 ring-border/30 focus-visible:ring-2 focus-visible:ring-ring/40"
       style={{ aspectRatio }}
     >
       <div ref={containerRef} className="absolute inset-0">

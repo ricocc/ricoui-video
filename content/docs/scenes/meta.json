@@ -3,8 +3,10 @@
   "collapsible": false,
   "pages": [
     "index",
+    "announce-title",
     "hero-launch",
     "orbit-gallery",
-    "moodboard-reveal"
+    "moodboard-reveal",
+    "status-cycle"
   ]
 }

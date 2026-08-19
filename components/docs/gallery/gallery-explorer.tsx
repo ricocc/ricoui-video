@@ -178,10 +178,15 @@ export function GalleryExplorer({
         </div>
       </div>
 
-      {/* Four across from `xl` up. The old ladder only reached four at 100rem,
-          so every normal desktop sat at three. `gap-3` is paired with the card's
-          own `mb-3` — the margin is what makes the vertical gutter. */}
-      <div className="mt-6 columns-1 gap-3 sm:columns-2 lg:columns-3 xl:columns-4">
+      {/* A grid, not `columns-*`. Every card is 16:9 (every config is 1280x720),
+          so there was never anything for a masonry to stagger — and CSS multicol
+          fills greedily: it picks the shortest height that holds the set, then
+          packs each column to it. 21 cards across four columns is 6/6/6/3, which
+          left the fourth column empty for half the page and the right quarter of
+          the screen dead. A grid lays the same cards out row-major, so the only
+          hole is the tail of the last row. `items-start` keeps a card at its own
+          aspect ratio instead of being stretched to its row. */}
+      <div className="mt-6 grid grid-cols-1 items-start gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {items.map((item) => (
           <GalleryCard
             key={item.href}

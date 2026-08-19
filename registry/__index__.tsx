@@ -1,5 +1,7 @@
 import type React from "react";
 import { type ComponentConfig, SHARED_CONTROLS } from "@/lib/customizer-config";
+import { AnnounceTitle } from "@/registry/snap-cn/announce-title";
+import { announceTitleConfig } from "@/registry/snap-cn/announce-title/config";
 import { AnswerStream } from "@/registry/snap-cn/answer-stream";
 import { answerStreamConfig } from "@/registry/snap-cn/answer-stream/config";
 import { FollowerRush } from "@/registry/snap-cn/follower-rush";
@@ -24,6 +26,8 @@ import { PromptZoom } from "@/registry/snap-cn/prompt-zoom";
 import { promptZoomConfig } from "@/registry/snap-cn/prompt-zoom/config";
 import { SearchTyping } from "@/registry/snap-cn/search-typing";
 import { searchTypingConfig } from "@/registry/snap-cn/search-typing/config";
+import { StatusCycle } from "@/registry/snap-cn/status-cycle";
+import { statusCycleConfig } from "@/registry/snap-cn/status-cycle/config";
 import { TerminalSimulator } from "@/registry/snap-cn/terminal-simulator";
 import { terminalSimulatorConfig } from "@/registry/snap-cn/terminal-simulator/config";
 import { TextBuild } from "@/registry/snap-cn/text-build";
@@ -47,6 +51,7 @@ export interface RegistryEntry {
 }
 
 const registry: Record<string, RegistryEntry> = {
+  "announce-title": { Component: AnnounceTitle, config: announceTitleConfig },
   "answer-stream": { Component: AnswerStream, config: answerStreamConfig },
   "follower-rush": { Component: FollowerRush, config: followerRushConfig },
   "hero-launch": { Component: HeroLaunch, config: heroLaunchConfig },
@@ -65,6 +70,7 @@ const registry: Record<string, RegistryEntry> = {
   "phone-frame": { Component: PhoneFrame, config: phoneFrameConfig },
   "prompt-zoom": { Component: PromptZoom, config: promptZoomConfig },
   "search-typing": { Component: SearchTyping, config: searchTypingConfig },
+  "status-cycle": { Component: StatusCycle, config: statusCycleConfig },
   "terminal-simulator": {
     Component: TerminalSimulator,
     config: terminalSimulatorConfig,
@@ -91,6 +97,9 @@ for (const { config } of Object.values(registry)) {
 // `speed` knob at a minimum of 1. Reassigning the existing key keeps its order.
 const MIN_SPEED_ONE = [
   "follower-rush",
+  // The tagline finishes draining to white at frame 147 of 170; under speed < 1
+  // the line never reaches its resting colour inside the composition.
+  "announce-title",
   "terminal-simulator",
   // The notch notification lands "connected" at frame 120 of 240; under
   // speed < 1 that beat never arrives inside the composition.
@@ -109,6 +118,9 @@ const MIN_SPEED_ONE = [
   // The payoff is the finished sentence and the beat that follows it. Under
   // speed < 1 the last characters never land inside durationInFrames.
   "search-typing",
+  // The last chip arrives at frame 115 of 150 and its step settles by ~124;
+  // under speed < 1 act 2 never finishes inside the composition.
+  "status-cycle",
 ];
 for (const name of MIN_SPEED_ONE) {
   const entry = registry[name];
