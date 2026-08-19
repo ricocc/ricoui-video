@@ -72,8 +72,12 @@ export const textHighlightConfig: ComponentConfig = {
       label: "Shine color (shimmer)",
     },
     logoSrc: {
+      // Empty on purpose: the component falls back to its built-in vector mark,
+      // which is what the reader should see first — a raster placeholder here
+      // only demonstrates the thing the rush is worst at. Paste or upload to
+      // swap in your own.
       type: "image",
-      default: "/logo/dummy-logo.png",
+      default: "",
       label: "Logo URL",
     },
     logoScale: {
