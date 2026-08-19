@@ -1,5 +1,7 @@
 import type React from "react";
 import { type ComponentConfig, SHARED_CONTROLS } from "@/lib/customizer-config";
+import { AnnounceTitle } from "@/registry/snap-cn/announce-title";
+import { announceTitleConfig } from "@/registry/snap-cn/announce-title/config";
 import { AnswerStream } from "@/registry/snap-cn/answer-stream";
 import { answerStreamConfig } from "@/registry/snap-cn/answer-stream/config";
 import { FollowerRush } from "@/registry/snap-cn/follower-rush";
@@ -47,6 +49,7 @@ export interface RegistryEntry {
 }
 
 const registry: Record<string, RegistryEntry> = {
+  "announce-title": { Component: AnnounceTitle, config: announceTitleConfig },
   "answer-stream": { Component: AnswerStream, config: answerStreamConfig },
   "follower-rush": { Component: FollowerRush, config: followerRushConfig },
   "hero-launch": { Component: HeroLaunch, config: heroLaunchConfig },
@@ -91,6 +94,9 @@ for (const { config } of Object.values(registry)) {
 // `speed` knob at a minimum of 1. Reassigning the existing key keeps its order.
 const MIN_SPEED_ONE = [
   "follower-rush",
+  // The tagline finishes draining to white at frame 147 of 170; under speed < 1
+  // the line never reaches its resting colour inside the composition.
+  "announce-title",
   "terminal-simulator",
   // The notch notification lands "connected" at frame 120 of 240; under
   // speed < 1 that beat never arrives inside the composition.

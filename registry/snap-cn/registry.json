@@ -4,6 +4,23 @@
   "homepage": "https://snapcn.dev",
   "items": [
     {
+      "name": "announce-title",
+      "type": "registry:component",
+      "title": "Announce Title",
+      "description": "A four-shot launch title: the eyebrow rushes past the camera on a receding type plane and lands on a colour field, the name assembles word by word on paper, and a macro pan across the tagline cuts wide as the line builds itself last word first while a white sweep drains it out of colour. Content, palette and the mark that leads the closing line are all props.",
+      "dependencies": [
+        "remotion",
+        "@remotion/google-fonts"
+      ],
+      "files": [
+        {
+          "path": "announce-title/index.tsx",
+          "type": "registry:component",
+          "target": "components/snap-cn/announce-title.tsx"
+        }
+      ]
+    },
+    {
       "name": "answer-stream",
       "type": "registry:component",
       "title": "Answer Stream",

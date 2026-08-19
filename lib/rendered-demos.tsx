@@ -50,6 +50,12 @@ export const RENDERED_DEMOS: readonly string[] = [
   "text-reveal",
   "text-swell",
   "hero-launch",
+  // Type is under a moving scale for most of the run — a receding 3D plane, a
+  // 1.5x settle, then a whole line panned at 19x — and each of the first two
+  // shots is drawn eight times a frame for the shutter. A live Player has an
+  // 8ms budget for all of that; the render has none, and the difference is the
+  // whole read of the opening.
+  "announce-title",
   // The screen-takeover finale is a slow camera dolly (scale) on a whole video
   // screen over ~45 frames, then a long hold — the exact slow, smooth motion a
   // live Player mispaces on a high-refresh display. The render doesn't mispace.

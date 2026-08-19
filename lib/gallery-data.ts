@@ -186,6 +186,13 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     href: "/docs/social/follower-rush",
   },
   {
+    name: "Announce Title",
+    description:
+      "A four-shot launch title — the eyebrow rushes past the camera on a receding type plane, the name assembles on paper, and a macro pan cuts wide as the tagline builds itself last word first",
+    category: "scenes",
+    href: "/docs/scenes/announce-title",
+  },
+  {
     name: "Product Hero",
     description:
       "Cinematic product-launch hero — two cards slide into formation as the headline reveals above",
