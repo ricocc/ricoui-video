@@ -105,6 +105,12 @@ export const RENDERED_DEMOS: readonly string[] = [
   // If any of these ever costs more than it earns, the fix is to delete the line
   // — `renderedDemoSrc` returns null and the page falls straight back to the
   // live `<Player>`. Nothing else has to change.
+  // A width that morphs under a label that must not move with it, a per-letter
+  // scale cascade, and a field that steps 200px with a 1.8-frame time constant.
+  // All three are slow, smooth, sub-pixel motion on type — the exact thing a
+  // live Player mispaces on a high-refresh display, and the width morph's
+  // overshoot is only legible if every frame is held for the right length.
+  "status-cycle",
   "text-highlight",
   "text-build",
   "word-captions",

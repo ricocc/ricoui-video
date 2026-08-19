@@ -193,6 +193,13 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     href: "/docs/scenes/announce-title",
   },
   {
+    name: "Status Cycle",
+    description:
+      "A status pill whose label rolls behind a hard clip while its width springs past the target and back, then the field crossfades to a column of chips stepping up from below",
+    category: "scenes",
+    href: "/docs/scenes/status-cycle",
+  },
+  {
     name: "Product Hero",
     description:
       "Cinematic product-launch hero — two cards slide into formation as the headline reveals above",

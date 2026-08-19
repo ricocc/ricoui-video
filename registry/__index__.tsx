@@ -26,6 +26,8 @@ import { PromptZoom } from "@/registry/snap-cn/prompt-zoom";
 import { promptZoomConfig } from "@/registry/snap-cn/prompt-zoom/config";
 import { SearchTyping } from "@/registry/snap-cn/search-typing";
 import { searchTypingConfig } from "@/registry/snap-cn/search-typing/config";
+import { StatusCycle } from "@/registry/snap-cn/status-cycle";
+import { statusCycleConfig } from "@/registry/snap-cn/status-cycle/config";
 import { TerminalSimulator } from "@/registry/snap-cn/terminal-simulator";
 import { terminalSimulatorConfig } from "@/registry/snap-cn/terminal-simulator/config";
 import { TextBuild } from "@/registry/snap-cn/text-build";
@@ -68,6 +70,7 @@ const registry: Record<string, RegistryEntry> = {
   "phone-frame": { Component: PhoneFrame, config: phoneFrameConfig },
   "prompt-zoom": { Component: PromptZoom, config: promptZoomConfig },
   "search-typing": { Component: SearchTyping, config: searchTypingConfig },
+  "status-cycle": { Component: StatusCycle, config: statusCycleConfig },
   "terminal-simulator": {
     Component: TerminalSimulator,
     config: terminalSimulatorConfig,
@@ -115,6 +118,9 @@ const MIN_SPEED_ONE = [
   // The payoff is the finished sentence and the beat that follows it. Under
   // speed < 1 the last characters never land inside durationInFrames.
   "search-typing",
+  // The last chip arrives at frame 115 of 150 and its step settles by ~124;
+  // under speed < 1 act 2 never finishes inside the composition.
+  "status-cycle",
 ];
 for (const name of MIN_SPEED_ONE) {
   const entry = registry[name];
