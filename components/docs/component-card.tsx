@@ -113,7 +113,7 @@ export function ComponentCard({ item }: { item: CardItem }) {
         title={item.name}
         aria-label={`${item.name}: ${item.description}`}
         className={cn(
-          "group/card relative mb-4 block break-inside-avoid rounded-none outline-none",
+          "group/card relative block rounded-none outline-none",
           "focus-visible:ring-2 focus-visible:ring-ring/40",
         )}
       >
@@ -126,10 +126,7 @@ export function ComponentCard({ item }: { item: CardItem }) {
   }
 
   return (
-    <div
-      className="group/card mb-4 block break-inside-avoid rounded-none opacity-60"
-      title={item.name}
-    >
+    <div className="group/card block rounded-none opacity-60" title={item.name}>
       <CardFrame item={item} />
     </div>
   );
