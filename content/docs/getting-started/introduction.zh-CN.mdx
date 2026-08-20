@@ -1,0 +1,25 @@
+---
+title: 项目介绍
+description: RICOUI Video 的定位、适用人群和设计原则
+---
+
+RICOUI Video 面向需要制作软件演示视频的独立开发者和小团队。它沿用 shadcn/ui 的
+工作方式，但复制的是 Remotion 视频组件，而不是网页 UI。
+
+## 为什么使用 RICOUI Video
+
+- **动画细节经过渲染验证。** 文字基线、缩放锚点和逐帧节奏会在真实输出中检查，
+  不只依赖浏览器预览。
+- **预览与输出一致。** 组件使用标准 Remotion API，同一份实现进入 Player 和最终视频。
+- **共享主题系统。** 组件通过 `theme` 与 `mode` 接收视觉 token，便于适配你的产品。
+- **安装后源码归你。** 不增加 RICOUI Video 运行时，也没有必须跟随升级的包版本。
+
+## 前置条件
+
+你需要先准备 Remotion 项目：
+
+```bash
+npx create-video@latest
+```
+
+下一步阅读[安装指南](/docs/getting-started/installation)。

@@ -1,0 +1,13 @@
+{
+  "title": "文字与标题",
+  "collapsible": false,
+  "pages": [
+    "index",
+    "text-reveal",
+    "text-swell",
+    "text-highlight",
+    "text-swap",
+    "text-build",
+    "word-flip"
+  ]
+}

@@ -32,7 +32,7 @@ export async function GET(
   const page = slug?.length ? source.getPage(slug) : undefined;
   const data = page?.data as { title?: string; description?: string };
 
-  const title = data?.title ?? "snapcn";
+  const title = data?.title ?? "RICOUI Video";
   const description =
     data?.description ??
     "Cinematic video components for React. Production-ready Remotion animations, transitions and backgrounds — installed with the shadcn CLI.";
@@ -64,7 +64,7 @@ export async function GET(
           }}
         />
         <div style={{ fontSize: 32, fontWeight: 700, letterSpacing: -1 }}>
-          snapcn
+          RICOUI Video
         </div>
         {category ? (
           <div
@@ -120,7 +120,7 @@ export async function GET(
         }}
       >
         <div>Video components for Remotion · shadcn CLI</div>
-        <div>snapcn.dev</div>
+        <div>video.ricoui.com</div>
       </div>
     </div>,
     { width: 1200, height: 630 },

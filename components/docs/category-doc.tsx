@@ -1,4 +1,5 @@
 import { DynamicCodeBlock } from "fumadocs-ui/components/dynamic-codeblock";
+import { headers } from "next/headers";
 import Link from "next/link";
 import {
   type CategoryId,
@@ -26,7 +27,9 @@ import { InstallBlock } from "./install-block";
  * same object the live preview and the customizer run on. Nothing here is a
  * figure typed into a doc that the component can drift away from.
  */
-export function CategoryDoc({ category }: { category: CategoryId }) {
+export async function CategoryDoc({ category }: { category: CategoryId }) {
+  const zh = (await headers()).get("x-ricoui-locale") !== "en";
+  const prefix = zh ? "" : "/en";
   const items = GALLERY_ITEMS.filter((item) => item.category === category);
   const label =
     GALLERY_CATEGORIES.find((c) => c.id === category)?.label ?? category;
@@ -38,40 +41,43 @@ export function CategoryDoc({ category }: { category: CategoryId }) {
 
   return (
     <>
-      <h2 id="components">The components</h2>
+      <h2 id="components">{zh ? "组件" : "The components"}</h2>
       <p>
-        {items.length === 1 ? "One component" : `${items.length} components`} in{" "}
-        {label}. Each card plays its own default scene — open one for its props,
-        the source file <code>shadcn add</code> writes, and a player you can
-        scrub frame by frame.
+        {zh
+          ? `这一分类共有 ${items.length} 个组件。每张卡片都会播放默认场景；打开后可以查看 Props、安装源码和可逐帧拖动的 Player。`
+          : `${items.length === 1 ? "One component" : `${items.length} components`} in ${label}. Each card plays its own default scene — open one for its props, the source file shadcn add writes, and a player you can scrub frame by frame.`}
       </p>
 
       <CategoryGrid category={category} />
 
-      <h2 id="install">Install</h2>
+      <h2 id="install">{zh ? "安装" : "Install"}</h2>
       <p>
-        Components are installed into your own Remotion project with the shadcn
-        CLI, and the file it writes is yours to edit — there is no snapcn
-        package to depend on.{" "}
-        <Link href="/docs/getting-started/installation">
-          Set the registry up once
+        {zh
+          ? "组件通过 shadcn CLI 安装到你的 Remotion 项目，源码可以直接修改。"
+          : "Components are installed into your own Remotion project with the shadcn CLI, and the file it writes is yours to edit — there is no RICOUI Video runtime package to depend on. "}
+        <Link href={`${prefix}/docs/getting-started/installation`}>
+          {zh ? "先完成一次 Registry 配置" : "Set the registry up once"}
         </Link>
-        , then add components by name:
+        {zh ? "，再按名称添加组件：" : ", then add components by name:"}
       </p>
 
       <InstallBlock name={leadSlug} />
 
       <p>
-        That writes <code>components/snap-cn/{leadSlug}.tsx</code>. Swap the
-        name for any other component on this page.
+        {zh ? "该命令会写入 " : "That writes "}
+        <code>components/snap-cn/{leadSlug}.tsx</code>
+        {zh
+          ? "。安装其他组件时只需替换名称。"
+          : ". Swap the name for any other component on this page."}
       </p>
 
       {config ? (
         <>
-          <h2 id="usage">Put it on screen</h2>
+          <h2 id="usage">{zh ? "放入画面" : "Put it on screen"}</h2>
           <p>
-            Every prop has a working default, so the component renders as soon
-            as it is mounted — give it a composition and you have a video:
+            {zh
+              ? "每个 Prop 都有可用默认值，挂载进 Composition 后即可渲染："
+              : "Every prop has a working default, so the component renders as soon as it is mounted — give it a composition and you have a video:"}
           </p>
           <DynamicCodeBlock
             lang="tsx"
@@ -103,19 +109,26 @@ export const RemotionRoot = () => (
         </>
       ) : null}
 
-      <h2 id="next">Next</h2>
+      <h2 id="next">{zh ? "下一步" : "Next"}</h2>
       <ul>
         <li>
-          <Link href="/docs/getting-started/installation">Installation</Link> —
-          the one-time registry setup, and the Remotion project it needs.
+          <Link href={`${prefix}/docs/getting-started/installation`}>
+            {zh ? "安装" : "Installation"}
+          </Link>{" "}
+          — the one-time registry setup, and the Remotion project it needs.
         </li>
         <li>
-          <Link href="/docs/components">All components</Link> — the full
-          gallery, filterable across every category.
+          <Link href={`${prefix}/docs/components`}>
+            {zh ? "全部组件" : "All components"}
+          </Link>{" "}
+          — the full gallery, filterable across every category.
         </li>
         <li>
-          <Link href="/docs/getting-started/agent-skill">Agent skill</Link> —
-          hand snapcn to a coding agent so it picks the right component itself.
+          <Link href={`${prefix}/docs/getting-started/agent-skill`}>
+            Agent skill
+          </Link>{" "}
+          — hand snapcn to a coding agent so it picks the right component
+          itself.
         </li>
       </ul>
     </>

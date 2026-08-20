@@ -12,7 +12,7 @@ import { CopyButton } from "./copy-button";
 export type PackageManager = "prompt" | "pnpm" | "yarn" | "npm" | "bun";
 
 const packageManagerAtom = atomWithStorage<PackageManager>(
-  "snap-cn/packageManager",
+  "ricoui-video/packageManager",
   "pnpm",
 );
 

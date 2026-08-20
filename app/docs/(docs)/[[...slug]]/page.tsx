@@ -1,11 +1,13 @@
 import { DocsBody, DocsDescription, DocsTitle } from "fumadocs-ui/page";
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 import { GALLERY_HREFS } from "@/lib/gallery-data";
+import { localizeHref } from "@/lib/i18n/config";
 import { getMDXComponents } from "@/mdx-components";
 import { source } from "@/source";
 
-const SITE_URL = "https://snapcn.dev";
+const SITE_URL = "https://video.ricoui.com";
 
 /**
  * Components no longer have standalone docs pages — their MDX renders inline in
@@ -26,13 +28,17 @@ export default async function Page(props: {
   params: Promise<{ slug?: string[] }>;
 }) {
   const params = await props.params;
+  const locale =
+    (await headers()).get("x-ricoui-locale") === "en" ? "en" : "zh-CN";
   const overlay = componentOverlayRedirect(params.slug);
-  if (overlay) redirect(overlay);
-  const page = source.getPage(params.slug);
+  if (overlay) redirect(locale === "en" ? `/en${overlay}` : overlay);
+  const page = source.getPage(params.slug, locale);
   if (!page) notFound();
 
-  const data = page.data as any;
+  const data = page.data;
   const MDX = data.body;
+  const baseUrl = page.url.replace(/^\/zh(?=\/|$)/, "") || "/";
+  const routeUrl = localizeHref(baseUrl, locale);
 
   // Docs > Category > Page trail derived from the URL segments. Answer
   // engines and Google both consume this for breadcrumb rich results.
@@ -51,14 +57,18 @@ export default async function Page(props: {
         "@type": "TechArticle",
         headline: data.title,
         description: data.description,
-        url: `${SITE_URL}${page.url}`,
+        url: `${SITE_URL}${routeUrl}`,
         image: `${SITE_URL}/og/${page.slugs.join("/")}`,
         author: {
           "@type": "Person",
           name: "Sri Nath",
           url: "https://x.com/SriNath693",
         },
-        publisher: { "@type": "Organization", name: "snapcn", url: SITE_URL },
+        publisher: {
+          "@type": "Organization",
+          name: "RICOUI Video",
+          url: SITE_URL,
+        },
       },
       {
         "@type": "BreadcrumbList",
@@ -118,21 +128,31 @@ export async function generateMetadata(props: {
   params: Promise<{ slug?: string[] }>;
 }): Promise<Metadata> {
   const params = await props.params;
-  const page = source.getPage(params.slug);
+  const locale =
+    (await headers()).get("x-ricoui-locale") === "en" ? "en" : "zh-CN";
+  const page = source.getPage(params.slug, locale);
   if (!page) notFound();
-  const data = page.data as any;
+  const data = page.data;
   const ogImage = `/og/${page.slugs.join("/")}`;
+  const baseUrl = page.url.replace(/^\/zh(?=\/|$)/, "") || "/";
+  const routeUrl = localizeHref(baseUrl, locale);
 
   return {
     title: data.title,
     description: data.description,
-    alternates: { canonical: page.url },
+    alternates: {
+      canonical: routeUrl,
+      languages: {
+        en: localizeHref(baseUrl, "en"),
+        "zh-CN": localizeHref(baseUrl, "zh-CN"),
+      },
+    },
     openGraph: {
       type: "article",
-      url: page.url,
+      url: routeUrl,
       title: data.title,
       description: data.description,
-      siteName: "snapcn",
+      siteName: "RICOUI Video",
       images: [{ url: ogImage, width: 1200, height: 630, alt: data.title }],
     },
     twitter: {

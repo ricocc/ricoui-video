@@ -27,7 +27,7 @@ const KNOWN_COMPONENTS = new Set(INSTALL_ALL_NAMES);
  * snapcn's product is not the website. The website is a brochure; the product
  * ships when someone runs
  *
- *     npx shadcn@latest add @snap-cn/orbit-gallery
+ *     npx shadcn@latest add @ricoui-video/orbit-gallery
  *
  * which the CLI resolves through the shadcn registry directory into a plain GET
  * to `/r/orbit-gallery.json` from a terminal — so the namespace form is counted
@@ -66,9 +66,27 @@ function componentFromPath(pathname: string): string | null {
   return match[1];
 }
 
-export async function middleware(request: NextRequest) {
-  const response = NextResponse.next();
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const requestHeaders = new Headers(request.headers);
+  const isEnglish = pathname === "/en" || pathname.startsWith("/en/");
+  const isLegacyChinese = pathname === "/zh" || pathname.startsWith("/zh/");
+  requestHeaders.set("x-ricoui-locale", isEnglish ? "en" : "zh-CN");
+
+  let response: NextResponse;
+  if (isLegacyChinese) {
+    const url = request.nextUrl.clone();
+    url.pathname = pathname.slice(3) || "/";
+    response = NextResponse.redirect(url, 308);
+  } else if (isEnglish) {
+    const url = request.nextUrl.clone();
+    url.pathname = pathname.slice(3) || "/";
+    response = NextResponse.rewrite(url, {
+      request: { headers: requestHeaders },
+    });
+  } else {
+    response = NextResponse.next({ request: { headers: requestHeaders } });
+  }
 
   after(async () => {
     const ua = request.headers.get("user-agent");
@@ -116,5 +134,13 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/r/:path*", "/llms.txt", "/llms-full.txt"],
+  matcher: [
+    "/en",
+    "/en/:path*",
+    "/zh",
+    "/zh/:path*",
+    "/r/:path*",
+    "/llms.txt",
+    "/llms-full.txt",
+  ],
 };

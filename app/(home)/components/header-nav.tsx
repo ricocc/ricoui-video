@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useRef, useState } from "react";
+import { useI18n } from "@/components/locale-provider";
 import { SlidingHighlight } from "@/components/sliding-highlight";
 import { SheetClose } from "@/components/ui/sheet";
 import type { NavLink } from "@/config/site";
@@ -21,6 +22,7 @@ export function NavDesktop({
   links: NavLink[];
   className?: string;
 }) {
+  const { href, t } = useI18n();
   const navRef = useRef<HTMLElement>(null);
   const [highlight, setHighlight] = useState<{
     left: number;
@@ -54,12 +56,12 @@ export function NavDesktop({
       {links.map((link) => (
         <Link
           key={link.href}
-          href={link.href}
+          href={href(link.href)}
           onMouseEnter={(event) => moveTo(event.currentTarget)}
           onFocus={(event) => moveTo(event.currentTarget)}
           className="relative rounded-md px-2.5 py-1.5 text-[0.8125rem] text-muted-foreground transition-colors duration-150 ease-out hover:text-foreground focus-visible:text-foreground focus-visible:outline-none"
         >
-          {link.label}
+          {link.label === "Components" ? t("nav.components") : t("nav.docs")}
         </Link>
       ))}
     </nav>
@@ -72,6 +74,7 @@ export function NavDesktop({
  * header; each link is a `SheetClose` so a tap closes the sheet before routing.
  */
 export function NavMobile({ links }: { links: NavLink[] }) {
+  const { href, t } = useI18n();
   return (
     <nav className="flex flex-col px-6 text-base">
       {links.map((link) => (
@@ -79,12 +82,12 @@ export function NavMobile({ links }: { links: NavLink[] }) {
           key={link.href}
           render={
             <Link
-              href={link.href}
+              href={href(link.href)}
               className="py-3 text-foreground/90 transition-colors hover:text-foreground focus-visible:text-foreground focus-visible:outline-none"
             />
           }
         >
-          {link.label}
+          {link.label === "Components" ? t("nav.components") : t("nav.docs")}
         </SheetClose>
       ))}
     </nav>

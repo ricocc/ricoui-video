@@ -1,4 +1,4 @@
-# snap-cn Motion Direction
+# RICOUI Video Motion Direction
 
 The canonical motion direction for **templates** and branded transition presentations. Locked in against a reference product demo roughly ~44s long (the reference timings below are given from the start of that clip). All templates follow these principles; branded presentations on top of `TransitionSeries` implement the named moves from here.
 

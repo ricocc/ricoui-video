@@ -22,6 +22,7 @@
     "hooks": "@/hooks"
   },
   "registries": {
+    "@ricoui-video": "https://video.ricoui.com/r/{name}.json",
     "@svgl": "https://svgl.app/r/{name}.json"
   }
 }

@@ -1,0 +1,5 @@
+{
+  "title": "屏幕与设备",
+  "collapsible": false,
+  "pages": ["index", "phone-frame", "laptop-frame", "terminal-simulator"]
+}

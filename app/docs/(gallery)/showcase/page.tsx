@@ -11,7 +11,8 @@ import { getApprovedSubmissions } from "@/lib/server/showcase";
 export const dynamic = "force-dynamic";
 
 const TITLE = "Showcase";
-const DESCRIPTION = "Videos built with snapcn, submitted by the community.";
+const DESCRIPTION =
+  "Videos built with RICOUI Video, submitted by the community.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
     url: "/docs/showcase",
     title: TITLE,
     description: DESCRIPTION,
-    siteName: "snapcn",
+    siteName: "RICOUI Video",
   },
 };
 

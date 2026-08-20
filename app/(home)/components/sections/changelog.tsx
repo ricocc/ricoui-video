@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useI18n } from "@/components/locale-provider";
 import { cn } from "@/lib/utils";
 import { CodeSnippet } from "../code-snippet";
 import { FadeUp } from "../fade-up";
@@ -83,6 +84,7 @@ const ENTRIES = [
 export function Changelog() {
   const [active, setActive] = useState(0);
   const panels = useRef<(HTMLElement | null)[]>([]);
+  const { t } = useI18n();
 
   // Which panel the reader is actually on. The margins leave a band about a
   // tenth of the viewport tall across the middle — a reading line — and whatever
@@ -113,7 +115,7 @@ export function Changelog() {
       <div className="section">
         <FadeUp>
           <h2 className="mx-auto max-w-[12ch] text-pretty text-center font-sans text-[clamp(2.25rem,4.6vw,3.5rem)] font-normal leading-[1.06] tracking-[-0.03em] text-foreground">
-            Compose it, then animate it
+            {t("home.composeTitle")}
           </h2>
         </FadeUp>
 

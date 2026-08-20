@@ -1,0 +1,5 @@
+{
+  "title": "字幕",
+  "collapsible": false,
+  "pages": ["index", "word-captions", "karaoke-captions"]
+}

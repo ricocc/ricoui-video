@@ -8,7 +8,7 @@ export function InstallAll() {
       <CodeBlockCommand
         component="all"
         variant="outline"
-        prompt="Add every snapcn component to my project."
+        prompt="Add every RICOUI Video component to my project."
         {...convertNpmCommand(INSTALL_ALL_COMMAND)}
       />
     </div>

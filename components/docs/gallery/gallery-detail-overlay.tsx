@@ -15,6 +15,7 @@ import {
   useMemo,
   useState,
 } from "react";
+import { useI18n } from "@/components/locale-provider";
 import { installCommand as buildInstallCommand } from "@/config/site";
 import {
   GALLERY_CATEGORIES,
@@ -22,7 +23,12 @@ import {
   slugFromHref,
 } from "@/lib/gallery-data";
 import { resolvePreview } from "@/lib/gallery-preview";
+import { zhCategoryLabels } from "@/lib/i18n/gallery";
 import { PreviewStage } from "@/lib/ui-preview-internals";
+import {
+  componentSourceLabel,
+  getComponentSource,
+} from "@/registry/metadata/components";
 import { morphToCard, SHARED_MEDIA } from "./shared-media-transition";
 
 const CATEGORY_LABEL = new Map(GALLERY_CATEGORIES.map((c) => [c.id, c.label]));
@@ -142,14 +148,19 @@ function OverlayBody({
   onPrev: () => void;
   onNext: () => void;
 }) {
+  const { locale } = useI18n();
   const slug = slugFromHref(item.href);
   const preview = useMemo(() => resolvePreview(slug), [slug]);
-  const category = CATEGORY_LABEL.get(item.category) ?? item.category;
+  const category =
+    locale === "zh-CN"
+      ? zhCategoryLabels[item.category]
+      : (CATEGORY_LABEL.get(item.category) ?? item.category);
   // One string for both the label and the clipboard. They used to be written out
   // separately, so the row showed a bare `@snap-cn/text-reveal` — which is not a
   // command and does nothing if you type it — while the copy button quietly
   // handed over the real thing. What it says is now what you get.
   const installCommand = buildInstallCommand(slug);
+  const source = componentSourceLabel(getComponentSource(slug));
   const [copied, setCopied] = useState(false);
   const hasDocs = Boolean(docBody);
 
@@ -217,15 +228,21 @@ function OverlayBody({
           </Dialog.Description>
 
           <dl className="text-sm">
-            <MetaRow label="Source">snapcn</MetaRow>
-            <MetaRow label="Category">{category}</MetaRow>
-            <MetaRow label="Type">{typeLabel(item.href)}</MetaRow>
+            <MetaRow label={locale === "zh-CN" ? "来源" : "Source"}>
+              {source}
+            </MetaRow>
+            <MetaRow label={locale === "zh-CN" ? "分类" : "Category"}>
+              {category}
+            </MetaRow>
+            <MetaRow label={locale === "zh-CN" ? "类型" : "Type"}>
+              {typeLabel(item.href)}
+            </MetaRow>
             {preview ? (
-              <MetaRow label="Duration">
+              <MetaRow label={locale === "zh-CN" ? "时长" : "Duration"}>
                 {(preview.durationInFrames / preview.fps).toFixed(1)}s
               </MetaRow>
             ) : null}
-            <MetaRow label="Install">
+            <MetaRow label={locale === "zh-CN" ? "安装" : "Install"}>
               <button
                 type="button"
                 onClick={copyInstall}

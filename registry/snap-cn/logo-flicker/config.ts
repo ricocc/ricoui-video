@@ -6,12 +6,12 @@ export const logoFlickerConfig: ComponentConfig = {
   controls: {
     brandName: {
       type: "text",
-      default: "snapcn",
+      default: "RICOUI Video",
       label: "Brand name",
     },
     logoSrc: {
       type: "image",
-      default: "/logo/snapcn-white.png",
+      default: "/android-chrome-512x512.png",
       label: "Logo (simple, monochrome)",
     },
     flipInterval: {

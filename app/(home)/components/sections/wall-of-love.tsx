@@ -21,22 +21,22 @@ import { FadeUp } from "../fade-up";
  * clicking these, X still needs its own send. That is why the button can say what
  * it does without a confirmation step behind it.
  */
-const SITE_URL = "https://snapcn.dev";
+const SITE_URL = "https://video.ricoui.com";
 
 const intent = (text: string) =>
   `https://x.com/intent/tweet?text=${encodeURIComponent(text)}`;
 
 const POSTS = [
   {
-    label: "Post about snapcn",
+    label: "Post about RICOUI Video",
     // Written in the reader's voice, not ours — they are the one posting it, and
     // a line of marketing copy in the first person is the thing people delete.
-    text: `@snapcn: ready-made Remotion components for video, installed with the shadcn CLI. Copy the code, own it forever.`,
+    text: `RICOUI Video: Remotion components for software demos, installed with the shadcn CLI. Copy the code, own it forever.`,
     primary: true,
   },
   {
     label: "Show what you built",
-    text: `Made this with snapcn 🎬
+    text: `Made this with RICOUI Video 🎬
 
 Remotion video components you install with the shadcn CLI:
 ${SITE_URL}`,

@@ -1,130 +1,88 @@
-<div align="center">
+# RICOUI Video
 
-<h1>snapcn</h1>
+[简体中文](README.md) | [English](README.en.md)
 
-<h3>Product demo videos, built in React.</h3>
+用于软件演示视频的 Remotion 可复制组件库。
 
-<p>
-The shots a software demo actually needs — AI chat streams, terminal sessions,
-device frames, captions — as components you install with the shadcn CLI and own outright.
-</p>
+包含 AI 流式回复、终端、设备框架、字幕、文字动画和可复用视频场景。通过
+shadcn CLI 安装，源码直接进入你的项目。
 
-<p>
-<a href="https://snapcn.dev"><strong>Browse the catalog&nbsp;→</strong></a> &nbsp;·&nbsp;
-<a href="https://snapcn.dev/docs">Docs</a> &nbsp;·&nbsp;
-<a href="https://snapcn.dev/docs/components">Components</a>
-</p>
+[官网](https://video.ricoui.com) · [组件](https://video.ricoui.com/docs/components) · [文档](https://video.ricoui.com/docs)
 
-<p>
-<img alt="MIT License" src="https://img.shields.io/github/license/snapcndev/snapcn?style=flat-square&color=blue">
-<img alt="Stars" src="https://img.shields.io/github/stars/snapcndev/snapcn?style=flat-square&color=blue">
-<img alt="Remotion 4" src="https://img.shields.io/badge/Remotion-4.0-blue?style=flat-square">
-</p>
+## 特性
 
-<img src="./public/hero.gif" alt="snapcn components animating" width="100%">
+- 专门服务于软件与 AI 产品演示的 Remotion 场景
+- 源码直接复制到项目中，不引入 RICOUI Video 运行时依赖
+- 可拖动进度的实时预览与组件文档
+- 按文字、字幕、AI、终端、设备和场景等用途分类
+- 默认提供简体中文，英文页面位于 `/en`
+- 采用 MIT License，清晰保留上游归属信息
 
-</div>
+## 安装
 
-## Quickstart
+`@ricoui-video` 尚未加入 shadcn Registry Directory，因此使用前需要先在项目的
+`components.json` 中配置 Registry 地址：
 
-You need a Remotion project. Don't have one? `npx create-video@latest` takes about a minute.
+```json
+{
+  "registries": {
+    "@ricoui-video": "https://video.ricoui.com/r/{name}.json"
+  }
+}
+```
+
+然后安装组件：
 
 ```bash
-npx shadcn@latest add @snap-cn/text-reveal
+npx shadcn@latest add @ricoui-video/text-reveal
 ```
 
-`@snap-cn` is in the [shadcn registry directory](https://github.com/shadcn-ui/ui/pull/11386), so the
-CLI resolves it with no `registries` entry to add first. The source lands in your repo along with
-anything it depends on, and there's no runtime package to keep on your dependency list.
+RICOUI Video 面向已有的 Remotion 项目。如果还没有项目，请先运行
+`npx create-video@latest`，并配置复制源码所使用的 `@` 路径别名。
 
-A `create-video` project needs two things before its first `add`: a `components.json`, and the `@/`
-alias in both `tsconfig.json` and `remotion.config.ts` — Remotion's bundler does not read `tsconfig`
-paths. [Installation](https://snapcn.dev/docs/getting-started/installation) has both files to paste.
+## Registry
 
-```tsx
-import { Composition } from "remotion";
-import { TextReveal } from "@/components/snap-cn/text-reveal";
+Registry 文件通过 `https://video.ricoui.com/r/<name>.json` 提供。所有组件统一使用
+`@ricoui-video/<name>` 安装，内部来源目录不会出现在安装命令中。
 
-export const RemotionRoot = () => (
-  <Composition
-    id="Intro"
-    component={TextReveal}
-    durationInFrames={60}
-    fps={30}
-    width={1920}
-    height={1080}
-    defaultProps={{ text: "Ship it." }}
-  />
-);
+## 组件
+
+组件按用途分类，不按界面语言分类。来自上游的组件继续保留在
+`registry/snap-cn/` 与 `registry/snap-cn-ui/`，便于以后与 SnapCN 对比和同步。
+RICOUI Video 原创组件放在 `registry/ricoui/`。
+
+组件来源和修改状态统一维护在 `registry/metadata/components.ts`，不会向标准
+shadcn Registry schema 写入自定义字段。
+
+## 多语言
+
+简体中文位于 `/`，英文页面使用 `/en` 前缀。共享界面翻译位于
+`lib/i18n/messages.ts`，路由与 URL 辅助函数位于 `lib/i18n/config.ts`。组件名、
+slug、Props、API、代码和安装命令不会随站点语言变化。
+
+新增语言时，需要扩展 locale 与字典、在 `proxy.ts` 中增加前缀处理，并补充
+canonical 与 hreflang。
+
+## 参与贡献
+
+添加组件前请阅读 [CONTRIBUTING.md](CONTRIBUTING.md)。修改上游来源组件时应尽量
+保持 diff 聚焦，便于后续同步 SnapCN。
+
+## 上游
+
+RICOUI Video 是基于 [SnapCN](https://github.com/snapcndev/snapcn) 开发的独立开源
+项目，不是 SnapCN 官方中文版，也不代表获得 SnapCN 的维护或背书。
+
+```text
+origin/main   -> https://github.com/ricocc/ricoui-video
+upstream/main -> https://github.com/snapcndev/snapcn
 ```
 
-## Components
+## 归属说明
 
-21 components, each with a scrubable preview at [snapcn.dev](https://snapcn.dev).
-
-| Group | Components |
-| --- | --- |
-| **AI chat input** | `answer-stream` `search-typing` `prompt-zoom` |
-| **Screens & devices** | `phone-frame` `laptop-frame` `terminal-simulator` |
-| **Text & titles** | `text-reveal` `text-build` `text-swap` `text-swell` `text-highlight` `word-flip` |
-| **Captions** | `karaoke-captions` `word-captions` |
-| **Scenes** | `hero-launch` `orbit-gallery` `moodboard-reveal` |
-| **Logos** | `logo-assemble` `logo-flicker` |
-| **Social proof** | `follower-rush` |
-| **Effects** | `pulsing-border` |
-
-Alongside them, `snap-cn-ui` — timeline-driven versions of shadcn atoms (`input`, `caret`) that the
-scene components paint from, so a text field in your video is drawn from the same tokens as the one
-in your app.
-
-## Why snapcn
-
-**It's built for showing software.** Streaming AI answers, a cursor typing into a search field, a
-terminal running a build, a phone tilting into frame. These are the shots a product demo is made of,
-and they're fiddly enough that most people give up and screen-record instead.
-
-**Your video inherits your design system.** Components take `theme` and `mode` props and resolve
-through `SnapCnTheme`, reusing the same surface tokens shadcn's own primitives paint with — so the
-UI in the video doesn't drift from the UI in the product.
-
-**The motion is measured, not eyeballed.** Scaled text pivots on its baseline instead of its centre,
-and renders with `geometricPrecision`, because glyph rasterisers have no vertical sub-pixel
-positioning and hinting re-snaps stems every frame. Both fixes were verified on rendered frames
-(judder 0.284px → 0.014px). The details are in [`motion-quality`](./.claude/skills/motion-quality/SKILL.md).
-
-**You own it.** shadcn philosophy: files are copied into your project. Edit anything, upgrade
-nothing, no black box.
-
-## Use it with an AI agent
-
-snapcn ships a skill that teaches coding agents the catalog, prop shapes, durations and the motion
-rules above — so your agent picks the right component and budgets the timeline instead of inventing
-`interpolate()` calls:
-
-```bash
-npx skills add snapcndev/snapcn --skill snapcn --yes
-```
-
-Agents that read context files instead can pull [`llms.txt`](https://snapcn.dev/llms.txt) or the
-full corpus at [`llms-full.txt`](https://snapcn.dev/llms-full.txt).
-
-## Docs
-
-- [Introduction](https://snapcn.dev/docs/getting-started/introduction)
-- [Installation](https://snapcn.dev/docs/getting-started/installation)
-- [Agent skill](https://snapcn.dev/docs/getting-started/agent-skill)
-- [All components](https://snapcn.dev/docs/components)
-
-## Contributing
-
-Issues and PRs welcome — see [CONTRIBUTING.md](./CONTRIBUTING.md). Missing a component you need?
-[Open an issue](https://github.com/snapcndev/snapcn/issues) — the roadmap is mostly whatever
-people ask for.
-
-## Author
-
-Built by **Sri Nath** — [x.com/SriNath693](https://x.com/SriNath693)
+项目保留 SnapCN 原始 MIT 版权声明与 Git 历史。RICOUI Video 新增内容由 RICOUI
+贡献者维护。
 
 ## License
 
-[MIT](./LICENSE)
+[MIT](LICENSE)

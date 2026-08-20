@@ -1,9 +1,11 @@
 import { NAV_LINKS } from "@/config/site";
+import { getGitHubStars } from "@/lib/github";
 import { NavDesktop } from "./header-nav";
 import { HeaderActions, HeaderLogo } from "./header-parts";
 import { StickyHeaderShell } from "./sticky-header-shell";
 
-export function SiteHeader() {
+export async function SiteHeader() {
+  const stars = await getGitHubStars();
   return (
     <StickyHeaderShell>
       {/* Two groups, not three. Three children under `justify-between` push the
@@ -14,7 +16,7 @@ export function SiteHeader() {
         <HeaderLogo />
         <NavDesktop links={NAV_LINKS} />
       </div>
-      <HeaderActions />
+      <HeaderActions stars={stars} />
     </StickyHeaderShell>
   );
 }

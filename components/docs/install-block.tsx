@@ -4,7 +4,7 @@ import { CodeBlockCommand } from "./code-block-command";
 
 /**
  * The install command for a single component. Spelled once, in
- * `installCommand` — see there for why it is the `@snap-cn/<name>` short form.
+ * `installCommand` — the public `@ricoui-video/<name>` namespace.
  *
  * Both `registry/*` items publish to the same flat `/r/<name>.json`, so the
  * `registry` prop no longer picks a path — it only names the component for the
@@ -23,7 +23,7 @@ export function InstallBlock({
       <CodeBlockCommand
         component={name}
         variant="outline"
-        prompt={`Add the ${registry} ${name} component to my project by running: ${npmCommand}`}
+        prompt={`Add the RICOUI Video ${name} component (${registry} source tier) by running: ${npmCommand}`}
         {...convertNpmCommand(npmCommand)}
       />
     </div>

@@ -1,0 +1,92 @@
+---
+title: 安装
+description: 将 RICOUI Video 组件添加到已有 Remotion 项目
+---
+
+请先准备 Remotion 项目；如果还没有，运行 `npx create-video@latest`。
+
+## 1. 配置 `@/` 路径别名
+
+组件内部会引用 `@/components/snap-cn/…` 与 `@/lib/snap-cn-ui`。这些是为了保持
+上游同步能力而保留的内部目标路径，不是对外 Registry namespace。请在
+`tsconfig.json` 和 Remotion bundler 中同时配置 `@`。
+
+```json title="tsconfig.json"
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": { "@/*": ["./src/*"] }
+  }
+}
+```
+
+```ts title="remotion.config.ts"
+import path from "node:path";
+import { Config } from "@remotion/cli/config";
+
+Config.overrideBundlerConfig((config) => ({
+  ...config,
+  resolve: {
+    ...config.resolve,
+    alias: { ...config.resolve?.alias, "@": path.join(process.cwd(), "src") },
+  },
+}));
+```
+
+## 2. 添加 `components.json`
+
+`@ricoui-video` 目前不能假定已进入 shadcn 官方 Registry Directory，因此需要显式配置：
+
+```json title="components.json"
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "new-york",
+  "rsc": false,
+  "tsx": true,
+  "tailwind": {
+    "config": "",
+    "css": "src/index.css",
+    "baseColor": "neutral",
+    "cssVariables": true
+  },
+  "aliases": {
+    "components": "@/components",
+    "utils": "@/lib/utils",
+    "ui": "@/components/ui",
+    "lib": "@/lib",
+    "hooks": "@/hooks"
+  },
+  "iconLibrary": "lucide",
+  "registries": {
+    "@ricoui-video": "https://video.ricoui.com/r/{name}.json"
+  }
+}
+```
+
+## 3. 安装组件
+
+<InstallBlock name="text-reveal" />
+
+安装后，组件及其依赖会进入 `components.json` 配置的目录。对外安装命令始终使用
+`@ricoui-video/<name>`。
+
+## 4. 在 Composition 中使用
+
+```tsx
+import { Composition } from "remotion";
+import { TextReveal } from "@/components/snap-cn/text-reveal";
+
+export const RemotionRoot = () => (
+  <Composition
+    id="HelloWorld"
+    component={TextReveal}
+    durationInFrames={60}
+    fps={30}
+    width={1280}
+    height={720}
+    defaultProps={{ text: "你好，世界", mode: "dark" }}
+  />
+);
+```
+
+最后运行 `npx remotion render HelloWorld out.mp4`。

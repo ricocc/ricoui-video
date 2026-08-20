@@ -1,0 +1,27 @@
+---
+title: 文档
+description: RICOUI Video 是一个 Remotion 组件 Registry，安装后源码直接进入你的项目。
+---
+
+产品已经做好，现在需要一支清楚、有节奏的演示视频。RICOUI Video 提供文字动画、
+字幕、设备框架、终端、AI 交互和完整场景，通过熟悉的 shadcn CLI 安装。组件会作为
+普通源码进入你的仓库，你可以像维护自己写的组件一样调整它。
+
+## 使用方式
+
+1. **准备 Remotion 项目。** RICOUI Video 不负责初始化项目；没有项目时先运行
+   `npx create-video@latest`。详细配置见[安装指南](/docs/getting-started/installation)。
+2. **安装组件。** `npx shadcn@latest add @ricoui-video/text-reveal` 会复制组件及其
+   Registry 依赖，不会向 `package.json` 加入 RICOUI Video 运行时。
+3. **放进 Composition。** 传入需要动画的内容，其余 Props 已有可用默认值。
+4. **渲染。** 使用 `npx remotion render` 输出视频；浏览器预览和最终渲染使用同一组件。
+
+## 包含哪些内容
+
+[组件页](/docs/components)按功能展示全部组件。组件名、slug、Props、API 和代码保持
+英文，不会因为站点语言改变。
+
+<DocsIndex />
+
+全部代码采用 MIT License，项目托管在
+[GitHub](https://github.com/ricocc/ricoui-video)。

@@ -21,8 +21,11 @@ type SnippetValues = {
   primary?: string;
 };
 
-const snippet = (values: SnippetValues): string =>
-  inputConfig.snippet(values as Record<string, unknown>);
+const snippet = (values: SnippetValues): string => {
+  if (!inputConfig.snippet)
+    throw new Error("input snippet generator is required");
+  return inputConfig.snippet(values as Record<string, unknown>);
+};
 
 describe("InputState union", () => {
   it("contains exactly the six documented states", () => {
@@ -146,7 +149,7 @@ describe("inputConfig.snippet: default props are omitted", () => {
   const allDefaults = snippet({
     state: "typing",
     placeholder: "you@example.com",
-    value: "remotion@snapcn.dev",
+    value: "hello@video.ricoui.com",
     size: "default",
     primary: "#171717",
   });
@@ -155,7 +158,7 @@ describe("inputConfig.snippet: default props are omitted", () => {
     expect(allDefaults).not.toContain("placeholder=");
   });
 
-  it("omits value when it equals the default 'remotion@snapcn.dev'", () => {
+  it("omits value when it equals the default 'hello@video.ricoui.com'", () => {
     expect(allDefaults).not.toContain("value=");
   });
 

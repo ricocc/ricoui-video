@@ -2,6 +2,7 @@
 
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { useI18n } from "@/components/locale-provider";
 import { Button } from "@/components/ui/button";
 import { useTrackEvent } from "@/lib/analytics";
 import { FadeUp } from "../fade-up";
@@ -9,6 +10,7 @@ import { InstallAll } from "../install-all";
 
 export function Hero() {
   const trackEvent = useTrackEvent();
+  const { href, t } = useI18n();
 
   return (
     <section className="relative overflow-hidden pt-14 pb-4 sm:pt-20 sm:pb-6">
@@ -47,7 +49,7 @@ export function Hero() {
                 Keep this under ~32 characters. Past that it wraps to three rows
                 of 5.5rem type, which is a headline you read rather than take in. */}
             <h1 className="mx-auto max-w-[16ch] text-pretty font-sans text-[clamp(2.75rem,6.5vw,5.5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground">
-              Product demo videos, in React.
+              {t("hero.title")}
             </h1>
           </FadeUp>
 
@@ -60,9 +62,7 @@ export function Hero() {
                 claim. Naming the shots also does the demo's job for it: a reader
                 who needs a terminal in a video recognises themselves here. */}
             <p className="mx-auto mt-6 max-w-xl text-pretty text-body-lg text-current/70">
-              Copy-paste Remotion components for the shots a software demo is
-              made of — streaming AI answers, terminals, device frames,
-              captions. Install with the shadcn CLI; the code is yours.
+              {t("hero.description")}
             </p>
           </FadeUp>
 
@@ -74,7 +74,7 @@ export function Hero() {
                 nativeButton={false}
                 render={
                   <Link
-                    href="/docs/components"
+                    href={href("/docs/components")}
                     onClick={() =>
                       trackEvent("cta_clicked", {
                         cta: "hero_browse",
@@ -84,7 +84,7 @@ export function Hero() {
                   />
                 }
               >
-                Browse components
+                {t("hero.browse")}
                 <ArrowRight className="size-4" aria-hidden="true" />
               </Button>
               <InstallAll />

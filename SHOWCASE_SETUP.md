@@ -59,7 +59,7 @@ localhost and production variants in each provider's console:
 
 Example callbacks for Google:
 `http://localhost:3000/api/auth/callback/google` and
-`https://snapcn.dev/api/auth/callback/google`.
+`https://video.ricoui.com/api/auth/callback/google`.
 
 ## 5. Deploy
 

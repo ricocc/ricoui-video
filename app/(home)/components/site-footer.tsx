@@ -1,6 +1,31 @@
+"use client";
+
 import Link from "next/link";
+import { useI18n } from "@/components/locale-provider";
 import { FOOTER_COLUMNS } from "@/config/site";
 import { cn } from "@/lib/utils";
+
+const ZH_LABELS: Record<string, string> = {
+  Components: "组件",
+  Documentation: "文档",
+  Browse: "浏览",
+  Project: "项目",
+  "Text & Titles": "文字与标题",
+  Captions: "字幕",
+  Logos: "Logo 动画",
+  "Screens & Devices": "屏幕与设备",
+  "Social Proof": "社交证明",
+  Scenes: "完整场景",
+  "AI Chat Input": "AI 交互",
+  Introduction: "项目介绍",
+  Installation: "安装",
+  "Agent skill": "Agent Skill",
+  "All components": "全部组件",
+  Showcase: "作品展示",
+  "MIT license": "MIT 许可",
+  Issues: "问题反馈",
+  "SnapCN upstream": "SnapCN 上游",
+};
 
 /**
  * Sitemap footer: one column per group, each headed by a mono eyebrow.
@@ -51,6 +76,7 @@ function DrawArrow() {
 }
 
 export function SiteFooter() {
+  const { href: localizedHref, locale, t } = useI18n();
   return (
     <footer className="border-t border-border">
       <div className="section pt-14 pb-12 sm:pt-16">
@@ -58,7 +84,7 @@ export function SiteFooter() {
           {FOOTER_COLUMNS.map(({ title, links }) => (
             <div key={title}>
               <p className="font-mono text-[0.6875rem] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-                {title}
+                {locale === "zh-CN" ? (ZH_LABELS[title] ?? title) : title}
               </p>
               <ul className="mt-4 flex flex-col gap-3">
                 {links.map(({ href, label }) => {
@@ -74,12 +100,21 @@ export function SiteFooter() {
                           rel="noreferrer"
                           className={LINK}
                         >
-                          {label}
+                          {locale === "zh-CN"
+                            ? (ZH_LABELS[label] ?? label)
+                            : label}
                           <DrawArrow />
                         </a>
                       ) : (
-                        <Link href={href} className={LINK}>
-                          {label}
+                        <Link
+                          href={
+                            href.startsWith("/") ? localizedHref(href) : href
+                          }
+                          className={LINK}
+                        >
+                          {locale === "zh-CN"
+                            ? (ZH_LABELS[label] ?? label)
+                            : label}
                         </Link>
                       )}
                     </li>
@@ -94,7 +129,8 @@ export function SiteFooter() {
           className="mt-14 text-sm text-muted-foreground sm:mt-16"
           suppressHydrationWarning
         >
-          © {new Date().getFullYear()} snapcn — MIT licensed
+          © {new Date().getFullYear()} {t("footer.copyright")} ·{" "}
+          {t("footer.upstream")}
         </p>
       </div>
     </footer>

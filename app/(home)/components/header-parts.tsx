@@ -1,7 +1,11 @@
+"use client";
+
 import { Menu } from "lucide-react";
 import Link from "next/link";
+import { BrandWordmark } from "@/components/brand-wordmark";
+import { useI18n } from "@/components/locale-provider";
+import { LocaleSwitcher } from "@/components/locale-switcher";
 import { SearchButton } from "@/components/search-button";
-import { SnapCnLogo } from "@/components/snapcn-logo";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Sheet,
@@ -18,25 +22,28 @@ import { NavMobile } from "./header-nav";
 import { ThemeToggle } from "./theme-toggle";
 
 export function HeaderLogo() {
+  const { href } = useI18n();
   return (
     <Link
-      href="/"
-      aria-label="snapcn home"
+      href={href("/")}
+      aria-label="RICOUI Video home"
       className="flex items-center focus-visible:outline-none"
     >
-      <SnapCnLogo />
+      <BrandWordmark />
     </Link>
   );
 }
 
-export function HeaderActions() {
+export function HeaderActions({ stars }: { stars: number | null }) {
+  const { href, t } = useI18n();
   return (
     <div className="flex items-center gap-1.5">
       <SearchButton className="lg:w-52" />
       <div className="hidden sm:block">
-        <GithubButton />
+        <GithubButton stars={stars} />
       </div>
       <ThemeToggle />
+      <LocaleSwitcher />
 
       <Sheet>
         <SheetTrigger
@@ -45,7 +52,7 @@ export function HeaderActions() {
               variant="outline"
               size="icon"
               className="sm:hidden"
-              aria-label="Open menu"
+              aria-label={t("nav.menu")}
             />
           }
         >
@@ -53,20 +60,20 @@ export function HeaderActions() {
         </SheetTrigger>
         <SheetContent side="right" className="bg-background">
           <SheetHeader>
-            <SheetTitle>Menu</SheetTitle>
+            <SheetTitle>{t("nav.menu")}</SheetTitle>
           </SheetHeader>
           <NavMobile links={NAV_LINKS} />
           <div className="mt-4 flex flex-col gap-4 px-6 pb-6">
-            <GithubButton />
+            <GithubButton stars={stars} />
             <SheetClose
               render={
                 <Link
-                  href="/docs/getting-started/introduction"
+                  href={href("/docs/getting-started/introduction")}
                   className={cn(buttonVariants({ size: "lg" }), "h-11 w-full")}
                 />
               }
             >
-              Get started
+              {t("nav.getStarted")}
             </SheetClose>
           </div>
         </SheetContent>

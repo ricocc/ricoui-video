@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useI18n } from "@/components/locale-provider";
 import { INSTALL_COMMAND } from "@/config/site";
 import type { CategoryId } from "@/lib/gallery-data";
 import {
@@ -53,35 +56,60 @@ const BLURBS: Record<CategoryId, string> = {
     "Prompt typing, answer streaming and prompt zooms, for demoing an AI product's actual interaction.",
 };
 
+const ZH_LABELS: Record<CategoryId, string> = {
+  text: "文字与标题",
+  captions: "字幕",
+  logos: "Logo 动画",
+  screens: "屏幕与设备",
+  social: "社交证明",
+  scenes: "完整场景",
+  "ai-input": "AI 交互",
+};
+
+const ZH_BLURBS: Record<CategoryId, string> = {
+  text: "文字显现、词语翻转、动态标题与高亮扫过，适合产品视频的开场与重点表达。",
+  captions:
+    "逐词字幕与卡拉 OK 字幕，可与音频时间轴对齐，也适合静音观看的竖屏视频。",
+  logos: "用于品牌开场与收尾的 Logo 组装和闪现动画。",
+  screens: "手机、笔记本与终端框架，无需先在设计工具里制作设备样机。",
+  social: "粉丝数与指标快速增长动画，用于展示社交证明。",
+  scenes: "由基础组件组合而成的产品发布、环绕画廊与情绪板等完整场景。",
+  "ai-input": "提示词输入、回答流式生成与输入框聚焦，适合演示 AI 产品交互。",
+};
+
 export function WhatYouGet() {
+  const { href, locale, t } = useI18n();
   return (
     <section id="what-you-get" className="relative pb-20 sm:pb-28">
       <div className="section">
         <FadeUp>
           <h2 className="mx-auto max-w-[18ch] text-pretty text-center font-sans text-[clamp(2.25rem,4.6vw,3.5rem)] font-normal leading-[1.06] tracking-[-0.03em] text-foreground">
-            A shadcn registry, for video
+            {t("home.registryTitle")}
           </h2>
           <div className="mx-auto mt-5 max-w-2xl space-y-4 text-pretty text-center text-body-lg text-current/70">
             <p>
-              snapcn is a registry of {GALLERY_COUNT} Remotion components for
-              React video. You run{" "}
+              {t("home.registryIntro")} {locale === "en" ? "Run" : "运行"}{" "}
               <code className="font-mono text-[0.9em] text-foreground">
                 {INSTALL_COMMAND}
               </code>
-              , the source file lands in{" "}
+              {locale === "en"
+                ? ", and the source file lands in "
+                : "，源码将写入 "}
               <code className="font-mono text-[0.9em] text-foreground">
                 components/snap-cn/
               </code>
-              , and you edit it like code you wrote yourself.
+              {locale === "en" ? "." : "。"}
             </p>
             <p>
-              Nothing is added to your{" "}
+              {locale === "en"
+                ? "Nothing is added to your "
+                : "项目不会新增 RICOUI 运行时依赖；你的 "}
               <code className="font-mono text-[0.9em] text-foreground">
                 package.json
               </code>
-              . There is no snapcn runtime, no version to pin and no upgrade
-              that can change your video the week before you ship it. Every
-              component is written against the plain Remotion API —{" "}
+              {locale === "en"
+                ? ". There is no RICOUI Video runtime or version to pin. Every component uses the plain Remotion API — "
+                : " 中不会出现需要锁定版本的 RICOUI Video 包。每个组件都直接使用 Remotion API："}
               <code className="font-mono text-[0.9em] text-foreground">
                 useCurrentFrame()
               </code>
@@ -93,7 +121,9 @@ export function WhatYouGet() {
               <code className="font-mono text-[0.9em] text-foreground">
                 spring()
               </code>{" "}
-              — so the file you own is a file you can read.
+              {locale === "en"
+                ? " — readable code that you own."
+                : "，因此拿到的源码既清晰又可控。"}
             </p>
           </div>
         </FadeUp>
@@ -105,20 +135,20 @@ export function WhatYouGet() {
               return (
                 <li key={id} className="bg-background">
                   <Link
-                    href={`/docs/${id}`}
+                    href={href(`/docs/${id}`)}
                     className="flex h-full flex-col gap-2 p-6 transition-colors hover:bg-muted/60"
                   >
                     <span className="flex items-center gap-2">
                       <Icon className="size-4 text-current/50" aria-hidden />
                       <h3 className="text-base font-medium text-foreground">
-                        {label}
+                        {locale === "zh-CN" ? ZH_LABELS[id] : label}
                       </h3>
                       <span className="text-sm text-current/40">
                         {COUNTS[id] ?? 0}
                       </span>
                     </span>
                     <p className="text-sm leading-relaxed text-pretty text-current/70">
-                      {BLURBS[id]}
+                      {locale === "zh-CN" ? ZH_BLURBS[id] : BLURBS[id]}
                     </p>
                   </Link>
                 </li>
@@ -126,15 +156,16 @@ export function WhatYouGet() {
             })}
             <li className="bg-background">
               <Link
-                href="/docs/components"
+                href={href("/docs/components")}
                 className="flex h-full flex-col gap-2 p-6 transition-colors hover:bg-muted/60"
               >
                 <h3 className="text-base font-medium text-foreground">
-                  All {GALLERY_COUNT} components →
+                  {t("home.allComponents")}
                 </h3>
                 <p className="text-sm leading-relaxed text-pretty text-current/70">
-                  The whole registry in one filterable grid, every card playing
-                  its own scene in a real Remotion player.
+                  {locale === "zh-CN"
+                    ? `在同一个可筛选网格中浏览全部 ${GALLERY_COUNT} 个组件，每张卡片都由真实的 Remotion Player 播放。`
+                    : "The whole registry in one filterable grid, every card playing its own scene in a real Remotion player."}
                 </p>
               </Link>
             </li>

@@ -10,7 +10,7 @@ export const inputConfig: ComponentConfig = {
       default: "you@example.com",
       label: "Placeholder",
     },
-    value: { type: "text", default: "remotion@snapcn.dev", label: "Value" },
+    value: { type: "text", default: "hello@video.ricoui.com", label: "Value" },
     size: {
       type: "select",
       default: "default",
@@ -40,7 +40,7 @@ export const inputConfig: ComponentConfig = {
     const props: string[] = [`  state="${state}"`];
     if (placeholder !== undefined && placeholder !== "you@example.com")
       props.push(`  placeholder="${placeholder}"`);
-    if (value !== undefined && value !== "remotion@snapcn.dev")
+    if (value !== undefined && value !== "hello@video.ricoui.com")
       props.push(`  value="${value}"`);
     if (size !== undefined && size !== "default")
       props.push(`  size="${size}"`);

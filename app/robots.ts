@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const SITE_URL = "https://snapcn.dev";
+const SITE_URL = "https://video.ricoui.com";
 
 export default function robots(): MetadataRoute.Robots {
   return {

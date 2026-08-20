@@ -1,0 +1,12 @@
+{
+  "title": "完整场景",
+  "collapsible": false,
+  "pages": [
+    "index",
+    "announce-title",
+    "hero-launch",
+    "orbit-gallery",
+    "moodboard-reveal",
+    "status-cycle"
+  ]
+}

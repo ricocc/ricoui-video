@@ -1,6 +1,6 @@
-# The snap-cn Design System
+# The RICOUI Video Design System
 
-This document defines the visual language for the snap-cn site and docs: palette, radii, typography, and motion. It exists so future contributors can extend the UI without drifting. The look is a clean, dense, professional B2B-SaaS aesthetic — light mode is first-class, dark mode is a full peer, and the interface stays quiet so the video previews (the actual product) carry the visual interest.
+This document defines the visual language for the RICOUI Video site and docs: palette, radii, typography, and motion. It exists so future contributors can extend the UI without drifting. The look is a clean, dense, professional B2B-SaaS aesthetic — light mode is first-class, dark mode is a full peer, and the interface stays quiet so the video previews (the actual product) carry the visual interest.
 
 > Scope: this file covers **site chrome** — layout, docs, navigation, cards, controls. The motion language for the **Remotion video components themselves** (camera model, timing tokens, transitions) lives in [MOTION.md](./MOTION.md) and is a separate system. Do not apply site-chrome rules to composition internals, and never let a chrome refactor touch a video component's animation logic.
 

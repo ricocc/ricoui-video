@@ -2,6 +2,7 @@
 
 import { Check, Copy } from "lucide-react";
 import { useState } from "react";
+import { useI18n } from "@/components/locale-provider";
 import { Button } from "@/components/ui/button";
 import { INSTALL_ALL_COMMAND } from "@/config/site";
 import { useTrackEvent } from "@/lib/analytics";
@@ -9,6 +10,7 @@ import { useTrackEvent } from "@/lib/analytics";
 export function InstallAll() {
   const [copied, setCopied] = useState(false);
   const trackEvent = useTrackEvent();
+  const { t } = useI18n();
 
   const copy = () => {
     navigator.clipboard.writeText(INSTALL_ALL_COMMAND);
@@ -25,10 +27,10 @@ export function InstallAll() {
     <Button
       variant="outline"
       onClick={copy}
-      aria-label="Copy command to install all components"
+      aria-label={t("hero.installAll")}
       className="group h-11 gap-3 border-border bg-card px-4 font-mono text-sm font-normal text-muted-foreground hover:border-foreground/20 hover:text-foreground"
     >
-      <span className="text-foreground">Install all</span>
+      <span className="text-foreground">{t("hero.installAll")}</span>
       <span aria-hidden className="text-muted-foreground/70">
         {copied ? (
           <Check className="size-4 text-foreground" />

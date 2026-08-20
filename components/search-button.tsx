@@ -3,6 +3,7 @@
 import { useSearchContext } from "fumadocs-ui/contexts/search";
 import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useI18n } from "@/components/locale-provider";
 import { Kbd, KbdGroup } from "@/components/ui/kbd";
 import { cn } from "@/lib/utils";
 
@@ -21,6 +22,7 @@ import { cn } from "@/lib/utils";
  */
 export function SearchButton({ className }: { className?: string }) {
   const { setOpenSearch } = useSearchContext();
+  const { t } = useI18n();
 
   // The modifier glyph is client-only (⌘ on Apple, Ctrl elsewhere). Default to
   // ⌘ so the server and first client render agree, then correct after mount —
@@ -36,7 +38,7 @@ export function SearchButton({ className }: { className?: string }) {
   return (
     <button
       type="button"
-      aria-label="Search"
+      aria-label={t("search.label")}
       onClick={() => setOpenSearch(true)}
       className={cn(
         "flex h-9 w-9 items-center justify-center rounded-4xl border border-border bg-background px-0 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/30 focus-visible:outline-none lg:w-full lg:justify-start lg:gap-2 lg:px-3",
@@ -44,7 +46,9 @@ export function SearchButton({ className }: { className?: string }) {
       )}
     >
       <Search className="size-4 shrink-0" aria-hidden="true" />
-      <span className="hidden flex-1 text-left lg:block">Search…</span>
+      <span className="hidden flex-1 text-left lg:block">
+        {t("search.placeholder")}
+      </span>
       <KbdGroup className="hidden lg:flex">
         <Kbd>{mod}</Kbd>
         <Kbd>K</Kbd>

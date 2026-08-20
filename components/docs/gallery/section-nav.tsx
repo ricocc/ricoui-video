@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useI18n } from "@/components/locale-provider";
 import { DOCS_NAV } from "@/lib/docs-nav";
 import { cn } from "@/lib/utils";
 
@@ -61,7 +62,7 @@ export type DocsSection = (typeof DOCS_SECTIONS)[number];
  * prefix is the bare `/docs`, would be active on every route in the group.
  */
 export function useSectionActive() {
-  const pathname = usePathname();
+  const pathname = usePathname().replace(/^\/(?:en|zh)(?=\/|$)/, "") || "/";
   const hits = (match: string) =>
     pathname === match || pathname.startsWith(`${match}/`);
 
@@ -90,7 +91,8 @@ export function useSectionActive() {
  */
 export function DocsSectionNav({ className }: { className?: string }) {
   const isActive = useSectionActive();
-  const pathname = usePathname();
+  const pathname = usePathname().replace(/^\/(?:en|zh)(?=\/|$)/, "") || "/";
+  const { href, locale } = useI18n();
   const inDocs = isActive(DOCS_SECTIONS[0]);
 
   return (
@@ -101,7 +103,7 @@ export function DocsSectionNav({ className }: { className?: string }) {
           return (
             <Link
               key={item.href}
-              href={item.href}
+              href={href(item.href)}
               aria-current={active ? "page" : undefined}
               className={cn(
                 "flex items-center gap-1.5 text-sm transition-colors",
@@ -110,7 +112,11 @@ export function DocsSectionNav({ className }: { className?: string }) {
                   : "text-foreground/70 hover:text-foreground",
               )}
             >
-              {item.label}
+              {locale === "zh-CN" && item.label === "Docs"
+                ? "文档"
+                : locale === "zh-CN" && item.label === "Components"
+                  ? "组件"
+                  : item.label}
             </Link>
           );
         })}
@@ -130,7 +136,7 @@ export function DocsSectionNav({ className }: { className?: string }) {
                 return (
                   <Link
                     key={link.href}
-                    href={link.href}
+                    href={href(link.href)}
                     aria-current={current ? "page" : undefined}
                     className={cn(
                       "text-[13px] transition-colors",

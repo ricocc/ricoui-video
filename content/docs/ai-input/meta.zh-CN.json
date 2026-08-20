@@ -1,0 +1,5 @@
+{
+  "title": "AI 交互",
+  "collapsible": false,
+  "pages": ["index", "search-typing", "prompt-zoom", "answer-stream"]
+}

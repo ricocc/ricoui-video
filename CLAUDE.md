@@ -1,10 +1,10 @@
-# snapcn
+# RICOUI Video
 
 A shadcn registry of ready-made animations, transitions, and backgrounds for Remotion.
 
 ## What it is
 
-A set of production-ready components for building videos in Remotion. Users install components with `npx shadcn@latest add @snap-cn/<component>` and assemble videos from prebuilt blocks.
+A set of production-ready components for building videos in Remotion. Users install components with `npx shadcn@latest add @ricoui-video/<component>` and assemble videos from prebuilt blocks.
 
 ## Target audience
 
@@ -46,6 +46,12 @@ Events are not sent from `pnpm dev`; verify with `pnpm build && pnpm start`.
 - **Compositions** — full scenes assembled from primitives
 
 ## Key decisions
+
+RICOUI Video publishes the flat registry at `https://video.ricoui.com/r/{name}.json`.
+The public install namespace is `@ricoui-video/<component>` and consumers must
+configure it in `components.json` until it is accepted into the shadcn Registry
+Directory. References below to `@snap-cn` describe the retained upstream layout
+or agent skill, not this project's public namespace.
 
 - Install namespace: `@snap-cn/<component>`, e.g. `@snap-cn/text-reveal`. Registered in the shadcn registry directory (shadcn-ui/ui#11386), so the CLI resolves it with no setup. Both tiers publish to the same flat `/r/<name>.json` — there is no `@snap-cn-ui` namespace; UI primitives are `@snap-cn/input`, `@snap-cn/caret`
 - Remotion is a prerequisite — we don't bootstrap it for users

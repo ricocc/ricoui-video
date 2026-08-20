@@ -22,7 +22,7 @@ export function ShowcaseGallery({
         <p className="max-w-md text-sm text-muted-foreground">
           {notConfigured
             ? "Submissions open once the backend is connected."
-            : "Be the first to share a video you built with snapcn."}
+            : "Be the first to share a video you built with RICOUI Video."}
         </p>
       </div>
     );

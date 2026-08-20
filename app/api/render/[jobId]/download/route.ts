@@ -69,7 +69,7 @@ export async function GET(
 /** Belt-and-suspenders: strip anything that could break the header. */
 function sanitizeFileName(name: string): string {
   const cleaned = name.replace(/[^a-z0-9._-]+/gi, "-").slice(0, 100);
-  return cleaned || "snapcn-video.mp4";
+  return cleaned || "ricoui-video.mp4";
 }
 
 function jsonError(status: number, error: string, code: string): Response {

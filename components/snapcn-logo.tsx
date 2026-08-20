@@ -5,7 +5,7 @@ const WIDTH = 464;
 const HEIGHT = 409;
 
 /**
- * The snapcn mark, as a light/dark pair.
+ * The logo mark, as a light/dark pair.
  *
  * The mark is a single flat colour on transparency, so it cannot be one file:
  * the dark mark vanishes on the dark theme and the white one vanishes on the
@@ -17,14 +17,14 @@ const HEIGHT = 409;
  * SVG on `currentColor` and this collapses to one ~1KB file that is crisp at
  * every DPI and needs no pair at all.
  */
-export function SnapCnLogo({ className }: { className?: string }) {
+export function logoLogo({ className }: { className?: string }) {
   const size = cn("h-7 w-auto", className);
 
   return (
     <>
       <Image
-        src="/logo/snapcn.png"
-        alt="snapcn"
+        src="/logo/logo.png"
+        alt="logo"
         width={WIDTH}
         height={HEIGHT}
         priority
@@ -33,7 +33,7 @@ export function SnapCnLogo({ className }: { className?: string }) {
       {/* Decorative twin: the light copy above already carries the alt text, so
           announcing this one would read the logo out twice. */}
       <Image
-        src="/logo/snapcn-white.png"
+        src="/logo/logo-white.png"
         alt=""
         aria-hidden
         width={WIDTH}

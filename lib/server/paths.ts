@@ -10,4 +10,4 @@ import path from "node:path";
  */
 export const RENDER_WORK_DIR =
   process.env.RENDER_WORK_DIR?.trim() ||
-  path.join(os.tmpdir(), "snapcn-renders");
+  path.join(os.tmpdir(), "ricoui-video-renders");

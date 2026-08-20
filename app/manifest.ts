@@ -4,8 +4,11 @@ import type { MetadataRoute } from "next";
 // favicon.io site.webmanifest; the PWA icons live in public/.
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "snapcn — Cinematic video components for React",
-    short_name: "snapcn",
+    name: "RICOUI Video — Remotion components for software demos",
+    short_name: "RICOUI Video",
+    description: "用于软件演示视频的 Remotion 可复制组件库。",
+    lang: "zh-CN",
+    start_url: "/",
     icons: [
       {
         src: "/android-chrome-192x192.png",

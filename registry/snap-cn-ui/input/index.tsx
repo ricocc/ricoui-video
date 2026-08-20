@@ -177,7 +177,7 @@ export function Input({
   state = "idle",
   style,
   placeholder = "you@example.com",
-  value = "remotion@snapcn.dev",
+  value = "hello@video.ricoui.com",
   size = "default",
   theme: themeOverride,
   primary,

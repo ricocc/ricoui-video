@@ -5,6 +5,7 @@ import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { type MouseEvent, useMemo, useRef } from "react";
 import { AbsoluteFill, Img } from "remotion";
+import { useI18n } from "@/components/locale-provider";
 import {
   CATEGORY_ICONS,
   type GalleryItem,
@@ -37,6 +38,7 @@ export function GalleryCard({
    *  May return the state-commit promise so the morph can wait for it. */
   onOpen?: (slug: string) => unknown;
 }) {
+  const { href } = useI18n();
   const slug = slugFromHref(item.href);
   const { containerRef, playerRef, mounted } = useLazyPlayer();
   const cardRef = useRef<HTMLAnchorElement>(null);
@@ -109,7 +111,7 @@ export function GalleryCard({
     <Link
       ref={cardRef}
       {...cardAttr(slug)}
-      href={item.href}
+      href={href(item.href)}
       onClick={handleClick}
       title={item.name}
       aria-label={`${item.name}: ${item.description}`}

@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { GALLERY_CATEGORIES, GALLERY_ITEMS } from "./gallery-data";
 
-export const SITE_URL = "https://snapcn.dev";
+export const SITE_URL = "https://video.ricoui.com";
 
 const DOCS_DIR = path.join(process.cwd(), "content", "docs");
 
@@ -45,16 +45,14 @@ function frontmatterField(fm: string, key: string): string {
 function toPlainMarkdown(body: string, url: string): string {
   return (
     body
-      // The `@snap-cn/<name>` short form, matching what the site's own
-      // InstallBlock prints — the CLI resolves the namespace from the shadcn
-      // registry directory, so an agent can paste this as-is.
+      // The public namespace configured in the consumer's components.json.
       .replace(
         /<InstallBlock\s+registry="[\w-]+"\s+name="([\w-]+)"\s*\/>/g,
-        "```bash\nnpx shadcn@latest add @snap-cn/$1\n```",
+        "```bash\nnpx shadcn@latest add @ricoui-video/$1\n```",
       )
       .replace(
         /<InstallBlock\s+name="([\w-]+)"\s*\/>/g,
-        "```bash\nnpx shadcn@latest add @snap-cn/$1\n```",
+        "```bash\nnpx shadcn@latest add @ricoui-video/$1\n```",
       )
       .replace(
         /<(ComponentPreview|UiComponentPreview|BlockPreview)[\s\S]*?\/>/g,
@@ -88,7 +86,7 @@ function componentsGalleryPage(): LlmsPage {
   return {
     url: "/docs/components",
     title: "Components",
-    description: "Every component in snapcn, grouped by category",
+    description: "Every RICOUI Video component, grouped by category",
     body,
     category: "components",
   };
@@ -102,7 +100,10 @@ export function collectDocsPages(): LlmsPage[] {
       const full = path.join(dir, entry.name);
       if (entry.isDirectory()) {
         walk(full);
-      } else if (entry.name.endsWith(".mdx")) {
+      } else if (
+        entry.name.endsWith(".mdx") &&
+        !entry.name.endsWith(".zh-CN.mdx")
+      ) {
         const rel = path.relative(DOCS_DIR, full).replace(/\.mdx$/, "");
         const slug = rel.endsWith("/index")
           ? rel.slice(0, -"/index".length)
@@ -136,9 +137,9 @@ export function collectDocsPages(): LlmsPage[] {
   });
 }
 
-export const LLMS_HEADER = `# snapcn
+export const LLMS_HEADER = `# RICOUI Video
 
-> snapcn is a shadcn-style registry of production-ready video components for Remotion (React). Developers install components with \`npx shadcn@latest add ${SITE_URL}/r/<component>.json\`; the source and everything it depends on is copied into their project and they own the code. Typical use: building product demo videos, launch videos and social clips in React.
+> RICOUI Video is a shadcn-style registry of production-ready video components for Remotion (React). Configure \`"@ricoui-video": "${SITE_URL}/r/{name}.json"\` in components.json, then install with \`npx shadcn@latest add @ricoui-video/<component>\`. The source and its dependencies are copied into the project. Typical use: software demos, AI product videos, launch videos and social clips.
 
-Prerequisites: an existing Remotion project (\`npx create-video@latest\`) and the shadcn CLI. License: MIT. Author: Sri Nath (https://x.com/SriNath693). Site: ${SITE_URL}
+Prerequisites: an existing Remotion project (\`npx create-video@latest\`) and the shadcn CLI. License: MIT. Independent project based on SnapCN (https://github.com/snapcndev/snapcn). Site: ${SITE_URL}
 `;

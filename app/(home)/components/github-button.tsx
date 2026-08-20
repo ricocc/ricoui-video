@@ -1,9 +1,8 @@
 import { Star } from "lucide-react";
-import { formatStars, getGitHubStars } from "@/lib/github";
+import { formatStars } from "@/lib/github";
 import { GithubButtonLink } from "./github-button-link";
 
-export async function GithubButton() {
-  const stars = await getGitHubStars();
+export function GithubButton({ stars }: { stars: number | null }) {
   return (
     <GithubButtonLink className="inline-flex h-9 items-center gap-2 rounded-4xl border border-border px-3 text-sm font-medium text-muted-foreground transition-colors duration-150 ease-out hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40">
       <GitHubIcon className="size-4" />

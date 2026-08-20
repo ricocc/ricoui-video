@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     url: "/docs/templates",
     title: TITLE,
     description: DESCRIPTION,
-    siteName: "snapcn",
+    siteName: "RICOUI Video",
   },
 };
 

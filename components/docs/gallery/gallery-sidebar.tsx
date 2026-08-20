@@ -3,8 +3,9 @@
 import { ArrowUpRight, ChevronsLeft } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { BrandWordmark } from "@/components/brand-wordmark";
+import { useI18n } from "@/components/locale-provider";
 import { SearchButton } from "@/components/search-button";
-import { SnapCnLogo } from "@/components/snapcn-logo";
 import { GITHUB_URL, X_URL } from "@/config/site";
 import { DOCS_NAV } from "@/lib/docs-nav";
 import { GALLERY_COUNT } from "@/lib/gallery-data";
@@ -34,9 +35,10 @@ export function GallerySidebar({
   collapsed: boolean;
   onToggle: () => void;
 }) {
+  const { href } = useI18n();
   const year = new Date().getFullYear();
   const isActive = useSectionActive();
-  const pathname = usePathname();
+  const pathname = usePathname().replace(/^\/(?:en|zh)(?=\/|$)/, "") || "/";
   // The written docs are one of the six sections, so their page tree only opens
   // while you are in them — the Components gallery and the Showcase keep the
   // short rail they had. `DOCS_SECTIONS[0]` is the Docs entry, and its
@@ -55,8 +57,12 @@ export function GallerySidebar({
       )}
     >
       <div className="flex items-center justify-between gap-2">
-        <Link href="/" aria-label="snapcn home" className="shrink-0">
-          <SnapCnLogo />
+        <Link
+          href={href("/")}
+          aria-label="RICOUI Video home"
+          className="shrink-0"
+        >
+          <BrandWordmark />
         </Link>
         <div className="flex items-center gap-2">
           <span className="flex items-center gap-1.5 text-[13px] text-muted-foreground">
@@ -85,7 +91,7 @@ export function GallerySidebar({
           return (
             <Link
               key={item.href}
-              href={item.href}
+              href={href(item.href)}
               aria-current={active ? "page" : undefined}
               // 13px on a 1.8 leading = a 23.4px pitch, measured off the
               // reference rail (23.5px). The old 15px/leading-loose/py-1 came to
@@ -124,7 +130,7 @@ export function GallerySidebar({
                   return (
                     <Link
                       key={link.href}
-                      href={link.href}
+                      href={href(link.href)}
                       aria-current={current ? "page" : undefined}
                       className={
                         current
@@ -153,7 +159,9 @@ export function GallerySidebar({
           <GitHubIcon className="size-5 text-foreground" />
         </div>
         <div>
-          <p className="text-[13px] font-medium text-foreground">Star snapcn</p>
+          <p className="text-[13px] font-medium text-foreground">
+            Star RICOUI Video
+          </p>
           <p className="text-[13px] text-muted-foreground">
             Free, open-source components.
           </p>
@@ -188,7 +196,9 @@ export function GallerySidebar({
         <p className="text-[13px] text-muted-foreground">
           MIT licensed · own your code.
         </p>
-        <p className="text-[13px] text-muted-foreground">© {year} snapcn</p>
+        <p className="text-[13px] text-muted-foreground">
+          © {year} RICOUI Video
+        </p>
       </div>
     </aside>
   );

@@ -1,6 +1,6 @@
 # Contributing
 
-snapcn is a shadcn registry of ready-made animations, transitions and
+RICOUI Video is a shadcn registry of ready-made animations, transitions and
 backgrounds for Remotion. Components are **copied into the user's project**, so
 every file we ship is a file someone will read, edit and own. Write it that way.
 
@@ -16,12 +16,14 @@ pnpm run registry:build   # rebuild public/r/*.json after touching a component
 
 ## Adding a component
 
-1. `registry/snap-cn/<slug>/index.tsx` — the component. Frame-driven, no
+1. Choose the source tier: upstream-derived work stays under
+   `registry/snap-cn/<slug>/`; original RICOUI work goes under
+   `registry/ricoui/<slug>/`. Components are frame-driven, with no
    `setTimeout`, no CSS keyframes: everything comes from `useCurrentFrame()`.
-2. `registry/snap-cn/<slug>/config.ts` — the customizer controls, timing and
+2. Add `config.ts` beside the component for customizer controls, timing and
    canvas size. This is also what the docs preview and the rendered demo read.
-3. Register it in `registry/__index__.tsx`, add an entry to
-   `registry/snap-cn/registry.json`, `lib/gallery-data.ts` and
+3. Register it in `registry/__index__.tsx`, the matching registry manifest,
+   `registry/metadata/components.ts`, `lib/gallery-data.ts` and
    `content/docs/<category>/<slug>.mdx`.
 4. `pnpm run registry:build`, then `pnpm lint && pnpm test`.
 

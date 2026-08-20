@@ -24,12 +24,14 @@ const OVERLAY_MDX = getMDXComponents({
  * One mechanism covers all components — no per-component authoring — because
  * each doc is just its MDX body rendered through the shared component map.
  */
-export function getDocBodies(): Record<string, ReactNode> {
+export function getDocBodies(
+  locale: "en" | "zh-CN" = "en",
+): Record<string, ReactNode> {
   const bodies: Record<string, ReactNode> = {};
   for (const item of GALLERY_ITEMS) {
     const slug = slugFromHref(item.href);
     const pageSlugs = item.href.replace(/^\/docs\//, "").split("/");
-    const page = source.getPage(pageSlugs);
+    const page = source.getPage(pageSlugs, locale);
     if (!page) continue;
     // biome-ignore lint/suspicious/noExplicitAny: fumadocs page.data.body is loosely typed, matching app/docs/(docs)/[[...slug]]/page.tsx
     const MDX = (page.data as any).body;

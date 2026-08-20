@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { ThemeToggle } from "@/app/(home)/components/theme-toggle";
+import { LocaleSwitcher } from "@/components/locale-switcher";
 import { DocsSectionNav } from "./section-nav";
 
 /**
@@ -22,7 +23,10 @@ export function DocsTopBar({ children }: { children?: ReactNode }) {
       <DocsSectionNav className="mb-4" />
       <div className="flex items-center gap-4">
         {children}
-        <ThemeToggle className="ml-auto" />
+        <div className="ml-auto flex items-center gap-2">
+          <LocaleSwitcher />
+          <ThemeToggle />
+        </div>
       </div>
     </div>
   );

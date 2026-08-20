@@ -71,7 +71,7 @@ function buildSpec(body: unknown): RenderSpec {
     inputProps: { clips },
     width: CANVAS.width,
     height: CANVAS.height,
-    fileName: "snapcn-video.mp4",
+    fileName: "ricoui-video.mp4",
   };
 }
 

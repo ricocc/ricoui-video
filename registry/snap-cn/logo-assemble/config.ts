@@ -6,7 +6,7 @@ export const logoAssembleConfig: ComponentConfig = {
   controls: {
     brandName: {
       type: "text",
-      default: "snapcn",
+      default: "RICOUI Video",
       label: "Brand name",
     },
     middleText: {
@@ -16,7 +16,7 @@ export const logoAssembleConfig: ComponentConfig = {
     },
     logoSrc: {
       type: "image",
-      default: "/logo/snapcn-white.png",
+      default: "/android-chrome-512x512.png",
       label: "Logo (simple, monochrome)",
     },
     count: {

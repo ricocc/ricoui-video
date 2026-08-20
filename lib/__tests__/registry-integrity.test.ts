@@ -35,10 +35,13 @@ const readManifest = (p: string): string[] =>
     }
   ).items.map((i) => i.name);
 
-const liveComponents = new Set([
-  ...readManifest("registry/snap-cn/registry.json"),
-  ...readManifest("registry/snap-cn-ui/registry.json"),
-]);
+/** The three component tiers. Originals under registry/ricoui get the same
+ * built/orphan/documented guarantees as upstream-derived components. */
+const TIERS = ["registry/snap-cn", "registry/snap-cn-ui", "registry/ricoui"];
+
+const liveComponents = new Set(
+  TIERS.flatMap((dir) => readManifest(path.join(dir, "registry.json"))),
+);
 
 const builtComponents = new Set(
   fs
@@ -75,7 +78,7 @@ describe("registry integrity", () => {
       .map((e) => e.name.slice(0, -".mdx".length))
       // Only pages that name a real component directory — the rest are guides.
       .filter((name) =>
-        fs.existsSync(path.join(ROOT, "registry/snap-cn", name)),
+        TIERS.some((dir) => fs.existsSync(path.join(ROOT, dir, name))),
       );
 
     const uninstallable = documented.filter((n) => !liveComponents.has(n));

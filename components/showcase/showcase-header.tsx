@@ -68,7 +68,7 @@ export function ShowcaseHeader({
             Showcase
           </h1>
           <p className="mt-2 max-w-xl text-muted-foreground">
-            Videos built with snapcn, shared by the people who made them.
+            Videos built with RICOUI Video, shared by the people who made them.
           </p>
         </div>
 

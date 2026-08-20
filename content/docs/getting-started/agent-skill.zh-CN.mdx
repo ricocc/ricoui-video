@@ -1,0 +1,20 @@
+---
+title: Agent Skill
+description: 使用 SnapCN 上游 skill，让 AI 更准确地组合 Remotion 视频
+---
+
+仓库保留了来自 SnapCN 的 agent skill，其中包含组件目录、Props、时长、设计默认值、
+动效原则和常见反模式。它属于上游来源内容，因此名称和安装坐标继续保留 SnapCN。
+
+```bash
+npx skills add snapcndev/snapcn --skill snapcn --yes
+```
+
+安装后，支持 skills 的 AI 编程工具可以读取组件能力和时间轴规则。RICOUI Video 自己的
+品牌、Registry namespace 与站点语言不会改写这份上游 skill 的归属。
+
+## 前置条件
+
+- 支持加载 skills 的 AI 编程工具
+- 已安装 RICOUI Video 组件的 Remotion 项目
+- 已完成[安装配置](/docs/getting-started/installation)

@@ -1,9 +1,9 @@
 ---
 title: Installation
-description: Add snapcn to an existing Remotion project
+description: Add RICOUI Video to an existing Remotion project
 ---
 
-snapcn assumes you already have Remotion installed. If you don't, run `npx create-video@latest` first.
+RICOUI Video assumes you already have Remotion installed. If you don't, run `npx create-video@latest` first.
 
 ## 1. Teach your project the `@/` alias
 
@@ -58,7 +58,10 @@ The shadcn CLI reads this to know where files go. `npx shadcn@latest init` write
     "lib": "@/lib",
     "hooks": "@/hooks"
   },
-  "iconLibrary": "lucide"
+  "iconLibrary": "lucide",
+  "registries": {
+    "@ricoui-video": "https://video.ricoui.com/r/{name}.json"
+  }
 }
 ```
 
@@ -66,7 +69,7 @@ The shadcn CLI reads this to know where files go. `npx shadcn@latest init` write
 
 <InstallBlock name="text-reveal" />
 
-`@snap-cn` is in the shadcn registry directory, so the CLI resolves the name with nothing else to configure. That copies `text-reveal.tsx` into `src/components/snap-cn/` (or wherever your `components.json` points), plus the small `lib/snap-cn-ui/` core it paints from. Anything a component depends on comes with it — you never install a second thing by hand.
+The `@ricoui-video` entry in `components.json` maps the public namespace to this project's Registry endpoint. The command copies `text-reveal.tsx` into `src/components/snap-cn/` (or wherever your aliases point), plus the small `lib/snap-cn-ui/` core it paints from. Internal target folders retain their upstream-compatible names; users always install through `@ricoui-video/*`.
 
 ## Component code
 

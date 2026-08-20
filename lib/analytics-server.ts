@@ -145,7 +145,7 @@ export function distinctIdFromCookie(cookies: {
  * anything identifying. Web Crypto, so it runs on the Edge runtime.
  */
 export async function anonymousId(ip: string, ua: string): Promise<string> {
-  const bytes = new TextEncoder().encode(`snapcn:${ip}:${ua}`);
+  const bytes = new TextEncoder().encode(`ricoui-video:${ip}:${ua}`);
   const digest = await crypto.subtle.digest("SHA-256", bytes);
   const hex = Array.from(new Uint8Array(digest))
     .slice(0, 8)

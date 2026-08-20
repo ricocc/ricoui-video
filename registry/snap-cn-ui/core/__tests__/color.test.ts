@@ -93,6 +93,7 @@ describe("mixOklch shortest-arc hue", () => {
     const b = "oklch(0.6 0.12 10)";
     const mid = rgbOf(mixOklch(a, b, 0.5));
     const hue = rgbToOklch({ mode: "rgb", r: mid.r, g: mid.g, b: mid.b }).h;
+    if (hue === undefined) throw new Error("expected a chromatic hue");
     const nearZero = hue <= 15 || hue >= 345;
     expect(nearZero).toBe(true);
     expect(Math.abs(hue - 180)).toBeGreaterThan(120);
@@ -113,6 +114,7 @@ describe("mixOklch holds hue for neutrals (no phantom hue)", () => {
     const blue = "oklch(0.6 0.12 250)";
     const near = rgbOf(mixOklch(gray, blue, 0.9));
     const hue = rgbToOklch({ mode: "rgb", r: near.r, g: near.g, b: near.b }).h;
+    if (hue === undefined) throw new Error("expected a chromatic hue");
     const dh = Math.abs(((hue - 250 + 540) % 360) - 180);
     expect(dh).toBeLessThan(20);
   });
@@ -214,7 +216,8 @@ describe("parseColor formats", () => {
 
   it("parses oklch() with a percent alpha (alpha ~= 0.10)", () => {
     const c = parseColor("oklch(1 0 0 / 10%)");
-    expect(Math.abs(c.alpha! - 0.1)).toBeLessThanOrEqual(0.01);
+    if (c.alpha === undefined) throw new Error("expected alpha");
+    expect(Math.abs(c.alpha - 0.1)).toBeLessThanOrEqual(0.01);
   });
 
   it("defaults alpha to 1 when no alpha is present", () => {
@@ -273,7 +276,8 @@ describe("toCss (culori formatRgb output)", () => {
     const reparsed = parseColor(
       toCss({ mode: "rgb", r: 10 / 255, g: 20 / 255, b: 30 / 255, alpha: 0.5 }),
     );
-    expect(Math.abs(reparsed.alpha! - 0.5)).toBeLessThanOrEqual(0.01);
+    if (reparsed.alpha === undefined) throw new Error("expected alpha");
+    expect(Math.abs(reparsed.alpha - 0.5)).toBeLessThanOrEqual(0.01);
   });
 });
 

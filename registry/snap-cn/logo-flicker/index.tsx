@@ -46,14 +46,14 @@ const FONT_FAMILY =
  *  `staticFile()` in a render and 404s in the project this file was just
  *  copied into. Pass your own — root-relative or remote, both resolve. */
 const DEFAULT_IMAGES = [
-  "https://snapcn.dev/showcase-assets/438b9e6b50654a44d404fbf358c26e9f.webp",
-  "https://snapcn.dev/showcase-assets/5e5305b05bd405a0d89570725434099e.webp",
-  "https://snapcn.dev/showcase-assets/767d99bb371a54d0d36751e8cecae43c.jpg",
-  "https://snapcn.dev/showcase-assets/821d815affa6496c39cbdeeec7a84603.jpg",
-  "https://snapcn.dev/showcase-assets/937438c560ada1c83317f2c11b3454b0.jpg",
-  "https://snapcn.dev/showcase-assets/98f89cb9994f5c382ab964062c4039db.jpg",
-  "https://snapcn.dev/showcase-assets/b25b82db2892efff9be3204e860d30ee.jpg",
-  "https://snapcn.dev/showcase-assets/c9ebc6337aa2268ac4b357f9cb1ac547.jpg",
+  "https://video.ricoui.com/showcase-assets/438b9e6b50654a44d404fbf358c26e9f.webp",
+  "https://video.ricoui.com/showcase-assets/5e5305b05bd405a0d89570725434099e.webp",
+  "https://video.ricoui.com/showcase-assets/767d99bb371a54d0d36751e8cecae43c.jpg",
+  "https://video.ricoui.com/showcase-assets/821d815affa6496c39cbdeeec7a84603.jpg",
+  "https://video.ricoui.com/showcase-assets/937438c560ada1c83317f2c11b3454b0.jpg",
+  "https://video.ricoui.com/showcase-assets/98f89cb9994f5c382ab964062c4039db.jpg",
+  "https://video.ricoui.com/showcase-assets/b25b82db2892efff9be3204e860d30ee.jpg",
+  "https://video.ricoui.com/showcase-assets/c9ebc6337aa2268ac4b357f9cb1ac547.jpg",
 ];
 
 // ─── Timeline (frames @ 30fps; ~3.5s) ──────────────────────────────────────────
@@ -111,8 +111,8 @@ function resolveSrc(src: string): string {
 }
 
 export function LogoFlicker({
-  logoSrc = "https://snapcn.dev/logo/snapcn-white.png",
-  brandName = "snapcn",
+  logoSrc = "https://video.ricoui.com/android-chrome-512x512.png",
+  brandName = "RICOUI Video",
   images = DEFAULT_IMAGES,
   flipInterval = FLIP_INTERVAL,
   background,

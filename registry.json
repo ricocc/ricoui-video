@@ -1,10 +1,11 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
-  "name": "snap-cn",
-  "homepage": "https://snapcn.dev",
+  "name": "ricoui-video",
+  "homepage": "https://video.ricoui.com",
   "include": [
     "registry/snap-cn/registry.json",
-    "registry/snap-cn-ui/registry.json"
+    "registry/snap-cn-ui/registry.json",
+    "registry/ricoui/registry.json"
   ],
   "items": []
 }

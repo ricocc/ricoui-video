@@ -1,5 +1,6 @@
 import { ChevronDown } from "lucide-react";
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { Suspense } from "react";
 import { getDocBodies } from "@/components/docs/gallery/doc-bodies";
 import { GalleryCard } from "@/components/docs/gallery/gallery-card";
@@ -9,29 +10,40 @@ import { GalleryHeaderRow } from "@/components/docs/gallery/gallery-header-row";
 import { GALLERY_CATEGORIES, GALLERY_ITEMS } from "@/lib/gallery-data";
 import { formatUpdatedAt, getGitHubUpdatedAt } from "@/lib/github";
 
-const SITE_URL = "https://snapcn.dev";
+const SITE_URL = "https://video.ricoui.com";
 const TITLE = "Components";
-const DESCRIPTION = "Every component in snapcn, grouped by category";
+const DESCRIPTION = "Every RICOUI Video component, grouped by category";
 
-export const metadata: Metadata = {
-  title: TITLE,
-  description: DESCRIPTION,
-  alternates: { canonical: "/docs/components" },
-  openGraph: {
-    type: "article",
-    url: "/docs/components",
-    title: TITLE,
-    description: DESCRIPTION,
-    siteName: "snapcn",
-    images: [{ url: "/og/components", width: 1200, height: 630, alt: TITLE }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: TITLE,
-    description: DESCRIPTION,
-    images: ["/og/components"],
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const zh = (await headers()).get("x-ricoui-locale") !== "en";
+  const title = zh ? "组件" : TITLE;
+  const description = zh
+    ? "按功能分类浏览 RICOUI Video 的全部组件"
+    : DESCRIPTION;
+  const url = zh ? "/docs/components" : "/en/docs/components";
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: url,
+      languages: { en: "/en/docs/components", "zh-CN": "/docs/components" },
+    },
+    openGraph: {
+      type: "article",
+      url,
+      title,
+      description,
+      siteName: "RICOUI Video",
+      images: [{ url: "/og/components", width: 1200, height: 630, alt: title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/og/components"],
+    },
+  };
+}
 
 // The card faces carry no visible text (name/description live in aria-labels),
 // so an ItemList keeps every component name + URL machine-readable on this URL,
@@ -50,7 +62,11 @@ const jsonLd = {
         name: "Sri Nath",
         url: "https://x.com/SriNath693",
       },
-      publisher: { "@type": "Organization", name: "snapcn", url: SITE_URL },
+      publisher: {
+        "@type": "Organization",
+        name: "RICOUI Video",
+        url: SITE_URL,
+      },
     },
     {
       "@type": "BreadcrumbList",
@@ -82,6 +98,8 @@ const jsonLd = {
 };
 
 export default async function ComponentsGalleryPage() {
+  const locale =
+    (await headers()).get("x-ricoui-locale") === "en" ? "en" : "zh-CN";
   const meta =
     formatUpdatedAt(await getGitHubUpdatedAt()) ??
     "MIT licensed · own your code";
@@ -89,7 +107,7 @@ export default async function ComponentsGalleryPage() {
   // Full documentation for every component, rendered on the server and handed to
   // the client overlay — no component has a standalone docs page anymore; the
   // docs are read inline here.
-  const docBodies = getDocBodies();
+  const docBodies = getDocBodies(locale);
 
   return (
     <>

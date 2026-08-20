@@ -8,6 +8,7 @@ import {
   useQueryStates,
 } from "nuqs";
 import { type ReactNode, useCallback, useEffect, useMemo } from "react";
+import { useI18n } from "@/components/locale-provider";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,6 +26,7 @@ import {
   type SortMode,
   slugFromHref,
 } from "@/lib/gallery-data";
+import { localizeGalleryItem, zhCategoryLabels } from "@/lib/i18n/gallery";
 import { cn } from "@/lib/utils";
 import { GalleryCard } from "./gallery-card";
 import { GalleryDetailOverlay } from "./gallery-detail-overlay";
@@ -59,6 +61,7 @@ export function GalleryExplorer({
   /** Server-rendered doc bodies for every component, keyed by slug (see doc-bodies). */
   docBodies?: Record<string, ReactNode>;
 }) {
+  const { locale } = useI18n();
   const [{ category, sort }, setState] = useQueryStates(
     {
       category: parseAsStringLiteral(CATEGORY_IDS),
@@ -107,6 +110,13 @@ export function GalleryExplorer({
   );
 
   const activeItem = activeSlug ? (ITEM_BY_SLUG.get(activeSlug) ?? null) : null;
+  const localizedItems = useMemo(
+    () => items.map((item) => localizeGalleryItem(item, locale)),
+    [items, locale],
+  );
+  const localizedActiveItem = activeItem
+    ? localizeGalleryItem(activeItem, locale)
+    : null;
 
   // Prev/next wrap around the on-screen list when the open item is in it,
   // else over the full curated list (e.g. a deep link outside the filter).
@@ -140,7 +150,7 @@ export function GalleryExplorer({
               onClick={() => setFilter({ category: null })}
               className={pillClassName(category === null)}
             >
-              All
+              {locale === "zh-CN" ? "全部" : "All"}
             </button>
             {GALLERY_CATEGORIES.map((c) => (
               <button
@@ -150,14 +160,18 @@ export function GalleryExplorer({
                 onClick={() => setFilter({ category: c.id })}
                 className={pillClassName(category === c.id)}
               >
-                {c.label}
+                {locale === "zh-CN" ? zhCategoryLabels[c.id] : c.label}
               </button>
             ))}
           </div>
 
           <DropdownMenu>
             <DropdownMenuTrigger className="inline-flex shrink-0 cursor-default items-center gap-1.5 rounded-full border border-border bg-background px-3.5 py-1.5 text-sm font-medium text-foreground/80 transition-colors hover:bg-muted">
-              {SORT_LABELS[sort]}
+              {locale === "zh-CN" && sort === "curated"
+                ? "精选排序"
+                : locale === "zh-CN" && sort === "category"
+                  ? "按分类"
+                  : SORT_LABELS[sort]}
               <ChevronDown className="size-4" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="min-w-40 rounded-none">
@@ -169,7 +183,11 @@ export function GalleryExplorer({
               >
                 {SORT_ORDER.map((mode) => (
                   <DropdownMenuRadioItem key={mode} value={mode}>
-                    {SORT_LABELS[mode]}
+                    {locale === "zh-CN" && mode === "curated"
+                      ? "精选排序"
+                      : locale === "zh-CN" && mode === "category"
+                        ? "按分类"
+                        : SORT_LABELS[mode]}
                   </DropdownMenuRadioItem>
                 ))}
               </DropdownMenuRadioGroup>
@@ -187,7 +205,7 @@ export function GalleryExplorer({
           hole is the tail of the last row. `items-start` keeps a card at its own
           aspect ratio instead of being stretched to its row. */}
       <div className="mt-6 grid grid-cols-1 items-start gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {items.map((item) => (
+        {localizedItems.map((item) => (
           <GalleryCard
             key={item.href}
             item={item}
@@ -197,7 +215,7 @@ export function GalleryExplorer({
       </div>
 
       <GalleryDetailOverlay
-        item={activeItem}
+        item={localizedActiveItem}
         docBodies={docBodies}
         onClose={() => void setActiveSlug(null)}
         onPrev={() => step(-1)}

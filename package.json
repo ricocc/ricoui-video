@@ -1,18 +1,23 @@
 {
-  "name": "snap-cn",
+  "name": "ricoui-video",
   "version": "0.1.0",
   "private": true,
-  "author": "Sri Nath (https://x.com/SriNath693)",
-  "homepage": "https://snapcn.dev",
+  "description": "Copy-paste Remotion components for building software demo videos.",
+  "author": "RICOUI contributors",
+  "homepage": "https://video.ricoui.com",
   "repository": {
     "type": "git",
-    "url": "https://github.com/snapcndev/snapcn.git"
+    "url": "https://github.com/ricocc/ricoui-video.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ricocc/ricoui-video/issues"
   },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "biome check",
+    "typecheck": "tsc --noEmit",
     "format": "biome format --write",
     "registry:build": "shadcn build",
     "check:tokens": "node scripts/check-tokens.mts",
